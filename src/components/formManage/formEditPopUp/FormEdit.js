@@ -1,5 +1,5 @@
 import styled from '../../../styles/components/formManage/formEdit/FormEdit.module.css';
-import FormList from './components/FormList';
+import FormItemList from './components/FormItemList';
 import getFormItem from '../../../apis/commonAPI/getFormItem';
 import React, { useState, useEffect } from 'react';
 import { TyniEditor, CustomButton } from '../../common/TyniEditor';
@@ -36,7 +36,7 @@ export default function FormEdit() {
   return (
     <div className={styled.formEditContainer}>
       <div className={styled.categoryArea}>
-        <FormList formItems={formItems} editor={editor} />
+        <FormItemList formItems={formItems} editor={editor} />
       </div>
       <div className={styled.editorArea}>
         <TyniEditor
