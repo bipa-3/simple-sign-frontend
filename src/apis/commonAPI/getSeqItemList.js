@@ -1,5 +1,7 @@
+import base_url from '../base_url';
+
 export default function getSeqItemList() {
-  let url = 'http://localhost:8080/common/seq/item';
+  let url = base_url + 'common/seq/item';
 
   return fetch(url, { headers: { Accept: 'application/json' } });
 }

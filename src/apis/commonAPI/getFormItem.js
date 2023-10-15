@@ -1,4 +1,6 @@
+import base_url from '../base_url';
+
 export default function getFormItem() {
-  let url = `http://localhost:8080/manage/form/item/list`;
+  let url = base_url + `manage/form/item/list`;
   return fetch(url, { headers: { Accept: 'application/json' } });
 }

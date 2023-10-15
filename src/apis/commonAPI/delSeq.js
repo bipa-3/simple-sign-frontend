@@ -1,5 +1,7 @@
+import base_url from '../base_url';
+
 export default function delSeq(data) {
-  let url = `http://localhost:8080/manage/seq/${data}`;
+  let url = base_url + `/manage/seq/${data}`;
 
   return fetch(url, {
     method: 'DELETE',

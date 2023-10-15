@@ -1,5 +1,7 @@
+import base_url from '../base_url';
+
 export default function getCompanyList(data) {
-  let url = 'http://localhost:8080/manage/seq/list';
+  let url = base_url + 'manage/seq/list';
 
   const jsonData = JSON.stringify(data);
 

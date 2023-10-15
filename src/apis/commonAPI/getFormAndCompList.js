@@ -1,5 +1,7 @@
+import base_url from '../base_url';
+
 export default function getFormAndCompList(data) {
-  let url = 'http://localhost:8080/manage/form/list';
+  let url = base_url + 'manage/form/list';
 
   const jsonData = JSON.stringify(data);
 

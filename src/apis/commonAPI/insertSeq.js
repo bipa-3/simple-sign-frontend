@@ -1,5 +1,7 @@
+import base_url from '../base_url';
+
 export default function insertSeq(data) {
-  let url = 'http://localhost:8080/manage/seq/detail';
+  let url = base_url + 'manage/seq/detail';
   const jsonData = JSON.stringify(data);
 
   console.log(data);

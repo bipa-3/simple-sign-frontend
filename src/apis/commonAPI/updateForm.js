@@ -1,16 +1,7 @@
+import base_url from '../base_url';
+
 export default function updateForm(data) {
-  let url = 'http://localhost:8080/manage/form/detail';
-  // let sample = [
-  //   {
-  //     compId: 1,
-  //     compName: 'Company A',
-  //     deptId: 1,
-  //     deptName: 'HR Department',
-  //     userId: 1,
-  //     lineOrder: 2,
-  //   },
-  // ];
-  // data = { ...data, approvalLine: sample };
+  let url = base_url + 'manage/form/detail';
 
   const jsonData = JSON.stringify(data);
 
