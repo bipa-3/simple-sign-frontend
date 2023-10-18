@@ -26,6 +26,7 @@ export default function ApprovalUpdatePage() {
   const titleRef = useRef(null); //제목
   const [rec_ref, setRecRef] = useState([]); //수신참조
   const [org_use_list, setOrgUseId] = useState([]); //결재라인
+  const [docStatus, setDocStatus] = useState(''); //임시저장여부
 
   const handleSelectBoxChange = (newValue) => {
     setSequenceCode(newValue);
@@ -132,11 +133,19 @@ export default function ApprovalUpdatePage() {
                 setOrgUseId={setOrgUseId}
                 rec_ref={rec_ref}
                 setRecRef={setRecRef}
+                setDocStatus={setDocStatus}
               />
               <div className={styled.updateAndDeleteBtn}>
+                {docStatus === 'T' ? (
+                  <Button
+                    label={'상신'}
+                    btnStyle={'red_btn'}
+                    onClick={handleClick}
+                  />
+                ) : null}
                 <Button
                   label={'수정'}
-                  btnStyle={'red_btn'}
+                  btnStyle={'green_btn'}
                   onClick={handleClick}
                 />
                 <Button

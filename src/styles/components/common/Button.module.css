@@ -70,6 +70,13 @@
   border: none;
 }
 
+.non_btn {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: #f1f5f7;
+  border: none;
+}
+
 .green_btn {
   font-weight: 500;
   border: 0;

@@ -30,6 +30,7 @@ export default function UpdateForm({
   setOrgUseId,
   rec_ref,
   setRecRef,
+  setDocStatus,
 }) {
   const [default_form, setDefaultForm] = useState('');
   const [userName, setUserName] = useState('');
@@ -43,6 +44,7 @@ export default function UpdateForm({
   const [sequence, setSequence] = useState([]);
   const [condition, setCondition] = useState('rec_ref');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { showLoading, hideLoading } = useLoading();
   const { detailData, setDetailData } = useFormManage();
 
@@ -87,6 +89,7 @@ export default function UpdateForm({
     //결재문서 상세조회
     getApprovalDoc(approval_doc_id)
       .then((json) => {
+        console.log(json);
         setDefaultForm(json.defaultForm);
         setUserName(json.userName);
         setDeptName(json.deptName);
@@ -98,6 +101,7 @@ export default function UpdateForm({
         setFormCode(json.formCode);
         setOrgUseId(json.approvalLineList);
         setRecRef(json.receivedRefList);
+        setDocStatus(json.docStatus);
       })
       .catch((e) => {
         console.log(e);

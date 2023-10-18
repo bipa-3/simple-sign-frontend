@@ -15,3 +15,7 @@
 input:focus {
   outline: none;
 }
+
+.searchIcon:hover {
+  color: rgb(110, 169, 184);
+}

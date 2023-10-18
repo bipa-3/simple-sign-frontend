@@ -74,12 +74,14 @@ export default function SmallBox(props) {
 
   const handleClick = (state) => {
     showLoading();
-    console.log('결재라인: ' + org_use_list);
-    console.log('수신참조: ' + rec_ref);
+    // console.log('결재라인: ' + org_use_list);
+    //console.log('수신참조: ' + rec_ref);
     const orgUserIdList = [];
-    org_use_list.map((data, index) => {
-      orgUserIdList.push(data.userId);
-    });
+    if (org_use_list.length != 0) {
+      org_use_list.map((data, index) => {
+        orgUserIdList.push(data.userId);
+      });
+    }
 
     const recRefList = [];
     rec_ref.map((data) => {
@@ -131,7 +133,11 @@ export default function SmallBox(props) {
     insertApprovalDoc(data)
       .then((res) => {
         if (res.status == '200') {
-          alert('상신되었습니다.');
+          if (docStatus === 'T') {
+            alert('임시저장되었습니다.');
+          } else if (docStatus === 'W') {
+            alert('상신되었습니다.');
+          }
           setRecRef('');
           closeModal();
         }

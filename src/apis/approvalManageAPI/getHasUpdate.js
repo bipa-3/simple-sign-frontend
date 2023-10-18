@@ -1,5 +1,7 @@
+import base_url from '../base_url';
+
 export default function getHasApproval(page) {
-  let url = `http://localhost:8080/approve/hasUpdate/${page}`;
+  let url = base_url + `approve/hasUpdate/${page}`;
   return fetch(url, {
     headers: { Accept: 'application/json' },
     credentials: 'include',

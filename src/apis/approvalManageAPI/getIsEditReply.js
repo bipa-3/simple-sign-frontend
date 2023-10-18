@@ -1,8 +1,9 @@
 import base_url from '../base_url';
 
-export default function getApprovalDoc(approval_doc_id) {
-  let url = base_url + `approve/detail/${approval_doc_id}`;
+export default function getIsEditReply(replyId) {
+  let url = base_url + `reply/isEdit/${replyId}`;
   return fetch(url, {
+    method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   }).then((res) => {

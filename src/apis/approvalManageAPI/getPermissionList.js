@@ -1,5 +1,8 @@
+import base_url from '../base_url';
+
 export default function getPermissionList(page) {
-  return fetch(`http://localhost:8080/approve/PermissionList/${page}`, {
+  let url = base_url + `approve/permissionList/${page}`;
+  return fetch(url, {
     headers: { Accept: 'application/json' },
     credentials: 'include',
   }).then((res) => {

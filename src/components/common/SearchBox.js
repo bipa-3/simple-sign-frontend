@@ -1,19 +1,36 @@
 import styled from '../../styles/components/ApprovalBox/Search.module.css';
 import SearchIcon from '@mui/icons-material/Search';
-import React from 'react';
+import Button from './Button';
+import React, { useState } from 'react';
 
 function Search(props) {
+  const [searchInput, setSearchInput] = useState('');
+
+  const handleSearchChange = (e) => {
+    setSearchInput(e.target.value);
+  };
   const searchbtnhandle = () => {
-    const searchItem = document.getElementById('searchInput').value.trim();
-    props.onSearch(searchItem); //부모 컴포넌트로 searchItem 전달
+    props.onSearch(searchInput); //부모 컴포넌트로 searchItem 전달
   };
 
   return (
     <div className={styled.searchbox}>
-      <input id="searchInput" type="text" placeholder=" Search..." />
-      <SearchIcon
-        style={{ fontSize: props.fontSize }}
+      <input
+        id="searchInput"
+        type="text"
+        placeholder=" Search..."
+        value={searchInput}
+        onChange={handleSearchChange}
+      />
+      <Button
+        label={
+          <SearchIcon
+            className={styled.searchIcon}
+            style={{ fontSize: props.fontSize }}
+          />
+        }
         onClick={searchbtnhandle}
+        btnStyle={'non_btn'}
       />
     </div>
   );

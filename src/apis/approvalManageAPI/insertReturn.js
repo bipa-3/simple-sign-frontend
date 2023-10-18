@@ -1,5 +1,7 @@
+import base_url from '../base_url';
+
 export default function insertReturn(page) {
-  let url = `http://localhost:8080/approve/return/${page}`;
+  let url = base_url + `approve/return/${page}`;
   return fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

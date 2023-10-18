@@ -8,6 +8,9 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { styled as MUIStyled } from '@mui/material';
 import { json } from 'react-router-dom';
+import getIsEditReply from '../../../apis/approvalManageAPI/getIsEditReply';
+import deleteReply from '../../../apis/approvalManageAPI/deleteReply';
+import updateReply from '../../../apis/approvalManageAPI/updateReply';
 
 const CustomButton = MUIStyled(Button)({
   width: '0.5em',
@@ -33,14 +36,7 @@ export default function ReplyDetail({
 
   const updateHandler = () => {
     //권한가져오고 권한이 있으면 contentEditable로 바꿔주기
-    fetch(`http://localhost:8080/reply/isEdit/${replyId}`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    })
-      .then((res) => {
-        return res.json();
-      })
+    getIsEditReply(replyId)
       .then((res) => {
         setIsEdit(res);
       })
@@ -50,11 +46,7 @@ export default function ReplyDetail({
   };
 
   const deleteHandler = (replyId) => {
-    fetch(`http://localhost:8080/reply/${replyId}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    })
+    deleteReply(replyId)
       .then((res) => {
         if (res.status == '200') {
           alert('댓글이 삭제되었습니다.');
@@ -73,12 +65,7 @@ export default function ReplyDetail({
     const data = {
       replyContent: editedContent,
     };
-    fetch(`http://localhost:8080/reply/${replyId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(data),
-    })
+    updateReply(replyId, data)
       .then((res) => {
         if (res.status == '200') {
           alert('댓글이 수정되었습니다.');

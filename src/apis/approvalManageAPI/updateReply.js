@@ -1,8 +1,8 @@
 import base_url from '../base_url';
 
-export default function updateApprovalDoc(page, data) {
-  let url = base_url + `approve/${page}`;
-  return fetch(url, {
+export default function updateReply(replyId, data) {
+  let url = base_url + `reply/${replyId}`;
+  fetch(url, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',

@@ -10,6 +10,7 @@ import { usePage } from '../contexts/PageContext';
 
 export default function FormListPage() {
   const [formList, setFormList] = useState([]);
+  const [searchContent, setSearchContent] = useState('');
   const { showLoading, hideLoading } = useLoading();
   const { state: pageState, setState: setPageState } = usePage();
   useEffect(() => {
@@ -17,7 +18,7 @@ export default function FormListPage() {
     showLoading();
 
     //양식리스트 조회
-    getFormList()
+    getFormList({ searchContent })
       .then((res) => {
         return res.json();
       })
@@ -29,14 +30,18 @@ export default function FormListPage() {
       .finally(() => {
         hideLoading();
       });
-  }, []);
+  }, [searchContent]);
+
+  const onSearch = (searchItem) => {
+    setSearchContent(searchItem);
+  };
 
   return (
     <div className={styled.align}>
       <div className={styled.containers}>
         <InnerBox width="100%" height="100%">
           <div className={styled.searchBoxContainer}>
-            <SearchBox width="200px" />
+            <SearchBox width="200px" onSearch={onSearch} />
           </div>
           <FormListItem />
         </InnerBox>
