@@ -1,6 +1,10 @@
 import axios from 'axios';
+import base_url from '../base_url';
 
-export default function putUserInfo(data) {
-  const url = `http://localhost:8080/updateinfo`;
-  return axios.put(url, data);
-}
+const api = axios.create({
+  baseURL: base_url,
+});
+
+export const putUserInfo = (data) => {
+  return api.put(`/updateinfo`, data);
+};
