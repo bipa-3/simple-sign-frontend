@@ -1,7 +1,8 @@
 import axios from 'axios';
+import base_url from '../base_url';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: base_url,
 });
 
 export const postLogout = () => {

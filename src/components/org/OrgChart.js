@@ -225,6 +225,8 @@ export default function OrgChart({
       isModalOpen={isModalOpen}
       openModal={openModal}
       closeModal={closeModal}
+      btnWidth="30px"
+      btnHeihgt="30px"
       children={
         <>
           {getOrgChart()}

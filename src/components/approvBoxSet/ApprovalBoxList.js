@@ -71,7 +71,7 @@ function ApprovalBoxList({ companyId }) {
       {data.map((item) => (
         <div key={item.approvalBoxId} className={styled.itemBox}>
           <div className={styled.iconimg}>
-            <BiSolidFolder style={{ fontSize: '17px', color: '#f7b84b' }} />
+            <BiSolidFolder style={{ fontSize: '18px', color: '#f7b84b' }} />
           </div>
           <div
             className={styled.boxName}
@@ -94,6 +94,8 @@ function ApprovalBoxList({ companyId }) {
               openModal();
             }}
             btnStyle="popup_non_btn"
+            btnWidth="5px"
+            btnheight="30px"
             children={
               <div style={{ textAlign: 'center', padding: '30px' }}>
                 정말로 삭제하시겠습니까?

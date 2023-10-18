@@ -1,6 +1,7 @@
 import axios from 'axios';
+import base_url from '../base_url';
 
 export default function getBoxDetail(boxId) {
-  const url = `http://localhost:8080/approvbox/box/detail?boxId=${boxId}`;
+  const url = base_url + `approvbox/box/detail?boxId=${boxId}`;
   return axios.get(url);
 }

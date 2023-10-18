@@ -3,11 +3,21 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
 
 export default function RowRadioButtonsGroup() {
+  const { state, setState } = useApprovalBox();
   const labelStyle = {
-    fontSize: '12px', // 폰트 크기
+    fontSize: '12.4px', // 폰트 크기
     color: '#6c757d', // 폰트 색상
+  };
+
+  const handleChange = (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      radioSortValue: event.target.value,
+    }));
+    console.log('Selected Value:', event.target.value); // 콘솔에서 선택된 값을 확인
   };
 
   return (
@@ -16,6 +26,8 @@ export default function RowRadioButtonsGroup() {
         row
         aria-labelledby="demo-row-radio-buttons-group-label"
         name="row-radio-buttons-group"
+        value={state.radioSortValue}
+        onChange={handleChange}
       >
         <FormControlLabel
           value="alldoc"

@@ -1,0 +1,11 @@
+.detailBox {
+  display: flex;
+  flex-direction: row;
+  min-height: 50px;
+}
+
+.insertBoxArea {
+  margin-top: 20px;
+  margin-left: 30px;
+  display: flex;
+}

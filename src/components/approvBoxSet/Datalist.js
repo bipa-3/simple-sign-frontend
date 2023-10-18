@@ -15,34 +15,35 @@ function Datalist({ onCompanyChange, selectedCompId }) {
   const customStyles = {
     control: (base) => ({
       ...base,
-      height: '27px',
-      minHeight: '27px',
+      height: '32px',
+      minHeight: '32px',
     }),
     option: (styles) => ({
       ...styles,
       display: 'flex',
       alignItems: 'center', // 세로 중앙 정렬 설정
-      height: '20px',
+      height: '27px',
     }),
     singleValue: (base) => ({
       ...base,
-      height: '20px',
-      lineHeight: '20px',
+      height: '25px',
+      lineHeight: '25px',
     }),
     indicatorSeparator: (base) => ({
       ...base,
-      height: '15px',
+      height: '20px',
       margin: '5px',
     }),
     indicatorsContainer: (base) => ({
       ...base,
-      height: '27px',
+      height: '30px',
       margin: 0,
     }),
     dropdownIndicator: (base) => ({
       ...base,
       height: '27px',
       padding: '3px',
+      marginRight: '4px',
     }),
     menu: (base) => ({
       ...base,

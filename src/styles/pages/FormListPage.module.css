@@ -1,14 +1,24 @@
 .align {
-  height: 100%;
   display: grid;
   grid-template-columns: 1fr 4fr;
-  gap: 20px;
 }
 
-.left_box {
-  margin-bottom: 45px;
+.containers {
+  padding: 15px;
+  display: flex;
+  grid-gap: 30px;
+  gap: 25px;
+  width: 100%;
+  height: 800px;
 }
+
+.innerBox {
+  max-height: 730px;
+  overflow: scroll;
+}
+
 .searchBoxContainer {
   padding: 10px 0 12px 0;
   border-bottom: 1px solid #edeff1;
+  margin-bottom: 45px;
 }

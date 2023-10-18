@@ -3,12 +3,16 @@
   width: 100%;
 }
 .searchItems {
-  column-gap: 100px; /* 자식 요소들 사이에 10px 간격 */
+  column-gap: 50px;
   display: flex;
   width: fit-content;
   flex-wrap: wrap; /* 줄 바꿈 설정 */
   justify-content: flex-start;
 }
+.searchItems > * {
+  margin-left: 30px; /* 각 항목의 오른쪽에 80px 마진 추가 */
+}
+
 .btnArea {
   display: flex;
   justify-content: center;

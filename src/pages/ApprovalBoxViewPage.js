@@ -10,20 +10,33 @@ function ApprovalBoxViewPage() {
   const { state, setState } = useApprovalBox();
 
   return (
-    <div className={styles.outInnerbox}>
-      <InnerBox height={'100%'} width={'100%'}>
-        <div className={styles.inInnerbox}>
+    <div className={styles.container}>
+      {state.view && (
+        <InnerBox>
           <div className={styles.searchDetailbox}>
-            {state.view && <SearchDetailBox />}
+            <SearchDetailBox />
           </div>
+        </InnerBox>
+      )}
+      <div className={styles.originArea}>
+        <InnerBox
+          height={'100%'}
+          width={'100%'}
+          childStyle={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
+        >
           <div className={styles.radiobuttonsBox}>
             <div className={styles.radiogroup}>
               <RowRadioButtonsGroup></RowRadioButtonsGroup>
             </div>
           </div>
           <ViewDocBox></ViewDocBox>
-        </div>
-      </InnerBox>
+        </InnerBox>
+      </div>
     </div>
   );
 }

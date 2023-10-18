@@ -1,7 +1,8 @@
 import axios from 'axios';
+import base_url from '../base_url';
 
 export default function updateApprovalBox(approvalBoxState) {
-  const url = `http://localhost:8080/approvbox/update`;
+  const url = base_url + `approvbox/update`;
   const payload = {
     ...approvalBoxState,
   };

@@ -3,6 +3,7 @@ import { Select, MenuItem } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import styled from '../../styles/components/org/OrgSearch.module.css';
 import { getOrgSeartch } from '../../apis/orgAPI/getOrgSeartch';
+import Search from '../common/SearchBox';
 
 export default function OrgSearch({ view, onCheckBox, onSearch }) {
   const userlist = [{ name: '회사' }, { name: '부서' }, { name: '사용자' }];
@@ -43,17 +44,7 @@ export default function OrgSearch({ view, onCheckBox, onSearch }) {
       </Select>
 
       <div className={styled.select_box_container}>
-        <input
-          className={styled.select_box_input}
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="검색"
-        />
-
-        <button className={styled.select_box_button} onClick={handleSearch}>
-          <SearchIcon />
-        </button>
+        <Search onSearch={handleSearch} />
       </div>
       <label className={styled.checkbox_label}>
         <input type="checkbox" onChange={handleCheckBox} />

@@ -16,9 +16,10 @@ export default function FormItemList({ formItems, editor }) {
           type="text"
           placeholder="검색할 항목을 입력하세요..."
           onChange={searchTexthandler}
+          className={styled.inputStyle}
         />
       </div>
-
+      <hr />
       <div className={styled.formListArea}>
         {formItems
           .filter((ele) => ele.formListName.includes(searchText))

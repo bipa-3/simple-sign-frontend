@@ -41,3 +41,12 @@
   color: #3bafda !important;
   background-color: white !important;
 }
+
+.selectedText {
+  color: '#3bafda' !important;
+}
+
+.subItemContainer {
+  display: flex;
+  align-items: center;
+}

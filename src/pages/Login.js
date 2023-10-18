@@ -49,6 +49,7 @@ export default function Login() {
     postLogin(loginId, password)
       .then((response) => {
         if (response.status === 200) {
+          sessionStorage.setItem('user', response.data);
           setState({ ...state, isLoggedIn: true });
         }
       })

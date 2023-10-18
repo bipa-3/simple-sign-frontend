@@ -83,6 +83,7 @@ function DetailBox() {
         <MenuUseRange
           commonCellStyle={commonCellStyle}
           commonDataStyle={commonDataStyle}
+          menuOption={menuOption}
           setMenuOption={setMenuOption}
         />
         <SortOrder

@@ -23,4 +23,12 @@ export const AppProvider = ({ children }) => {
   );
 };
 
+export function useApp() {
+  const context = useContext(AppContext);
+  if (!context) {
+    throw new Error('Cannot find useApp');
+  }
+  return context;
+}
+
 export default AppContext;

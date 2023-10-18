@@ -164,7 +164,7 @@ export default function SeqDetailTable() {
   ];
 
   return (
-    <>
+    <div className={styled.detailContainer}>
       <DetailBox
         children={
           <>
@@ -206,17 +206,19 @@ export default function SeqDetailTable() {
               id={'deptScope'}
               data={detailData.deptScope}
               dataHandler={deptScopefilterHandler}
-            />
-            <OrgChart
-              view={'user'}
-              initData={detailData.deptScope.map((ele, index) => {
-                ele.id = index;
-                return ele;
-              })}
-              isModalOpen={isDeptModalOpen}
-              openModal={openDeptModal}
-              closeModal={closeDeptModal}
-              confirmHandler={deptScopeConfirm}
+              children={
+                <OrgChart
+                  view={'user'}
+                  initData={detailData.deptScope.map((ele, index) => {
+                    ele.id = index;
+                    return ele;
+                  })}
+                  isModalOpen={isDeptModalOpen}
+                  openModal={openDeptModal}
+                  closeModal={closeDeptModal}
+                  confirmHandler={deptScopeConfirm}
+                />
+              }
             />
           </>
         }
@@ -229,19 +231,23 @@ export default function SeqDetailTable() {
               id={'formScope'}
               data={detailData.formScope}
               dataHandler={formScopefilterHandler}
-            />
-            <PopUp
-              label={<AiOutlineOrderedList />}
-              width={'400px'}
-              height={'600px'}
-              isModalOpen={isFormModalOpen}
-              openModal={openFormModal}
-              closeModal={closeFormModal}
               children={
-                <>
-                  <FormListPopUp setGridData={setGridData} />
-                  <PopUpFoot buttons={grayAndBlueBtn_form_popup} />
-                </>
+                <PopUp
+                  label={<AiOutlineOrderedList />}
+                  width={'400px'}
+                  height={'600px'}
+                  btnWidth="30px"
+                  btnHeihgt="30px"
+                  isModalOpen={isFormModalOpen}
+                  openModal={openFormModal}
+                  closeModal={closeFormModal}
+                  children={
+                    <>
+                      <FormListPopUp setGridData={setGridData} />
+                      <PopUpFoot buttons={grayAndBlueBtn_form_popup} />
+                    </>
+                  }
+                />
               }
             />
           </>
@@ -287,6 +293,8 @@ export default function SeqDetailTable() {
                     label={<FiEdit />}
                     width={'900px'}
                     height={'600px'}
+                    btnWidth="30px"
+                    btnHeihgt="30px"
                     title={'채번값 설정'}
                     isModalOpen={isModalOpen}
                     openModal={openModal}
@@ -311,6 +319,6 @@ export default function SeqDetailTable() {
           </>
         }
       ></DetailBox>
-    </>
+    </div>
   );
 }

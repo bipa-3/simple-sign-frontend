@@ -4,10 +4,8 @@ export default function insertApprovalDoc(data) {
 
   return fetch(url, {
     method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: jsonData,
   });
 }

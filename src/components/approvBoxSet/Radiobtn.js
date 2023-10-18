@@ -6,7 +6,7 @@ import Radio from '@mui/material/Radio';
 
 function Radiobtn({ labels, values = labels, selectedOption, onChange }) {
   const labelStyle = {
-    fontSize: '12px', // 폰트 크기
+    fontSize: '13px', // 폰트 크기
     color: '#6c757d', // 폰트 색상
   };
 

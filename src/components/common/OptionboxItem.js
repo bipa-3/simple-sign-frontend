@@ -3,7 +3,7 @@ import styles from '../../styles/components/common/Optionbox.module.css';
 import React from 'react';
 
 function OptionboxItem(props) {
-  console.log(props);
+  //console.log(props);
   return (
     <div className={styles.whole}>
       <div className={styles.element}>

@@ -81,7 +81,7 @@ function SendSearchDetail(props) {
             <>
               <TextComp text={'제목'} />
               <InputComp
-                width={'220px'}
+                width={'225px'}
                 dataHandler={handleDataChange('searchTitle')}
               />
             </>
@@ -92,7 +92,7 @@ function SendSearchDetail(props) {
             <>
               <TextComp text={'내용'} />
               <InputComp
-                width={'220px'}
+                width={'225px'}
                 dataHandler={handleDataChange('searchContent')}
               />
             </>
@@ -103,7 +103,7 @@ function SendSearchDetail(props) {
             <>
               <TextComp text={'결재자'} />
               <InputComp
-                width={'220px'}
+                width={'225px'}
                 dataHandler={handleDataChange('searchApprovUser')}
               />
             </>
@@ -115,7 +115,7 @@ function SendSearchDetail(props) {
               <TextComp text={'결재상태'} />
               <SelectComp
                 options={docStatus}
-                width={'200px'}
+                width={'225px'}
                 dataHandler={handleSelectedData}
               />
             </>
@@ -126,7 +126,7 @@ function SendSearchDetail(props) {
             <>
               <TextComp text={'문서양식'} />
               <InputComp
-                width={'200px'}
+                width={'225px'}
                 dataHandler={handleDataChange('searchDocForm')}
               />
             </>
@@ -137,7 +137,7 @@ function SendSearchDetail(props) {
             <>
               <TextComp text={'문서번호'} />
               <InputComp
-                width={'209px'}
+                width={'225px'}
                 dataHandler={handleDataChange('searchDocNumber')}
               />
             </>

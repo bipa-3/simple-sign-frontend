@@ -19,6 +19,7 @@ export default function FormEdit({ data, dataHandler }) {
   };
 
   useEffect(() => {
+    dataHandler(data);
     showLoading();
     getFormItem()
       .then((res) => {

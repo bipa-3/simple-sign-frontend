@@ -64,12 +64,12 @@ export default function SeqManagePage() {
 
   return (
     <div className={styled.container}>
-      <SeqSearchBox searchHandler={searchHandler} />
       <div className={styled.contentArea}>
+        <div className={styled.searchArea}>
+          <SeqSearchBox searchHandler={searchHandler} />
+        </div>
         <div className={styled.formListArea}>
           <SeqListArea rows={formListData} searchHandler={searchHandler} />
-        </div>
-        <div className={styled.formDetailArea}>
           <SeqDetail searchHandler={searchHandler} />
         </div>
       </div>

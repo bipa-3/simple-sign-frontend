@@ -8,3 +8,7 @@
 .contentContainer {
   height: 100%;
 }
+
+.detailContainer {
+  overflow: scroll;
+}

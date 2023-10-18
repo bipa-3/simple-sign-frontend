@@ -78,9 +78,15 @@ export default function FormListArea({ rows, searchHandler }) {
       width={'100%'}
       height={'100%'}
       titleChildren={
-        <Button label={'삭제'} btnStyle={'gray_btn'} onClick={delHandler} />
+        <Button label={'삭제'} btnStyle={'red_btn'} onClick={delHandler} />
       }
-      childStyle={{ width: '100%', height: '100%' }}
+      childStyle={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        padding: '0px 0px 20px 0px',
+      }}
       children={
         <DataList rows={rows} columns={columns} dataHandler={dataHandler} />
       }

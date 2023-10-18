@@ -1,12 +1,8 @@
 .itemBox {
   display: flex;
   flex-direction: row;
-
   justify-content: center;
   align-items: center;
-  /* padding: 5px; */
-  padding-left: 30px;
-  padding-right: 30px;
 }
 
 .title {
@@ -14,15 +10,15 @@
   /* font-size: 12px; */
   font-weight: 700;
   padding-right: 5px;
-  min-width: 42px;
-  padding-left: 10px;
+  min-width: 65px;
+  margin-left: 10px;
 }
 
 .inputBox {
   display: flex;
   justify-content: center;
   align-items: center;
-
+  border-radius: 0.25rem;
   border: 1px solid #e6e6e6;
   width: 180px;
   height: 27px;
@@ -40,6 +36,7 @@
   height: 27px;
   margin-left: 10px;
   border: 1px solid #e6e6e6;
+  font-size: 12px;
 }
 
 .selectItem select {

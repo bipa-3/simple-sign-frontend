@@ -1,11 +1,9 @@
 export default function updateApprovalDoc(page, data) {
   let url = `http://localhost:8080/approve/${page}`;
-  fetch(url, {
+  return fetch(url, {
     method: 'PATCH',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify(data),
   });
 }

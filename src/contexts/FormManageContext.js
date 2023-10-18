@@ -22,6 +22,7 @@ const detailInitState = {
   compName: '',
   formName: '',
   scope: [],
+  scope2: [],
   defaultForm: '',
   mainForm: '',
   status: '',
@@ -43,14 +44,21 @@ const FormManageProvider = ({ children }) => {
     setFlagData(1);
     setDetailData({
       ...detailInitState,
+      code: '',
       compId: setData.compList[0].id,
       compName: setData.compList[0].name,
+      status: 1,
     });
   };
   const updateDetailData = () => {
     setFlagData(2);
   };
   const defaultDetailData = () => {
+    setFlagData(0);
+  };
+
+  const resetDetailData = () => {
+    setDetailData(detailInitState);
     setFlagData(0);
   };
 
@@ -67,6 +75,7 @@ const FormManageProvider = ({ children }) => {
         createDetailData,
         updateDetailData,
         defaultDetailData,
+        resetDetailData,
       }}
     >
       {children}

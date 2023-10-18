@@ -2,3 +2,7 @@
   height: 180px;
   overflow: auto;
 }
+
+.selectContainer {
+  height: 50px;
+}

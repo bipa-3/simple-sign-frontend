@@ -107,7 +107,7 @@ function RemainSearchDetail() {
           <SelectComp
             dataHandler={handleSearchDate}
             options={optionlist()}
-            width="54px"
+            width="65px"
           />
           <SearchDate onDateChange={handleDateChange} />
         </ItemBox>
@@ -115,7 +115,7 @@ function RemainSearchDetail() {
         <ItemBox>
           <TextComp text={'제목'} />
           <InputComp
-            width={'220px'}
+            width={'225px'}
             dataHandler={handleDataChange('searchTitle')}
           />
         </ItemBox>
@@ -123,7 +123,7 @@ function RemainSearchDetail() {
         <ItemBox>
           <TextComp text={'내용'} />
           <InputComp
-            width={'220px'}
+            width={'225px'}
             dataHandler={handleDataChange('searchContent')}
           />
         </ItemBox>
@@ -131,7 +131,7 @@ function RemainSearchDetail() {
         <ItemBox>
           <TextComp text={'기안부서'} />
           <InputComp
-            width={'220px'}
+            width={'225px'}
             dataHandler={handleDataChange('searchDept')}
           />
         </ItemBox>
@@ -139,7 +139,7 @@ function RemainSearchDetail() {
         <ItemBox>
           <TextComp text={'기안자'} />
           <InputComp
-            width={'211px'}
+            width={'225px'}
             dataHandler={handleDataChange('searchWriter')}
           />
         </ItemBox>
@@ -147,7 +147,7 @@ function RemainSearchDetail() {
         <ItemBox>
           <TextComp text={'결재자'} />
           <InputComp
-            width={'211px'}
+            width={'225px'}
             dataHandler={handleDataChange('searchApprovUser')}
           />
         </ItemBox>
@@ -156,7 +156,7 @@ function RemainSearchDetail() {
           <TextComp text={'결재상태'} />
           <SelectComp
             options={docStatus}
-            width={'220px'}
+            width={'225px'}
             dataHandler={handleSelectedData}
           />
         </ItemBox>
@@ -164,7 +164,7 @@ function RemainSearchDetail() {
         <ItemBox>
           <TextComp text={'문서양식'} />
           <InputComp
-            width={'199px'}
+            width={'225px'}
             dataHandler={handleDataChange('searchDocForm')}
           />
         </ItemBox>
@@ -172,14 +172,14 @@ function RemainSearchDetail() {
         <ItemBox>
           <TextComp text={'문서번호'} />
           <InputComp
-            width={'199px'}
+            width={'225px'}
             dataHandler={handleDataChange('searchDocNumber')}
           />
         </ItemBox>
       </div>
       <div className={styled.btnArea}>
         <Button
-          label="검색"
+          label="조회하기"
           onClick={handleSearchIconClick}
           btnStyle="blue_btn"
         />

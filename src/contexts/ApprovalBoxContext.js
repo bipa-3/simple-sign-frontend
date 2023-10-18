@@ -1,12 +1,13 @@
 import React, { createContext, useState, useContext } from 'react';
 
 const initialState = {
-  viewItem: [],
   searchBtnStatus: false,
   shouldFetchDocs: false,
   searchInput: '',
   view: false,
   boxViewItems: [],
+  radioSortValue: 'alldoc',
+  rerender: false,
 };
 
 const detailSearchInitState = {

@@ -1,10 +1,16 @@
-.detailBox {
+/* .detailBox {
   display: flex;
   flex-direction: row;
   min-height: 50px;
+} */
+
+.detailBox {
+  display: flex;
+  width: 100%;
+  border-bottom: 1px solid #edeff1;
 }
 
-.titleBox {
+/* .titleBox {
   display: flex;
   justify-content: end;
   align-items: center;
@@ -12,6 +18,12 @@
   font-size: 12px;
   font-weight: 700;
   padding-right: 10px;
+} */
+
+.titleBox {
+  width: 40%;
+  background-color: #f1f5f7;
+  padding: 13.6px 0 13.6px 13.6px;
 }
 
 .contentBox {
@@ -69,4 +81,53 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+.dataBox {
+  width: 70%;
+  color: #6c757d;
+  padding: 13.6px;
+}
+
+.text {
+  font-size: 13px;
+  font-weight: 600;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-right: 20px;
+  color: #343a40;
+}
+
+.customSelect {
+  font-size: 13px;
+}
+
+.inputStyle {
+  width: 100%;
+  color: black;
+  font-size: 13px;
+  height: 27px;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding-left: 10px;
+}
+
+.viewItemBox {
+  width: 90%;
+  height: 155.4px;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  overflow-y: scroll;
+  padding: 8px 10px 10px 10px;
+  column-gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: 5px;
+}
+
+.viewUseField {
+  display: flex;
+  gap: 5px;
 }

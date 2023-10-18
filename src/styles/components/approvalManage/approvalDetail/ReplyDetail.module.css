@@ -1,5 +1,5 @@
 .container {
-  margin-left: 50px;
+  margin-left: 30px;
 }
 
 .replyContent {
@@ -9,4 +9,41 @@
 
 .hideReplyContent {
   display: none;
+}
+
+.replyBox {
+  margin-top: 50px;
+  margin-left: 40px;
+}
+
+.subReplyContainer {
+  margin-top: 30px;
+  margin-left: 30px;
+}
+
+.replyDisplay {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.innerDisplay {
+  display: block;
+}
+
+.btnDisplay {
+  text-align: right;
+}
+
+.inputBox {
+  font-size: 16px;
+  text-align: left;
+  background-color: rgba(232, 232, 232, 0.61);
+  width: 75%;
+  height: 20px;
+  border: 0.5px solid rgba(119, 119, 119, 0.61);
+}
+
+.div {
+  text-align: left;
 }

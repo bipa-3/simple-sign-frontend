@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
 import { usePage } from '../../contexts/PageContext';
 import { useLocation } from 'react-router-dom';
+import ViewCount from '../approvalBox/viewDocuments/ViewCount';
 
 function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
   const location = useLocation();
@@ -33,7 +34,6 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
     '기결내역-진행': 'progress',
     수신참조내역: 'reference',
     반려내역: 'reject',
-
   };
 
   useEffect(() => {
@@ -49,6 +49,12 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
       curPage: name,
     }));
 
+    setState((prevState) => ({
+      ...prevState,
+      view: false,
+      radioSortValue: 'alldoc',
+    }));
+
     const customBoxNames = customBoxViewItemState.map(
       (box) => box.approvalBoxName
     );
@@ -56,30 +62,23 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
       i === index ? true : false
     );
     if (name === '기안양식관리') {
-      navigate('/EAM');
+      navigate(`/EAM?name=${name}`);
     } else if (name === '문서채번관리') {
-      navigate('/SAM');
+      navigate(`/SAM?name=${name}`);
     } else if (name === '결재함설정') {
-      navigate('/ABS');
+      navigate(`/ABS?name=${name}`);
     } else if (name === '상신문서') {
-      navigate('/ABV');
-      setState((prevState) => ({ ...prevState, viewItem: ['send'] }));
+      navigate(`/ABV?viewItems=send&name=${name}`);
     } else if (name === '임시보관문서') {
-      navigate('/ABV');
-      setState((prevState) => ({ ...prevState, viewItem: ['tempor'] }));
+      navigate(`/ABV?viewItems=tempor&name=${name}`);
     } else if (name === '미결문서') {
-      navigate('/ABV');
-      setState((prevState) => ({ ...prevState, viewItem: ['pend'] }));
+      navigate(`/ABV?viewItems=pend&name=${name}`);
     } else if (name === '기결문서') {
-      navigate('/ABV');
-      setState((prevState) => ({ ...prevState, viewItem: ['concluded'] }));
+      navigate(`/ABV?viewItems=concluded&name=${name}`);
     } else if (name === '수신참조문서') {
-      navigate('/ABV');
-      setState((prevState) => ({ ...prevState, viewItem: ['reference'] }));
+      navigate(`/ABV?viewItems=reference&name=${name}`);
     }
     if (customBoxNames.includes(name)) {
-      navigate('/ABV');
-
       const matchedBox = customBoxViewItemState.find(
         (box) => box.approvalBoxName === name
       );
@@ -89,10 +88,9 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
         (item) => viewItemMapping[item] || item
       );
 
-      setState((prevState) => ({
-        ...prevState,
-        viewItem: transformedViewItems,
-      }));
+      //viewItems 배열을 콤마로 구분된 문자열로 전환
+      const viewItemsString = transformedViewItems.join(',');
+      navigate(`/ABV?viewItems=${viewItemsString}&name=${name}`);
     }
   };
 
@@ -142,10 +140,13 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
                 setState((prevState) => ({ ...prevState, searchInput: '' }));
               }}
             >
-              <ListItemText
-                primary={subitem.name}
-                className={styled.sub_menutext}
-              ></ListItemText>
+              <div className={styled.subItemContainer}>
+                <ListItemText
+                  primary={subitem.name}
+                  className={styled.sub_menutext}
+                ></ListItemText>
+                <ViewCount count="5"></ViewCount>
+              </div>
             </ListItemButton>
           ))}
         </div>

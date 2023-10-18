@@ -29,6 +29,8 @@ export default function PopUp(props) {
         onClick={props.openModal}
         btnStyle={props.btnStyle}
         label={props.label}
+        width={props.btnWidth}
+        height={props.btnHeight}
       ></Button>
       <Modal open={props.isModalOpen} onClose={props.closeModal}>
         <div className={styles.popUpContainer} style={popUpStyle}>

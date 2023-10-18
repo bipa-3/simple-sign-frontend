@@ -7,8 +7,10 @@ import Userprofile from './Userprofile';
 import styles from '../../../styles/components/header/dropdown.module.css';
 import AppContext from '../../../contexts/AppContext';
 import { postLogout } from '../../../apis/loginAPI/postLogout';
+import { useNavigate } from 'react-router';
 
 export default function Profile() {
+  const navigate = useNavigate();
   const { state, setState } = useContext(AppContext);
 
   //로그아웃
@@ -36,7 +38,13 @@ export default function Profile() {
           </Button>
           <Menu {...bindMenu(popupState)}>
             <div className={styles.fixedbox}>Welcome !</div>
-            <MenuItem className={styles.menubox} onClick={popupState.close}>
+            <MenuItem
+              className={styles.menubox}
+              onClick={() => {
+                popupState.close();
+                navigate('/userinfo');
+              }}
+            >
               Profile
             </MenuItem>
             <MenuItem className={styles.menubox} onClick={popupState.close}>

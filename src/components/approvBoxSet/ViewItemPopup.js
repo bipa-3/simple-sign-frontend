@@ -86,16 +86,16 @@ function ViewItemPopup({ checkedItems, currentViewItems }) {
 
   return (
     <PopUp
-      label={
-        <GridViewRoundedIcon style={{ color: 'grey', fontSize: '20px' }} />
-      }
+      label={<GridViewRoundedIcon style={{ fontSize: '20px' }} />}
       title="조회항목 선택"
       width="400px"
       height="440px"
       isModalOpen={isModalOpen}
       openModal={openModal}
       closeModal={closeModal}
-      btnStyle={'gray_btn'}
+      btnStyle={'grey_btn'}
+      btnWidth="30px"
+      btnHeihgt="30px"
       children={
         <div>
           <div className={styled.viewItemContainer}>
@@ -127,7 +127,12 @@ function ViewItemPopup({ checkedItems, currentViewItems }) {
             </div>
           </div>
           <div className={styled.submitBtn}>
-            <Button label="확인" onClick={handleSave} btnStyle="blue_btn" />
+            <div style={{ marginRight: '10px' }}>
+              <Button label="확인" onClick={handleSave} btnStyle="blue_btn" />
+            </div>
+            <div>
+              <Button label="취소" onClick={closeModal} btnStyle="light_btn" />
+            </div>
           </div>
         </div>
       }

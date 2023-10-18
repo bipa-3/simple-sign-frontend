@@ -1,7 +1,7 @@
 import styles from '../../styles/components/ApprovalBox/ApprovalRightHeader.module.css';
 import React, { useContext, useState } from 'react';
-import Search from './SearchBox';
 import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
+import Search from '../common/SearchBox';
 
 function ApprovalRightHeader() {
   const [isDropdownView, setDropdownView] = useState(false);
@@ -26,7 +26,6 @@ function ApprovalRightHeader() {
   };
 
   const handleSearch = (value) => {
-    console.log('User searched for:', value);
     setState((prevState) => ({
       ...prevState,
       searchInput: value,

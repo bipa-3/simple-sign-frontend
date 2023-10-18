@@ -32,6 +32,12 @@ function DetailApprovalBox() {
       width="55%"
       font_size="15px"
       text="결재함 상세"
+      childStyle={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+      }}
       titleChildren={
         <Button
           label={'저장'}

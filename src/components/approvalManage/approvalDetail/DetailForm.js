@@ -49,6 +49,10 @@ export default function DetailForm(props) {
     deleteContentEditableError();
   }, []);
 
+  useEffect(() => {
+    console.log(receiveRefOpt);
+  }, [receiveRefOpt]);
+
   return (
     <>
       <div>
@@ -73,44 +77,28 @@ export default function DetailForm(props) {
                     </tr>
                     <tr style={{ height: '50px' }}>
                       <td>
-                        {approval_line.length > 0
-                          ? approval_line[0].userName
-                          : ''}
+                        {approval_line.length > 0 ? approval_line[0].user : ''}
                       </td>
                       <td>
-                        {approval_line.length > 1
-                          ? approval_line[1].userName
-                          : ''}
+                        {approval_line.length > 1 ? approval_line[1].user : ''}
                       </td>
                       <td>
-                        {approval_line.length > 2
-                          ? approval_line[2].userName
-                          : ''}
+                        {approval_line.length > 2 ? approval_line[2].user : ''}
                       </td>
                       <td>
-                        {approval_line.length > 3
-                          ? approval_line[3].userName
-                          : ''}
+                        {approval_line.length > 3 ? approval_line[3].user : ''}
                       </td>
                       <td>
-                        {approval_line.length > 4
-                          ? approval_line[4].userName
-                          : ''}
+                        {approval_line.length > 4 ? approval_line[4].user : ''}
                       </td>
                       <td>
-                        {approval_line.length > 5
-                          ? approval_line[5].userName
-                          : ''}
+                        {approval_line.length > 5 ? approval_line[5].user : ''}
                       </td>
                       <td>
-                        {approval_line.length > 6
-                          ? approval_line[6].userName
-                          : ''}
+                        {approval_line.length > 6 ? approval_line[6].user : ''}
                       </td>
                       <td>
-                        {approval_line.length > 7
-                          ? approval_line[7].userName
-                          : ''}
+                        {approval_line.length > 7 ? approval_line[7].user : ''}
                       </td>
                     </tr>
                   </table>
@@ -163,7 +151,17 @@ export default function DetailForm(props) {
               return (
                 <>
                   {receiveRefOpt.map((data, index) => (
-                    <div id="receiveList">{data.userName}</div>
+                    <div id="receiveList" key={index}>
+                      {data.category === 'U'
+                        ? data.user
+                        : data.category === 'D'
+                        ? data.department
+                        : data.category === 'E'
+                        ? data.establishment
+                        : data.category === 'C'
+                        ? data.company
+                        : null}
+                    </div>
                   ))}
                 </>
               );

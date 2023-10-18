@@ -28,4 +28,10 @@ function Button(props) {
   );
 }
 
+Button.defaultProps = {
+  width: '65px',
+  height: '30px',
+  fontSize: '12px',
+};
+
 export default Button;

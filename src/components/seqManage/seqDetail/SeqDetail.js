@@ -72,7 +72,7 @@ export default function SeqDetail({ searchHandler }) {
         />
         <Button
           label={flagData === 1 ? '저장' : '수정'}
-          btnStyle={'gray_btn'}
+          btnStyle={'green_btn'}
           onClick={flagData === 1 ? createDetailFunc : updateDetailFunc}
         />
       </>
@@ -82,9 +82,7 @@ export default function SeqDetail({ searchHandler }) {
   const returnMainComponent = () => {
     return (
       <>
-        <div className={styled.form_detail_area}>
-          <SeqDetailTable />
-        </div>
+        <SeqDetailTable />
       </>
     );
   };
@@ -96,6 +94,13 @@ export default function SeqDetail({ searchHandler }) {
         width={'100%'}
         height={'100%'}
         titleChildren={returnTitleComponent()}
+        childStyle={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+          padding: '0px 0px 25px 0px',
+        }}
         children={returnMainComponent()}
       ></InnerBox>
     </>

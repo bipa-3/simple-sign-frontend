@@ -1,11 +1,59 @@
 import styled from '../../../../styles/components/formManage/formDetail/components/DetailTableItems.module.css';
 import DragDrop from './DragDrop';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PopUp from '../../../common/PopUp';
 import FormEdit from '../../formEditPopUp/FormEdit';
 import { FiEdit } from 'react-icons/fi';
 import PopUpFoot from '../../../common/PopUpFoot';
 import Optionbox from '../../../common/Optionbox';
+import Select from 'react-select';
+import FormControl from '@mui/material/FormControl';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+
+const customStyles = {
+  control: (base) => ({
+    ...base,
+    height: '32px',
+    minHeight: '32px',
+  }),
+  option: (styles) => ({
+    ...styles,
+    display: 'flex',
+    alignItems: 'center', // 세로 중앙 정렬 설정
+    height: '27px',
+  }),
+  singleValue: (base) => ({
+    ...base,
+    height: '25px',
+    lineHeight: '25px',
+  }),
+  indicatorSeparator: (base) => ({
+    ...base,
+    height: '20px',
+    margin: '5px',
+  }),
+  indicatorsContainer: (base) => ({
+    ...base,
+    height: '30px',
+    margin: 0,
+  }),
+  dropdownIndicator: (base) => ({
+    ...base,
+    height: '27px',
+    padding: '3px',
+    marginRight: '4px',
+  }),
+  menu: (base) => ({
+    ...base,
+    marginTop: '2px', // 옵션 목록의 상단 마진 조정
+  }),
+  menuList: (base) => ({
+    ...base,
+    maxHeight: '200px', // 옵션 목록의 최대 높이 설정
+  }),
+};
 
 const DetailBox = ({ children }) => {
   return (
@@ -16,72 +64,76 @@ const DetailBox = ({ children }) => {
 };
 
 const TitleBox = ({ title }) => {
-  return <div className={styled.titleBox}>{title}</div>;
-};
-
-const SelectBox = ({ id, data, dataHandler, width = '90%' }) => {
   return (
-    <div className={styled.contentBox}>
-      <select
-        style={{ width: `${width}` }}
-        onChange={(e) => {
-          dataHandler(id, e.target.value);
-        }}
-      >
-        {data
-          ? data.map((ele, index) => {
-              return (
-                <option key={index} value={ele.id}>
-                  {ele.name}
-                </option>
-              );
-            })
-          : null}
-      </select>
+    <div className={styled.titleBox}>
+      <div className={styled.text}>{title}</div>
     </div>
   );
 };
 
-const InputBox = ({
-  id,
-  data,
-  dataHandler,
-  width = '90%',
-  children,
-  disabled,
-}) => {
+const SelectBox = ({ id, data, dataHandler }) => {
+  const [selectedOption, setSelectedOption] = useState(data[0]);
+  data = data.map((ele, index) => {
+    ele.value = index + 1;
+    ele.label = ele.name;
+    return ele;
+  });
   return (
-    <div className={styled.contentBox}>
-      <input
-        type="text"
-        value={data}
-        style={{ width }}
-        onChange={(e) => {
-          dataHandler(id, e.target.value);
+    <div className={styled.dataBox}>
+      <Select
+        defaultValue={data[0]}
+        value={selectedOption}
+        onChange={(selectedOption) => {
+          setSelectedOption(selectedOption);
+          dataHandler(id, selectedOption.value);
         }}
-        disabled={disabled}
+        options={data}
+        isSearchable={true}
+        className={styled.customSelect}
+        styles={customStyles}
       />
-      {children}
     </div>
   );
 };
 
-const AreaBox = ({ id, data, dataHandler }) => {
+const InputBox = ({ id, data, dataHandler, children, disabled }) => {
   return (
-    <div className={`${styled.contentBox} ${styled.areaContent}`}>
-      <div className={styled.areaContentBox}>
-        {data.length > 0
-          ? data.map((ele, index) => {
-              return (
-                <Optionbox
-                  key={index}
-                  id={id}
-                  initData={ele}
-                  dataHandler={dataHandler}
-                ></Optionbox>
-              );
-            })
-          : null}
+    <div className={styled.dataBox}>
+      <div className={styled.viewUseField}>
+        <input
+          type="text"
+          value={data}
+          onChange={(e) => {
+            dataHandler(id, e.target.value);
+          }}
+          disabled={disabled}
+          className={styled.inputStyle}
+        />
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const AreaBox = ({ id, data, dataHandler, children }) => {
+  return (
+    <div className={styled.dataBox}>
+      <div className={styled.viewUseField}>
+        <div className={styled.viewItemBox}>
+          {data.length > 0
+            ? data.map((ele, index) => {
+                return (
+                  <Optionbox
+                    key={index}
+                    id={id}
+                    initData={ele}
+                    dataHandler={dataHandler}
+                  ></Optionbox>
+                );
+              })
+            : null}
+        </div>
+        {children}
       </div>
     </div>
   );
@@ -89,6 +141,7 @@ const AreaBox = ({ id, data, dataHandler }) => {
 
 const FileBox = ({ id, name, data, dataHandler }) => {
   const [formData, setFormData] = useState(data);
+
   let previewWindow = null;
   const openPreviewWindow = (data) => {
     previewWindow = window.open('', 'Preview', 'width=565,height=800');
@@ -128,7 +181,7 @@ const FileBox = ({ id, name, data, dataHandler }) => {
   ];
 
   return (
-    <div className={styled.contentBox}>
+    <div className={styled.dataBox}>
       <div className={styled.fileContent}>
         <DragDrop name={name} id={id} data={data} dataHandler={dataHandler} />
         <div className={styled.subBox}>
@@ -140,13 +193,11 @@ const FileBox = ({ id, name, data, dataHandler }) => {
             width={'1200px'}
             height={'700px'}
             title={'양식파일편집'}
+            btnWidth="30px"
+            btnHeihgt="30px"
             children={
               <>
-                <div className={styled.contentContainer}>
-                  <div>
-                    <FormEdit data={data} dataHandler={setFormData} />
-                  </div>
-                </div>
+                <FormEdit data={data} dataHandler={setFormData} />
                 <PopUpFoot buttons={grayAndBlueBtn} />
               </>
             }
@@ -157,31 +208,43 @@ const FileBox = ({ id, name, data, dataHandler }) => {
   );
 };
 
-const RadioBox = ({ id, buttons, data, dataHandler }) => {
+const RadioBox = ({ id, data, dataHandler }) => {
+  const labelStyle = {
+    fontSize: '13px', // 폰트 크기
+    color: '#6c757d', // 폰트 색상
+  };
+  const labels = ['사용', '미사용'];
+
+  const [selectedOption, setSelectedOption] = useState(labels[0]);
+
+  useEffect(() => {
+    setSelectedOption(data === 1 ? '사용' : '미사용');
+  }, [data]);
+
   return (
-    <div className={styled.contentBox}>
-      <div className={styled.radioBox}>
-        <input
-          type="radio"
-          name="radio"
-          value={buttons[0].value}
-          checked={data === 1}
+    <div className={styled.dataBox}>
+      <FormControl>
+        <RadioGroup
+          row
+          aria-label="used"
+          name="used"
+          value={selectedOption}
           onChange={(e) => {
-            dataHandler(id, e.target.value === 'true' ? 1 : 0);
+            console.log('value:', e.target.value);
+            setSelectedOption(e.target.value);
+            dataHandler(id, e.target.value === '사용' ? 1 : 0);
           }}
-        />
-        <div>{buttons[0].name}</div>
-        <input
-          type="radio"
-          name="radio"
-          value={buttons[1].value}
-          checked={data === 0}
-          onChange={(e) => {
-            dataHandler(id, e.target.value === 'false' ? 0 : 1);
-          }}
-        />
-        <div>{buttons[1].name}</div>
-      </div>
+        >
+          {labels.map((label, index) => (
+            <FormControlLabel
+              key={index}
+              value={labels[index]}
+              control={<Radio size="small" style={{ color: '#6c757d' }} />}
+              label={<span style={labelStyle}>{label}</span>}
+            />
+          ))}
+        </RadioGroup>
+      </FormControl>
     </div>
   );
 };

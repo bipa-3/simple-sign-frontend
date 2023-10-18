@@ -1,35 +1,18 @@
 import styled from '../../../styles/components/ApprovalBox/DocItem.module.css';
 import defaultUserIcon from '../../../assets/imgs/default_user.png';
 import React from 'react';
-import PopUp from '../../common/PopUp';
-import ApprovalDetail from '../../approvalManage/approvalDetail/ApprovalDetail';
-import { useState } from 'react';
 
 function DocItem(props) {
   //문서상태에 따른 글자색
-  const getTxtColor = () => {
+  const getBgColor = () => {
     if (props.docStatus === 'A') {
-      return '#20C997';
+      return '#1abc9c';
     } else if (props.docStatus === 'P') {
       return '#46A3F0';
     } else if (props.docStatus === 'R') {
-      return '#FF8787';
+      return '#f1556c';
     } else if (props.docStatus === 'W') {
-      return '#F0C325';
-    } else {
-      return '';
-    }
-  };
-
-  const getBgColor = () => {
-    if (props.docStatus === 'A') {
-      return '#E7F7F4';
-    } else if (props.docStatus === 'P') {
-      return '#E5F4FF';
-    } else if (props.docStatus === 'R') {
-      return '#FFEEF1';
-    } else if (props.docStatus === 'W') {
-      return '#FFF5E5';
+      return '#f7b84b';
     } else {
       return '';
     }
@@ -50,12 +33,11 @@ function DocItem(props) {
     }
   };
 
-  const txtColor = getTxtColor();
   const bgColor = getBgColor();
 
   return (
-    <ul>
-      <li className={styled.itembox} onClick={props.onClick}>
+    <div style={{ width: '100%' }}>
+      <div className={styled.itembox} onClick={props.onClick}>
         {/* <div className={styled.checkboxArea}>
               <input type="checkbox"></input>
             </div> */}
@@ -84,20 +66,20 @@ function DocItem(props) {
               </div>
             </div>
           </div>
-          <div className={styled.docStatus}>
-            <div className={styled.process}>
-              <div
-                className={styled.txtline}
-                style={{ color: txtColor, backgroundColor: bgColor }} // 백그라운드 컬러 속성명 수정
-              >
-                <span>{getStatusText()}</span>
-                <span>{'(' + props.lastUser + ')'}</span>
-              </div>
+        </div>
+        <div className={styled.docStatus}>
+          <div className={styled.process}>
+            <div
+              className={styled.txtline}
+              style={{ color: 'white', backgroundColor: bgColor }}
+            >
+              <span>{getStatusText()}</span>
+              <span>{'(' + props.lastUser + ')'}</span>
             </div>
           </div>
         </div>
-      </li>
-    </ul>
+      </div>
+    </div>
   );
 }
 export default DocItem;

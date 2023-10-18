@@ -21,10 +21,11 @@
   border-bottom-left-radius: 0.25rem;
   border-bottom-right-radius: 0.25rem;
   width: 100%;
-  height: 420px;
+  height: 100%;
   overflow-y: scroll;
   padding-top: 20px;
   padding-left: 30px;
+  margin-bottom: 20px;
 }
 
 .boxlist ul {
@@ -33,6 +34,7 @@
 
 .formcontainer {
   width: 100%;
+  max-height: 100%;
   max-height: 495.45px;
   overflow-y: scroll;
   border-top: 1px solid #edeff1;
@@ -40,7 +42,7 @@
 .customSelect {
   /* z-index: 9999; */
   /* height: 27px; */
-  font-size: 12px;
+  font-size: 13px;
 }
 .inputItem {
   display: flex;
@@ -63,7 +65,7 @@
 .inputstyle {
   width: 100%;
   color: black;
-  font-size: 12px;
+  font-size: 13px;
   height: 27px;
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
@@ -79,17 +81,18 @@
   column-gap: 10px;
   display: flex;
   flex-wrap: wrap;
+  margin-right: 5px;
 }
 .btn {
-  width: 27px;
-  height: 27px;
+  width: 32px;
+  height: 32px;
 }
 .viewUseField {
   display: flex;
 }
 .searchbtn {
-  height: 27px;
-  width: 27px;
+  height: 32px;
+  width: 32px;
   align-items: center;
 }
 .selectContainer {
@@ -106,12 +109,12 @@
 }
 .inputSearch input {
   width: 100%;
-  height: 27px;
+  height: 32px;
   border: 1px solid #ccc;
   border-radius: 0.25rem;
   margin-right: 3px;
   padding-left: 9px;
-  font-size: 12px;
+  font-size: 13px;
 }
 .viewItemContainer {
   width: 100%;
@@ -136,7 +139,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 13px;
 }
 .topCheckbox {
   background-color: #edeff1;
@@ -164,7 +167,7 @@ input[type='checkbox'] {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 13px;
 }
 .submitBtn {
   display: flex;

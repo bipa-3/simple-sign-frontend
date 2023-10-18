@@ -85,7 +85,7 @@ export default function FormDetail({ searchHandler }) {
         />
         <Button
           label={flagData === 1 ? '저장' : '수정'}
-          btnStyle={'gray_btn'}
+          btnStyle={'green_btn'}
           onClick={flagData === 1 ? createDetailFunc : updateDetailFunc}
         />
       </>
@@ -100,9 +100,7 @@ export default function FormDetail({ searchHandler }) {
           handleButtonClick={handleButtonClick}
         ></FormDetailNav>
         {activeButton === 1 ? (
-          <div className={styled.form_detail_area}>
-            <DetailTable />
-          </div>
+          <DetailTable />
         ) : (
           <DataList
             rows={detailData.approvalLine}
@@ -120,6 +118,13 @@ export default function FormDetail({ searchHandler }) {
       width={'100%'}
       height={'100%'}
       titleChildren={returnTitleComponent()}
+      childStyle={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        padding: '0px 0px 20px 0px',
+      }}
       children={returnMainComponent()}
     ></InnerBox>
   );

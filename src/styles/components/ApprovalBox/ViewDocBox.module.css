@@ -1,67 +1,67 @@
 .container {
   width: 100%;
-  flex: 1;
-  padding-top: 10px;
   box-sizing: border-box;
-  height: 100%;
+  flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  overflow: 'hidden';
+  padding-bottom: 20px;
 }
 .tableheader {
   background-color: #f1f5f7;
-  height: 42px;
+
   border: 0 solid;
   width: 100%;
 }
 .titleAndcontents {
+  min-height: 52px;
   display: flex;
   justify-content: flex-end;
 }
 .title1 {
-  font-size: 13.4px;
-  font-weight: bold;
+  font-size: 13.6px;
+  font-weight: 550;
   color: #343a40;
   letter-spacing: -0.6px;
   text-align: center;
-  width: 200px;
+  width: 20%;
   padding: 0.85rem;
   background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
 .title2 {
-  font-size: 13.4px;
-  font-weight: bold;
+  font-size: 13.6px;
+  font-weight: 550;
   color: #343a40;
   letter-spacing: -0.6px;
   text-align: center;
-  width: 650px;
+  width: 40%;
   padding: 0.85rem;
   background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
 .title3 {
-  font-size: 13.4px;
-  font-weight: bold;
+  font-size: 13.6px;
+  font-weight: 550;
   color: #343a40;
   letter-spacing: -0.6px;
   text-align: center;
-  width: 270px;
+  width: 20%;
   padding: 0.85rem;
   background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
   box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
 }
 .title4 {
-  font-size: 13.4px;
-  font-weight: bold;
+  font-size: 13.6px;
+  font-weight: 550;
   color: #343a40;
   letter-spacing: -0.6px;
   text-align: center;
-  width: 250px;
+  width: 20%;
   padding: 0.85rem;
   background-color: var(--bs-table-bg);
   border-bottom-width: 1px;
@@ -69,20 +69,18 @@
 }
 .docList {
   list-style: none;
-  margin: 10px 0 0;
   padding-inline-start: 0px !important;
-  height: 100%;
   max-height: 400px;
   overflow-y: scroll;
+  height: 100%;
+  flex: 1;
   /* overflow: scroll; */
 }
 
 .docContainer {
   width: 100%;
-  inset: 0px;
   max-height: 100%;
-  margin-right: -17px;
-  margin-bottom: -17px;
+  flex: 1;
 }
 .pagination {
   padding-top: 20px;

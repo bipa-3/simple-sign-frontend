@@ -35,6 +35,8 @@
   align-items: center;
 }
 
-.form_detail_area {
+.form_detail_content {
   flex-grow: 1;
+  overflow: scroll;
+  height: 100%;
 }

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ContextProvider from './contexts/ContextProvider';
@@ -22,10 +22,16 @@ import ApprovalUpdatePage from '../src/pages/ApprovalUpdatePage';
 import ApprovalDetail from '../src/components/approvalManage/approvalDetail/ApprovalDetail';
 import Loading from './components/common/Loading';
 import { usePage } from './contexts/PageContext';
+import UserInfo from './pages/UserInfo';
+import UpdateUserInfo from './pages/UpdateUserInfo';
+
 function AppContent() {
   const { state } = useContext(AppContext);
   const navigate = useNavigate();
   const { state: pageState, setState: setPageState } = usePage();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const getname = queryParams.get('name');
 
   //로그인이 되지 않으면 로그인 페이지로
   useEffect(() => {
@@ -42,7 +48,7 @@ function AppContent() {
           <Sidebar />
           <div className="contentContainer">
             <Titlebox
-              title={pageState.curPage}
+              title={getname}
               view={pageState.isApprovalBox ? 'approval' : ''}
               componentProp={
                 pageState.isApprovalBox ? <ApprovalRightHeader /> : ''
@@ -58,6 +64,8 @@ function AppContent() {
                 <Route path="/FL" element={<FormListPage />} />
                 <Route path="/AD" element={<ApprovalDetail />} />
                 <Route path="/ADD" element={<ApprovalUpdatePage />} />
+                <Route path="/userinfo" element={<UserInfo />} />
+                <Route path="/updateuser" element={<UpdateUserInfo />} />
               </Routes>
             </div>
           </div>

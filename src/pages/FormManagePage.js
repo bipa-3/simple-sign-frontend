@@ -72,12 +72,12 @@ export default function FormManagePage() {
 
   return (
     <div className={styled.container}>
-      <FormSearchBox searchHandler={searchHandler} />
       <div className={styled.contentArea}>
+        <div className={styled.searchArea}>
+          <FormSearchBox searchHandler={searchHandler} />
+        </div>
         <div className={styled.formListArea}>
           <FormListArea rows={formListData} searchHandler={searchHandler} />
-        </div>
-        <div className={styled.formDetailArea}>
           <FormDetail searchHandler={searchHandler} />
         </div>
       </div>

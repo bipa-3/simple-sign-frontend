@@ -1,0 +1,17 @@
+.detailContainer {
+  display: flex;
+  grid-gap: 30px;
+  gap: 25px;
+  width: 100%;
+  max-height: 800px;
+  overflow: scroll;
+}
+
+.updateAndDeleteBtn {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  flex-grow: 1;
+  gap: 5px;
+}

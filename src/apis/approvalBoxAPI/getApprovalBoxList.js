@@ -1,5 +1,7 @@
+import base_url from '../base_url';
+
 export default function getApprovalBoxList() {
-  let url = `http://localhost:8080/approvbox/boxlist`;
+  let url = base_url + `approvbox/boxlist`;
 
   return fetch(url, {
     headers: { Accept: 'application/json' },

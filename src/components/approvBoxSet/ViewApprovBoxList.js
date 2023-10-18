@@ -40,6 +40,13 @@ function ViewApprovalBoxList() {
       width="45%"
       font_size="15px"
       text="결재함 목록"
+      childStyle={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+        marginBottom: '30px',
+      }}
       titleChildren={
         <Button
           label={'추가'}
@@ -62,8 +69,8 @@ function ViewApprovalBoxList() {
           <Button
             label={<SearchIcon style={{ fontSize: '15px' }} />}
             btnStyle={'dark_btn'}
-            width="27px"
-            height="27px"
+            width="32px"
+            height="32px"
             fontSize="12px"
           />
         </div>

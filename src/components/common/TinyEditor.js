@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
+import styled from '../../styles/components/formManage/formEdit/components/FormList.module.css';
 
 export const CustomButton = ({ label, editor, text }) => {
   const handleInsertDiv = () => {
@@ -9,7 +10,11 @@ export const CustomButton = ({ label, editor, text }) => {
     }
   };
 
-  return <button onClick={handleInsertDiv}>{label}</button>;
+  return (
+    <button className={styled.customBtnStyle} onClick={handleInsertDiv}>
+      {label}
+    </button>
+  );
 };
 
 export function TinyEditor({ init, editorHandler, dataHandler }) {
@@ -27,7 +32,7 @@ export function TinyEditor({ init, editorHandler, dataHandler }) {
         onEditorChange={dataHandler}
         initialValue={init || ''}
         init={{
-          height: 500,
+          height: '100%',
           menubar: false,
           plugins: [
             'advlist',
