@@ -11,5 +11,6 @@ export default function insertForm(data) {
       'Content-Type': 'application/json',
     },
     body: jsonData,
+    credentials: 'include',
   });
 }

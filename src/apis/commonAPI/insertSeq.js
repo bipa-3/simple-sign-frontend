@@ -12,5 +12,6 @@ export default function insertSeq(data) {
       'Content-Type': 'application/json',
     },
     body: jsonData,
+    credentials: 'include',
   });
 }

@@ -9,5 +9,6 @@ export default function delForm(data) {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
   });
 }

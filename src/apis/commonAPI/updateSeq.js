@@ -12,5 +12,6 @@ export default function updateSeq(data) {
       'Content-Type': 'application/json',
     },
     body: jsonData,
+    credentials: 'include',
   });
 }

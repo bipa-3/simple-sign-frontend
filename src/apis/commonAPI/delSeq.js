@@ -9,5 +9,6 @@ export default function delSeq(data) {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
   });
 }

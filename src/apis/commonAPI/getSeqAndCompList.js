@@ -12,5 +12,6 @@ export default function getCompanyList(data) {
       'Content-Type': 'application/json',
     },
     body: jsonData,
+    credentials: 'include',
   });
 }
