@@ -9,6 +9,7 @@ import styled from '../../../styles/components/ApprovalBox/ViewDocBox.module.css
 import TableHeader from './TableHeader';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { usePage } from '../../../contexts/PageContext';
+import insertDocView from '../../../apis/approvalBoxAPI/insertDocView';
 
 function ViewDocBox() {
   const { state, setState, detailSearchState } = useApprovalBox();
@@ -32,6 +33,7 @@ function ViewDocBox() {
 
       const { docList, count } = response.data;
 
+      //조회 필터링
       let filteredDocList = docList;
 
       if (state.radioSortValue === 'ongoingdoc') {
@@ -41,6 +43,20 @@ function ViewDocBox() {
       } else if (state.radioSortValue === 'writtendoc') {
         filteredDocList = docList.filter((docItem) =>
           ['A', 'R'].includes(docItem.docStatus)
+        );
+      } else if (
+        state.radioSortValue === 'readdoc' &&
+        viewItems.includes('reference')
+      ) {
+        filteredDocList = docList.filter((docItem) =>
+          state.docView.includes(docItem.approvalDocId)
+        );
+      } else if (
+        state.radioSortValue === 'notreaddoc' &&
+        viewItems.includes('reference')
+      ) {
+        filteredDocList = docList.filter(
+          (docItem) => !state.docView.includes(docItem.approvalDocId)
         );
       }
 
@@ -60,7 +76,13 @@ function ViewDocBox() {
 
   useEffect(() => {
     fetchData();
-  }, [pageState.curPage, state.searchInput, page, state.radioSortValue]);
+  }, [
+    pageState.curPage,
+    state.searchInput,
+    page,
+    state.radioSortValue,
+    state.isReadDoc,
+  ]);
 
   useEffect(() => {
     if (state.shouldFetchDocs) {
@@ -71,7 +93,7 @@ function ViewDocBox() {
 
   useEffect(() => {
     setPage(1);
-  }, [pageState.curPage, state.searchInput]);
+  }, [pageState.curPage, state.searchInput, state.radioSortValue]);
 
   useEffect(() => {
     if (state.rerender) {
@@ -82,8 +104,24 @@ function ViewDocBox() {
 
   const navigate = useNavigate();
 
-  const handleItemClick = (docId) => {
+  const handleItemClick = async (docId) => {
+    setState((prevState) => ({ ...prevState, isReadDoc: docId }));
     navigate(`/AD?page=${docId}`);
+    if (viewItems.includes('reference')) {
+      try {
+        //클릭된 문서 ID를 state.docView 배열에 추가
+        if (!state.docView.includes(docId)) {
+          setState((prevState) => ({
+            ...prevState,
+            docView: [...prevState.docView, docId],
+          }));
+        }
+
+        await insertDocView(docId);
+      } catch (error) {
+        console.error('Error inserting document view:', error);
+      }
+    }
   };
 
   return (
@@ -91,19 +129,50 @@ function ViewDocBox() {
       <TableHeader />
       <div className={styled.docContainer}>
         <div className={styled.docList}>
-          {docData.map((docItem) => (
-            <DocItem
-              key={docItem.approvalDocId}
-              docNumber={docItem.approvalDocId}
-              formName={docItem.formName}
-              date={docItem.createdAt.toLocaleString('ko-KR')}
-              title={docItem.approvalDocTitle}
-              sendUser={docItem.userName}
-              docStatus={docItem.docStatus}
-              sendDepartDetail={docItem.deptName}
-              onClick={() => handleItemClick(docItem.approvalDocId)}
-            />
-          ))}
+          {docData
+            .filter(
+              (docItem) =>
+                !(state.selectSortDate === '종결일' && docItem.endDate === null)
+            )
+            .map((docItem) => (
+              <DocItem
+                key={docItem.approvalDocId}
+                docNumber={docItem.approvalDocId}
+                formName={docItem.formName}
+                date={
+                  state.selectSortDate === '기안일'
+                    ? docItem.sendDate
+                    : state.selectSortDate === '도착일' &&
+                      viewItems.includes('reference')
+                    ? docItem.sendDate
+                    : state.selectSortDate === '도착일'
+                    ? docItem.receiveDate
+                    : state.selectSortDate === '종결일'
+                    ? docItem.endDate
+                    : state.selectSortDate === '결재일'
+                    ? docItem.approvalDate
+                    : docItem.sendDate // 기본값을 기안일로 설정했습니다.
+                }
+                title={docItem.approvalDocTitle}
+                sendUser={docItem.userName}
+                docStatus={docItem.docStatus}
+                sendDepartDetail={docItem.deptName}
+                lastUser={
+                  docItem.docStatus === 'A' || docItem.docStatus === 'R'
+                    ? docItem.endUser
+                    : docItem.docStatus === 'W'
+                    ? docItem.userName
+                    : docItem.docStatus === 'P'
+                    ? docItem.approver
+                    : ''
+                }
+                isRead={
+                  viewItems.includes('reference') &&
+                  state.docView.includes(docItem.approvalDocId)
+                }
+                onClick={() => handleItemClick(docItem.approvalDocId)}
+              />
+            ))}
         </div>
       </div>
       <div className={styled.pagination}>

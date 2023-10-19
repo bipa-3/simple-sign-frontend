@@ -7,7 +7,12 @@ const initialState = {
   view: false,
   boxViewItems: [],
   radioSortValue: 'alldoc',
+  selectSortDate: '',
+  topSelectSortDate: '',
+  rowSelectSortDate: '',
   rerender: false,
+  isReadDoc: '',
+  docView: [],
 };
 
 const detailSearchInitState = {
@@ -24,6 +29,13 @@ const detailSearchInitState = {
   searchDocNumber: '',
 };
 
+const approvalDocCount = {
+  sendCount: 0,
+  pendCount: 0,
+  concludedCount: 0,
+  referenceCount: 0,
+};
+
 const customBoxViewItemInitState = [];
 
 const ApprovalBoxContext = createContext();
@@ -36,6 +48,7 @@ export const ApprovalBoxProvider = ({ children }) => {
   const [customBoxViewItemState, setCustomBoxViewItemState] = useState(
     customBoxViewItemInitState
   );
+  const [count, setCount] = useState(approvalDocCount);
 
   return (
     <ApprovalBoxContext.Provider
@@ -47,6 +60,8 @@ export const ApprovalBoxProvider = ({ children }) => {
         detailSearchInitState,
         customBoxViewItemState,
         setCustomBoxViewItemState,
+        count,
+        setCount,
       }}
     >
       {children}

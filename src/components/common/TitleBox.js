@@ -5,7 +5,7 @@ import ReloadIcon from '../../assets/imgs/reload.png';
 import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
 
 function Titlebox(props) {
-  const { state, setState } = useApprovalBox();
+  const { state, setState, count } = useApprovalBox();
   const clickReload = () => {
     setState((prevState) => ({
       ...prevState,
@@ -18,7 +18,26 @@ function Titlebox(props) {
       return (
         <div className={styles.showApprobox}>
           <div className={styles.docCount}>
-            <ViewCount count="5"></ViewCount> 건
+            {props.title === '상신문서' && (
+              <div>
+                <ViewCount count={count.sendCount}></ViewCount>건
+              </div>
+            )}
+            {props.title === '미결문서' && (
+              <div>
+                <ViewCount count={count.pendCount}></ViewCount>건
+              </div>
+            )}
+            {props.title === '기결문서' && (
+              <div>
+                <ViewCount count={count.concludedCount}></ViewCount>건
+              </div>
+            )}
+            {props.title === '수신참조문서' && (
+              <div>
+                <ViewCount count={count.referenceCount}></ViewCount>건
+              </div>
+            )}
           </div>
           <img
             className={styles.reloadIcon}

@@ -26,7 +26,7 @@ export default function SeqDetailTable() {
     seqItems,
     setSeqItems,
   } = useSeqManage();
-  const [seqList, setseqList] = useState([]);
+  const [seqList, setSeqList] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeptModalOpen, setIDeptModalOpen] = useState(false);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
@@ -68,7 +68,14 @@ export default function SeqDetailTable() {
         return res.json();
       })
       .then((data) => {
-        setSeqItems(data);
+        setSeqItems(
+          data.map((ele, index) => {
+            console.log(ele.id);
+            ele.code = ele.id.toString().padStart(2, '0');
+            ele.id = index;
+            return ele;
+          })
+        );
       })
       .catch((err) => {
         console.error(err);
@@ -78,13 +85,12 @@ export default function SeqDetailTable() {
   useEffect(() => {
     const itemIdList = detailData.seqString.split(',');
     if (detailData.seqString !== '') {
-      let result = seqItems.filter((ele) => {
-        if (itemIdList.includes(ele.id)) {
-          return true;
-        }
-        return false;
+      let result = itemIdList.map((ele, index) => {
+        const foundItem = seqItems.find((item) => item.code === ele);
+        console.log(foundItem);
+        return { id: index, value: foundItem.value, code: foundItem.code };
       });
-      setseqList([...result]);
+      setSeqList([...result]);
     }
   }, [detailData.seqString]);
 
@@ -105,12 +111,13 @@ export default function SeqDetailTable() {
       ...detailData,
       seqList: seqList
         .map((ele) => {
+          console.log(ele);
           return ele.value;
         })
         .join(' '),
       seqString: seqList
         .map((ele) => {
-          return ele.id;
+          return ele.code;
         })
         .join(','),
     });
@@ -305,8 +312,7 @@ export default function SeqDetailTable() {
                           <SeqSet
                             seqItems={seqItems}
                             seqList={seqList}
-                            setseqList={setseqList}
-                            initData={detailData.seqString}
+                            setSeqList={setSeqList}
                           />
                         </div>
                         <PopUpFoot buttons={grayAndBlueBtn} />

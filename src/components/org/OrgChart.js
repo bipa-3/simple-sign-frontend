@@ -12,7 +12,7 @@ import { RiOrganizationChart } from 'react-icons/ri';
  * 
  * @param {String} view 사용자 - user, 부서별 - dept ex) const view = 'user';
  * @param {Object} initData compId:1, company:"Company A", department:"test Department", deptId:4, estId:1, establishment:"Establishment 1",
-                            grade:"", id:1, position:"", user:"", orgUserId:0
+                            grade:"", id:1, position:"", user:"", userId:0
  * @param {Function} isModalOpen  모달 여는 메서드 const openModal = () => {setIsModalOpen(true)};
  * @param {Function} closeModal 모달 닫는 메서드 const closeModal = () => {setIsModalOpen(false)};
  * @param {Boolean} openModal 모달 상태값 const [isModalOpen, setIsModalOpen] = useState(false); //isModalOpen 데이터
@@ -81,14 +81,14 @@ export default function OrgChart({
         position: '',
         useId: 0,
         user: '',
-        orgUserId: 0,
+        userId: 0,
       };
-      if (view === 'user' && row.orgUserId && row.user) {
+      if (view === 'user' && row.userId && row.user) {
         return {
           ...returnObj,
           category: 'U',
-          useId: row.orgUserId,
-          orgUserId: row.orgUserId,
+          useId: row.userId,
+          userId: row.userId,
           user: row.user,
           grade: row.grade,
           position: row.position,

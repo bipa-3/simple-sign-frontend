@@ -5,10 +5,13 @@ import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import DataList from '../../formManage/formList/DataList';
 import { columns } from '../../../assets/datas/seq_popup_list';
 
-export default function SeqSet({ seqItems, seqList, setseqList, initData }) {
+export default function SeqSet({ seqItems, seqList, setSeqList }) {
+  console.log(seqItems, seqList);
   const [previewData, setPreviewData] = useState('');
   const [leftSelectedRow, setLeftSelectedRow] = useState({});
   const [rightSelectedRow, setRightSelectedRow] = useState({});
+  let selectedCount =
+    seqList.length > 0 ? seqList[seqList.length - 1].id + 1 : 0;
 
   const leftDataHandler = (data) => {
     setLeftSelectedRow(data);
@@ -19,20 +22,20 @@ export default function SeqSet({ seqItems, seqList, setseqList, initData }) {
   };
 
   const addselectedRows = () => {
-    setseqList([...seqList, leftSelectedRow]);
+    let data = { ...leftSelectedRow, id: selectedCount };
+    setSeqList([...seqList, data]);
+    selectedCount++;
   };
 
   const delselectedRows = () => {
     let filtedSeqList = seqList.filter((ele) => {
-      if (
-        ele.id !== rightSelectedRow.id &&
-        ele.value !== rightSelectedRow.value
-      ) {
+      if (ele.id !== rightSelectedRow.id) {
+        setRightSelectedRow({});
         return true;
       }
       return false;
     });
-    setseqList(filtedSeqList);
+    setSeqList(filtedSeqList);
   };
 
   useEffect(() => {
@@ -57,16 +60,16 @@ export default function SeqSet({ seqItems, seqList, setseqList, initData }) {
           />
         </div>
         <div>
-          <BsChevronRight
-            className={styled.arrowBox}
-            onClick={(e) => {
-              addselectedRows(e);
-            }}
-          />
           <BsChevronLeft
             className={styled.arrowBox}
             onClick={(e) => {
               delselectedRows(e);
+            }}
+          />
+          <BsChevronRight
+            className={styled.arrowBox}
+            onClick={(e) => {
+              addselectedRows(e);
             }}
           />
         </div>

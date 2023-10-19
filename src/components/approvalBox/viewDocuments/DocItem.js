@@ -3,6 +3,8 @@ import defaultUserIcon from '../../../assets/imgs/default_user.png';
 import React from 'react';
 
 function DocItem(props) {
+  const elementTextStyle = props.isRead ? { color: 'lightgray' } : {};
+
   //문서상태에 따른 글자색
   const getBgColor = () => {
     if (props.docStatus === 'A') {
@@ -43,7 +45,7 @@ function DocItem(props) {
             </div> */}
         <div className={styled.dateText}>{props.date}</div>
         <div className={styled.element}>
-          <div className={styled.elementText}>
+          <div className={styled.elementText} style={elementTextStyle}>
             <span>{props.title}</span>
           </div>
           <div className={styled.info}>

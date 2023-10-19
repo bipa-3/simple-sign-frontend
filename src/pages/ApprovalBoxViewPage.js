@@ -5,9 +5,19 @@ import InnerBox from '../components/common/InnerBox';
 import styles from '../styles/pages/ApprovalBoxViewPage.module.css';
 import ViewDocBox from '../components/approvalBox/viewDocuments/ViewDocBox';
 import { useApprovalBox } from '../contexts/ApprovalBoxContext';
+import { useEffect } from 'react';
 
 function ApprovalBoxViewPage() {
   const { state, setState } = useApprovalBox();
+
+  useEffect(() => {
+    if (!state.view) {
+      setState((prevState) => ({
+        ...prevState,
+        topSelectSortDate: '',
+      }));
+    }
+  }, [state.view, setState]);
 
   return (
     <div className={styles.container}>

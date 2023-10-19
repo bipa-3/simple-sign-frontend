@@ -10,11 +10,16 @@ import SearchDate from '../SearchDate';
 import styled from '../../../styles/components/ApprovalBox/SearchDeatil.module.css';
 import { useApprovalBox } from '../../../contexts/ApprovalBoxContext';
 import Button from '../../common/Button';
+import { useLocation } from 'react-router-dom';
 
 function RemainSearchDetail() {
   const { state, setState, detailSearchState, setDetailSearchState } =
     useApprovalBox();
-  const { viewItem } = state;
+  const location = useLocation(); // URL의 위치 정보를 얻음
+  const queryParams = new URLSearchParams(location.search);
+  const viewItemsString = queryParams.get('viewItems');
+  const viewItems = viewItemsString ? viewItemsString.split(',') : [];
+
   const docStatus = [
     { name: '전체', value: '1' },
     { name: '상신', value: '2' },
@@ -24,20 +29,24 @@ function RemainSearchDetail() {
   ];
   const OPTIONS = {
     pend: [
-      { name: '도착일', value: 'arrivedDate' },
-      { name: '기안일', value: 'sendDate' },
+      { name: '기안일', value: '기안일' },
+      { name: '도착일', value: '도착일' },
     ],
     concluded: [
-      { name: '결재일', value: 'approvDate' },
-      { name: '기안일', value: 'sendDate' },
-      { name: '종결일', value: 'closedDate' },
+      { name: '기안일', value: '기안일' },
+      { name: '결재일', value: '결재일' },
+      { name: '종결일', value: '종결일' },
     ],
     reference: [
-      { name: '기안일', value: 'sendDate' },
-      { name: '도착일', value: 'arrivedDate' },
-      { name: '종결일', value: 'closedDate' },
+      { name: '기안일', value: '기안일' },
+      { name: '도착일', value: '도착일' },
+      { name: '종결일', value: '종결일' },
     ],
   };
+
+  useEffect(() => {
+    handleSearchDate(null, state.bottomSelectSortDate);
+  }, [state.bottomSelectSortDate]);
 
   const handleSearchIconClick = () => {
     setState((prevState) => ({ ...prevState, shouldFetchDocs: true }));
@@ -45,11 +54,48 @@ function RemainSearchDetail() {
 
   const optionlist = () => {
     for (const option in OPTIONS) {
-      if (viewItem.includes(option)) {
-        return OPTIONS[option];
+      if (viewItems.includes(option)) {
+        return OPTIONS[option].map((item) => ({
+          seqCode: item.value,
+          name: item.name,
+        }));
       }
     }
     return [];
+  };
+
+  const setDatename = () => {
+    if (viewItems.includes('pend')) {
+      return (
+        <SelectComp
+          dataHandler={handleSearchDate}
+          options={optionlist()}
+          width="100"
+          height="30"
+          values={state.bottomSelectSortDate}
+        />
+      );
+    } else if (viewItems.includes('concluded')) {
+      return (
+        <SelectComp
+          dataHandler={handleSearchDate}
+          options={optionlist()}
+          width="100"
+          height="30"
+          values={state.bottomSelectSortDate}
+        />
+      );
+    } else if (viewItems.includes('reference')) {
+      return (
+        <SelectComp
+          dataHandler={handleSearchDate}
+          options={optionlist()}
+          width="100"
+          height="30"
+          values={state.bottomSelectSortDate}
+        />
+      );
+    }
   };
 
   useEffect(() => {
@@ -60,21 +106,13 @@ function RemainSearchDetail() {
         searchDate: initialDateOption.value,
       }));
     }
-  }, [viewItem]);
+  }, []);
 
-  useEffect(() => {
-    const initialDateOption = docStatus[0];
-    if (initialDateOption) {
-      setDetailSearchState((prevState) => ({
-        ...prevState,
-        searchApprovState: initialDateOption.value,
-      }));
-    }
-  }, [viewItem]);
   const handleSearchDate = (id, selectedDate) => {
-    setDetailSearchState((prevState) => ({
+    setState((prevState) => ({
       ...prevState,
-      searchDate: selectedDate,
+      topSelectSortDate: selectedDate,
+      selectSortDate: selectedDate,
     }));
   };
   const handleSelectedData = (id, selectedData) => {
@@ -104,11 +142,7 @@ function RemainSearchDetail() {
     <div className={styled.SearchDetailBox}>
       <div className={styled.searchItems}>
         <ItemBox>
-          <SelectComp
-            dataHandler={handleSearchDate}
-            options={optionlist()}
-            width="65px"
-          />
+          {<span>{setDatename()}</span>}
           <SearchDate onDateChange={handleDateChange} />
         </ItemBox>
 

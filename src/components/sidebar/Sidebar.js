@@ -7,6 +7,7 @@ import styled from '../../styles/components/sidebar/Sidebar.module.css';
 import { useEffect } from 'react';
 import getApprovalBoxList from '../../apis/approvalBoxAPI/getApprovalBoxList';
 import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
+import getDocumentsCount from '../../apis/approvalBoxAPI/getDocumentCount';
 
 //추후 backend data변경예정
 const userData = [
@@ -53,7 +54,7 @@ const managerData = [
 function Sidebar() {
   let [data, setData] = useState(userData);
   const [isSubMenuVisible, setSubMenuVisible] = useState([false, false, false]);
-  const { customBoxViewItemState, setCustomBoxViewItemState } =
+  const { customBoxViewItemState, setCustomBoxViewItemState, setCount, state } =
     useApprovalBox();
 
   //결재분류함(커스텀) 데이터 받아오기
@@ -86,6 +87,39 @@ function Sidebar() {
       );
   }, []);
 
+  useEffect(() => {
+    // 결재분류함 데이터를 가져오는 로직 ...
+
+    const fetchData = async () => {
+      try {
+        let response;
+
+        response = await getDocumentsCount('상신문서');
+        const sendCountValue = response.data;
+
+        response = await getDocumentsCount('미결문서');
+        const pendCountValue = response.data;
+
+        response = await getDocumentsCount('기결문서');
+        const concludedCountValue = response.data;
+
+        response = await getDocumentsCount('수신참조문서');
+        const referenceCountValue = response.data;
+
+        setCount({
+          sendCount: sendCountValue,
+          pendCount: pendCountValue,
+          concludedCount: concludedCountValue,
+          referenceCount: referenceCountValue,
+        });
+      } catch (error) {
+        console.error('Error fetching document counts:', error);
+      }
+    };
+
+    fetchData();
+  }, [state.isReadDoc]);
+
   const authorityManage = (value) => {
     if (value == 'user') {
       setData(userData);
@@ -114,6 +148,7 @@ function Sidebar() {
           key={item.id}
           item={item}
           isSubMenuVisible={isSubMenuVisible}
+          boxName={item.name}
           toggleSubMenu={() => {
             toggleSubMenu(item.id);
           }}

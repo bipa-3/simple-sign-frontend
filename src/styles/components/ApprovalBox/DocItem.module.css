@@ -151,3 +151,6 @@
   padding-left: 2px;
   padding-right: 2px;
 }
+.lightenText {
+  color: #999; /* 이 값은 원하는 연한 색상으로 조절하세요 */
+}

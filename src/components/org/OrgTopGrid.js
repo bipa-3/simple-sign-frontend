@@ -51,7 +51,7 @@ export default function OrgTopGrid({
         position: item.positionName || '',
         grade: item.gradeName || '',
         user: item.userName || '',
-        orgUserId: item.orgUserId,
+        userId: item.orgUserId,
       };
     }
     return baseData;

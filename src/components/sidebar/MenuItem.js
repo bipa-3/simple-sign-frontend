@@ -10,6 +10,7 @@ import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
 import { usePage } from '../../contexts/PageContext';
 import { useLocation } from 'react-router-dom';
 import ViewCount from '../approvalBox/viewDocuments/ViewCount';
+import getDocView from '../../apis/approvalBoxAPI/getDocView';
 
 function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
   const location = useLocation();
@@ -18,7 +19,7 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
 
   const { customBoxViewItemState, setCustomBoxViewItemState } =
     useApprovalBox();
-  const { state, setState } = useApprovalBox();
+  const { state, setState, count, setCount } = useApprovalBox();
   const navigate = useNavigate();
   const [clickStates, setClickStates] = useState([
     false,
@@ -68,16 +69,53 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
     } else if (name === '결재함설정') {
       navigate(`/ABS?name=${name}`);
     } else if (name === '상신문서') {
+      setState((prevState) => ({
+        ...prevState,
+        selectSortDate: '기안일',
+      }));
       navigate(`/ABV?viewItems=send&name=${name}`);
     } else if (name === '임시보관문서') {
+      setState((prevState) => ({
+        ...prevState,
+        selectSortDate: '작성일',
+      }));
       navigate(`/ABV?viewItems=tempor&name=${name}`);
     } else if (name === '미결문서') {
+      setState((prevState) => ({
+        ...prevState,
+        selectSortDate: '도착일',
+      }));
       navigate(`/ABV?viewItems=pend&name=${name}`);
     } else if (name === '기결문서') {
+      setState((prevState) => ({
+        ...prevState,
+        selectSortDate: '결재일',
+      }));
       navigate(`/ABV?viewItems=concluded&name=${name}`);
     } else if (name === '수신참조문서') {
+      setState((prevState) => ({
+        ...prevState,
+        selectSortDate: '기안일',
+      }));
       navigate(`/ABV?viewItems=reference&name=${name}`);
+
+      async function fetchDocViewAndNavigate() {
+        try {
+          const response = await getDocView();
+          setState((prevState) => ({ ...prevState, docView: response.data }));
+        } catch (error) {
+          console.error('Error retrieving document view:', error);
+        }
+      }
+
+      fetchDocViewAndNavigate(); // 비동기 함수 호출
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        selectSortDate: '기안일',
+      }));
     }
+
     if (customBoxNames.includes(name)) {
       const matchedBox = customBoxViewItemState.find(
         (box) => box.approvalBoxName === name
@@ -145,7 +183,18 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
                   primary={subitem.name}
                   className={styled.sub_menutext}
                 ></ListItemText>
-                <ViewCount count="5"></ViewCount>
+                {subitem.name === '상신문서' && (
+                  <ViewCount count={count.sendCount} />
+                )}
+                {subitem.name === '미결문서' && (
+                  <ViewCount count={count.pendCount} />
+                )}
+                {subitem.name === '기결문서' && (
+                  <ViewCount count={count.concludedCount} />
+                )}
+                {subitem.name === '수신참조문서' && (
+                  <ViewCount count={count.referenceCount} />
+                )}
               </div>
             </ListItemButton>
           ))}

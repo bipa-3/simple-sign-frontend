@@ -26,11 +26,12 @@ const InputComp = ({ id, dataHandler, width, placeholder }) => {
   );
 };
 
-const SelectComp = ({ id, width, options, dataHandler }) => {
+const SelectComp = ({ id, width, options, dataHandler, values }) => {
   return (
     <select
       className={styled.select}
       style={{ width: `${width}` }}
+      value={values}
       onChange={(e) => {
         console.log(e.target.value);
         dataHandler(id, e.target.value);
@@ -39,7 +40,7 @@ const SelectComp = ({ id, width, options, dataHandler }) => {
       {options
         ? options.map((ele, index) => {
             return (
-              <option key={index} value={ele.id}>
+              <option key={index} value={ele.seqCode ? ele.seqCode : ele.id}>
                 {ele.name}
               </option>
             );
