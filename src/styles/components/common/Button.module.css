@@ -70,6 +70,24 @@
   border: none;
 }
 
+.clip_non_btn {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: #dfe3e8;
+  border: none;
+  border-radius: 3px;
+  margin-top: -2px;
+}
+
+.clip_non_btn:hover {
+  width: 100% !important;
+  height: 100% !important;
+  background-color: #f0f2f4;
+  border: none;
+  border-radius: 3px;
+  margin-top: -2px;
+}
+
 .non_btn {
   width: 100% !important;
   height: 100% !important;

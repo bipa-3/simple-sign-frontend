@@ -4,12 +4,16 @@ import TemporSearchDetail from './TemporSearchDetail';
 import SendSearchDetail from './SendSearchDetail';
 import RemainSearchDetail from './RemainSearchDeatil';
 import { useLocation } from 'react-router-dom';
+import { useApprovalBox } from '../../../contexts/ApprovalBoxContext';
+import { useEffect } from 'react';
 
 function SearchDetailBox() {
   const location = useLocation(); // URL의 위치 정보를 얻음
   const queryParams = new URLSearchParams(location.search);
   const viewItemsString = queryParams.get('viewItems');
   const viewItems = viewItemsString ? viewItemsString.split(',') : [];
+  const { setState, detailSearchState, setDetailSearchState } =
+    useApprovalBox();
 
   function setDatename() {
     if (viewItems.includes('send') || viewItems.includes('reference')) {
@@ -32,6 +36,10 @@ function SearchDetailBox() {
   } else {
     searchDetailComponent = <RemainSearchDetail dateName={setDatename()} />;
   }
+
+  useEffect(() => {
+    setState((prevState) => ({ ...prevState, shouldFetchDocs: false }));
+  }, [detailSearchState]);
 
   return <div className={styled.searchDetail}>{searchDetailComponent}</div>;
 }

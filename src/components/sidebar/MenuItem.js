@@ -54,6 +54,7 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
       ...prevState,
       view: false,
       radioSortValue: 'alldoc',
+      shouldFetchDocs: false,
     }));
 
     const customBoxNames = customBoxViewItemState.map(

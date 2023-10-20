@@ -24,10 +24,10 @@ function ViewDocBox() {
   const viewItems = viewItemsString ? viewItemsString.split(',') : [];
   const { state: pageState, setState: setPageState } = usePage();
 
-  const fetchData = async (isDetailSearch = false) => {
+  const fetchData = async () => {
     try {
       const offset = (page - 1) * 10;
-      const response = isDetailSearch
+      const response = state.shouldFetchDocs
         ? await detailSearchDocs(viewItems, 10, offset, detailSearchState)
         : await getDocsList(viewItems, 10, offset, state.searchInput);
 
@@ -87,7 +87,6 @@ function ViewDocBox() {
   useEffect(() => {
     if (state.shouldFetchDocs) {
       fetchData(true);
-      setState((prevState) => ({ ...prevState, shouldFetchDocs: false }));
     }
   }, [state.shouldFetchDocs]);
 

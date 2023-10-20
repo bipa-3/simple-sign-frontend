@@ -22,6 +22,7 @@ function BoxCompany(props) {
       <div style={props.commonDataStyle}>
         <Datalist
           selectedCompId={props.compId}
+          authority="2"
           onCompanyChange={handleCompanyChange}
         />
       </div>

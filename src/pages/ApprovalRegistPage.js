@@ -6,6 +6,7 @@ import PopUpFoot from '../components/common/PopUpFoot';
 import moment from 'moment';
 import { useLoading } from '../contexts/LoadingContext';
 import insertApprovalDoc from '../apis/approvalManageAPI/insertApprovalDoc';
+import { useFormManage } from '../contexts/FormManageContext';
 
 export default function SmallBox(props) {
   const innerBoxStyle = {
@@ -30,6 +31,7 @@ export default function SmallBox(props) {
   const titleRef = useRef(null); //제목
   const [rec_ref, setRecRef] = useState([]); //수신참조
   const [org_use_list, setOrgUseId] = useState([]); //결재라인
+  const { detailData, flagData, setDetailData, setData } = useFormManage();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -208,6 +210,7 @@ export default function SmallBox(props) {
               handleDraftingTime={handleDraftingTime}
               handleEnforcementTime={handleEnforcementTime}
             />
+
             <PopUpFoot buttons={BlueAndGrayBtn} />
           </>
         }

@@ -3,6 +3,7 @@ import React, { createContext, useState, useContext } from 'react';
 const initialState = {
   boxId: null,
   insertStatus: 0,
+  compId: null,
 };
 
 const approvalBoxInit = {

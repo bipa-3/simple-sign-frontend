@@ -2,15 +2,11 @@ import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import styled from '../../styles/pages/ApprovalBoxSetPage.module.css';
 import getCompanyList from '../../apis/commonAPI/getCompanyList';
+import getUserCompany from '../../apis/approvalBoxAPI/getUserCompany';
 
-function Datalist({ onCompanyChange, selectedCompId }) {
-  const [selectedOption, setSelectedOption] = useState({
-    value: 0,
-    label: '전체',
-  });
+function Datalist({ onCompanyChange, selectedCompId, authority }) {
+  const [selectedOption, setSelectedOption] = useState(null);
   const [companyOptions, setCompanyOptions] = useState([]);
-
-  const defaultValue = companyOptions[0];
 
   const customStyles = {
     control: (base) => ({
@@ -55,49 +51,72 @@ function Datalist({ onCompanyChange, selectedCompId }) {
     }),
   };
 
+  // 데이터 로딩
   useEffect(() => {
-    getCompanyList()
-      .then((response) => response.json())
-      .then((data) => {
-        const transformedData = data.map((company) => ({
-          value: company.id,
-          label: company.name,
-        }));
+    if (authority === '1') {
+      getCompanyList()
+        .then((response) => response.json())
+        .then(handleCompanyData)
+        .catch(handleError);
+    } else if (authority === '2') {
+      getUserCompany().then(handleCompanyData).catch(handleError);
+    } else {
+      setCompanyOptions([]);
+      setSelectedOption(null);
+    }
+  }, [selectedCompId, authority]);
 
-        transformedData.unshift({
-          value: '0',
-          label: '전체',
-        });
-
-        setCompanyOptions(transformedData);
-
-        // 선택된 회사의 id를 상위 컴포넌트로 전달
-        const initialOption = transformedData.find(
-          (option) => option.value === selectedCompId
-        ) || { value: 0, label: '전체' };
-
-        setSelectedOption(initialOption);
-
-        if (typeof onCompanyChange === 'function') {
-          onCompanyChange(initialOption.value);
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching company list:', error);
-      });
-  }, [selectedCompId]);
+  // selectedOption 변경 감지
+  useEffect(() => {
+    if (selectedOption && typeof onCompanyChange === 'function') {
+      onCompanyChange(selectedOption.value);
+      console.log('onCompanyChange1' + selectedOption.value);
+    }
+  }, [selectedOption]);
 
   const handleChange = (selectedOption) => {
     setSelectedOption(selectedOption);
     if (typeof onCompanyChange === 'function') {
-      onCompanyChange(selectedOption.value); // 선택된 회사의 id를 상위 컴포넌트로 전달
+      onCompanyChange(selectedOption.value);
+      console.log('onCompanyChange2' + selectedOption.value);
     }
   };
+  function handleError(error) {
+    console.error('Error fetching company data:', error);
+  }
+
+  function handleCompanyData(data) {
+    let transformedData;
+
+    if (authority === '1') {
+      transformedData = data.map((company) => ({
+        value: company.id,
+        label: company.name,
+      }));
+
+      transformedData.unshift({
+        value: 0,
+        label: '전체',
+      });
+      setSelectedOption({ value: 0, label: '전체' });
+    } else if (authority === '2') {
+      transformedData = data.map((company) => ({
+        value: company.id,
+        label: company.name,
+      }));
+      setSelectedOption(transformedData[0]);
+    } else {
+      return;
+    }
+
+    setCompanyOptions(transformedData);
+  }
+
+  console.log(selectedOption);
 
   return (
     <div className={styled.selectbox}>
       <Select
-        defaultValue={defaultValue}
         value={selectedOption}
         onChange={handleChange}
         options={companyOptions}

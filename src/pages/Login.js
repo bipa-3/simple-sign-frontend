@@ -56,6 +56,11 @@ export default function Login() {
             'authority',
             response.data.userOrgList[0].authorityCode
           );
+          localStorage.setItem('compId', response.data.userOrgList[0].compId);
+          localStorage.setItem(
+            'orgUserId',
+            response.data.userOrgList[0].orgUserId
+          );
           localStorage.setItem('userId', response.data.userId);
           localStorage.setItem('userName', response.data.userName);
           localStorage.setItem(
