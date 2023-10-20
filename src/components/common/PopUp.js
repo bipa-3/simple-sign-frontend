@@ -32,7 +32,13 @@ export default function PopUp(props) {
         width={props.btnWidth}
         height={props.btnHeight}
       ></Button>
-      <Modal open={props.isModalOpen} onClose={props.closeModal}>
+      <Modal
+        open={props.isModalOpen}
+        onClose={props.closeModal}
+        disableAutoFocus={true}
+        disableEnforceFocus={true}
+        keepMounted={true}
+      >
         <div className={styles.popUpContainer} style={popUpStyle}>
           <div className={styles.header}>{props.title}</div>
           {props.children}

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import ReactHtmlParser from 'html-react-parser';
 import { useNavigate } from 'react-router-dom';
-import moment from 'moment';
+import DefaultSign from '../../userinfo/DefaultSign';
 import getApprovalDoc from '../../../apis/approvalManageAPI/getApprovalDoc';
 import deleteContentEditableError from '../../../apis/approvalManageAPI/deleteContentEditableError';
 import { useLoading } from '../../../contexts/LoadingContext';
+import { getSign } from '../../../apis/userInfoAPl/getSign';
+import styled from '../../../styles/components/approvalManage/approvalDetail/DetailForm.module.css';
 
 export default function DetailForm(props) {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ export default function DetailForm(props) {
   const [approval_line, setApprovalLine] = useState('');
   const [receiveRefOpt, setReceiveRefOpt] = useState('');
   const { showLoading, hideLoading } = useLoading();
+  const [customSign, setCustomSign] = useState('');
 
   useEffect(() => {
     showLoading();
@@ -36,6 +39,9 @@ export default function DetailForm(props) {
         setContents(json.contents);
         setApprovalLine(json.approvalLineList);
         setReceiveRefOpt(json.receivedRefList);
+        if (json.docStatus == 'T') {
+          props.setIsTemporal(true);
+        }
       })
       .catch(() => {
         alert('문서를 찾을 수 없습니다');
@@ -49,9 +55,46 @@ export default function DetailForm(props) {
     deleteContentEditableError();
   }, []);
 
-  useEffect(() => {
-    console.log(receiveRefOpt);
-  }, [receiveRefOpt]);
+  const renderApproval = (approval) => {
+    console.log(approval);
+    if (
+      approval &&
+      (approval.approvalStatus === 'R' || approval.approvalStatus === 'A') &&
+      approval.signState === 0
+    ) {
+      return (
+        <>
+          <div>
+            <DefaultSign name={approval.user} />
+          </div>
+          {approval.user}
+        </>
+      );
+    } else if (
+      approval &&
+      (approval.approvalStatus === 'R' || approval.approvalStatus === 'A') &&
+      approval.signState === 1
+    ) {
+      getSign()
+        .then((response) => {
+          console.log(response);
+          setCustomSign(response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      return (
+        <>
+          <div>
+            <img className={styled.custom_sign} src={customSign} alt="사인" />
+          </div>
+          {approval.user}
+        </>
+      );
+    } else if (approval) {
+      return approval.user;
+    }
+  };
 
   return (
     <>
@@ -65,7 +108,7 @@ export default function DetailForm(props) {
                     border={'1px solid'}
                     style={{ width: '100%', borderCollapse: 'collapse' }}
                   >
-                    <tr style={{ height: '50px' }}>
+                    <tr style={{ height: '20px' }}>
                       <td>결재자1</td>
                       <td>결재자2</td>
                       <td>결재자3</td>
@@ -75,31 +118,17 @@ export default function DetailForm(props) {
                       <td>결재자7</td>
                       <td>결재자8</td>
                     </tr>
-                    <tr style={{ height: '50px' }}>
-                      <td>
-                        {approval_line.length > 0 ? approval_line[0].user : ''}
-                      </td>
-                      <td>
-                        {approval_line.length > 1 ? approval_line[1].user : ''}
-                      </td>
-                      <td>
-                        {approval_line.length > 2 ? approval_line[2].user : ''}
-                      </td>
-                      <td>
-                        {approval_line.length > 3 ? approval_line[3].user : ''}
-                      </td>
-                      <td>
-                        {approval_line.length > 4 ? approval_line[4].user : ''}
-                      </td>
-                      <td>
-                        {approval_line.length > 5 ? approval_line[5].user : ''}
-                      </td>
-                      <td>
-                        {approval_line.length > 6 ? approval_line[6].user : ''}
-                      </td>
-                      <td>
-                        {approval_line.length > 7 ? approval_line[7].user : ''}
-                      </td>
+                    <tr style={{ height: '70px' }}>
+                      {[...Array(8)].map((_, index) => (
+                        <td
+                          style={{
+                            textAlign: 'center',
+                          }}
+                          key={index}
+                        >
+                          {renderApproval(approval_line[index])}
+                        </td>
+                      ))}
                     </tr>
                   </table>
                 </div>

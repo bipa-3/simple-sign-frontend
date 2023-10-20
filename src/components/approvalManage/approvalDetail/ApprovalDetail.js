@@ -31,6 +31,7 @@ export default function ApprovalDetail() {
   const [hasApproval, setHasApproval] = useState(false);
   const [hasUpdate, setHasUpdate] = useState(false);
   const [hasDelete, setHasDelete] = useState(false);
+  const [isTemporal, setIsTemporal] = useState(false);
 
   const openModal = (mode) => {
     setIsModalOpen(true);
@@ -52,17 +53,19 @@ export default function ApprovalDetail() {
 
   //권한목록 가져와서 해당 사용자가 있으면 버튼 노출
   const getHasPermission = () => {
-    //console.log(sessionStorage.getItem('user')); //해당 사용자 권한 가져오기
-    //승인/반려 권한 가져오기
-    getPermissionList(location.search.split('=')[1]).then((res) => {
-      //console.log(res);
-      setHasPermission(res);
-    });
+    if (!isTemporal) {
+      //console.log(sessionStorage.getItem('user')); //해당 사용자 권한 가져오기
+      //승인/반려 권한 가져오기
+      getPermissionList(location.search.split('=')[1]).then((res) => {
+        //console.log(res);
+        setHasPermission(res);
+      });
 
-    //결재취소권한 가져오기
-    getHasApproval(location.search.split('=')[1]).then((res) => {
-      setHasApproval(res);
-    });
+      //결재취소권한 가져오기
+      getHasApproval(location.search.split('=')[1]).then((res) => {
+        setHasApproval(res);
+      });
+    }
 
     //문서수정권한 가져오기
     getHasUpdate(location.search.split('=')[1]).then((res) => {
@@ -210,7 +213,10 @@ export default function ApprovalDetail() {
           titleChildren={returnTitleComponent()}
           children={
             <>
-              <DetailForm approval_doc_id={location.search.split('=')[1]} />
+              <DetailForm
+                approval_doc_id={location.search.split('=')[1]}
+                setIsTemporal={setIsTemporal}
+              />
               <div className={styled.updateAndDeleteBtn}>
                 {hasUpdate ? (
                   <Button
@@ -227,7 +233,9 @@ export default function ApprovalDetail() {
                   />
                 ) : null}
               </div>
-              <ReplyForm approval_doc_id={location.search.split('=')[1]} />
+              {isTemporal ? null : (
+                <ReplyForm approval_doc_id={location.search.split('=')[1]} />
+              )}
             </>
           }
         ></InnerBox>

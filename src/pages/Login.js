@@ -1,9 +1,12 @@
 import React, { useState, useContext } from 'react';
 import styled from '../styles/pages/Login.module.css';
 import { postLogin } from '../apis/loginAPI/postLogin';
+import { useNavigate } from 'react-router';
 import AppContext from '../contexts/AppContext';
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const { state, setState } = useContext(AppContext);
 
   const [loginId, setLoginId] = useState('');
@@ -49,8 +52,18 @@ export default function Login() {
     postLogin(loginId, password)
       .then((response) => {
         if (response.status === 200) {
-          sessionStorage.setItem('user', response.data);
+          localStorage.setItem(
+            'authority',
+            response.data.userOrgList[0].authorityCode
+          );
+          localStorage.setItem('userId', response.data.userId);
+          localStorage.setItem('userName', response.data.userName);
+          localStorage.setItem(
+            'userOrgList',
+            JSON.stringify(response.data.userOrgList)
+          );
           setState({ ...state, isLoggedIn: true });
+          navigate('/');
         }
       })
       .catch((error) => {

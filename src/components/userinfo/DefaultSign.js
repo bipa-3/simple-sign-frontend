@@ -7,7 +7,7 @@ import styled from '../../styles/components/UserInfo/DefaultSign.module.css';
  */
 export default function DefaultSign({ name }) {
   return (
-    <div>
+    <div className={styled.sign}>
       <p className={styled.default_sign}>{name}</p>
     </div>
   );

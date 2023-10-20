@@ -51,12 +51,13 @@ export function TinyEditor({ init, editorHandler, dataHandler }) {
             'table',
             'preview',
             'wordcount',
+            'image',
           ],
           toolbar:
             'undo redo | blocks | ' +
             'bold italic forecolor | alignleft aligncenter ' +
             'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | table ',
+            'removeformat | table | image ',
           content_css: 'assets/editor_style.css',
           statusbar: false,
         }}
