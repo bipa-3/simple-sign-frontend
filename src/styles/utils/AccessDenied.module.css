@@ -1,0 +1,37 @@
+.accessDeniedContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.accessDeniedContent {
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.accessDeniedTitle {
+  color: #f44336; /* 빨간색 */
+  font-size: 24px; /* 제목 폰트 크기 조정 */
+}
+
+.accessDeniedLink {
+  background-color: #2196f3; /* 파란색 */
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-top: 10px;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+  cursor: pointer; /* 커서를 포인터로 변경 */
+
+  &:hover {
+    background-color: #1976d2; /* 파란색 (더 진한 버전) */
+  }
+}

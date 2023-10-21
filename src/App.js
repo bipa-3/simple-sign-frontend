@@ -24,6 +24,7 @@ import Loading from './components/common/Loading';
 import { usePage } from './contexts/PageContext';
 import UserInfo from './pages/UserInfo';
 import UpdateUserInfo from './pages/UpdateUserInfo';
+import checkUserAuthority from './utils/checkUserAuthority';
 
 function AppContent() {
   const { state } = useContext(AppContext);
@@ -57,10 +58,16 @@ function AppContent() {
             <div className="contentsArea">
               <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/EAM" element={<FormManagePage />} />
+                <Route
+                  path="/EAM"
+                  element={checkUserAuthority(2, <FormManagePage />)}
+                />
                 <Route path="/ABS" element={<ApprovalBoxSetPage />} />
                 <Route path="/ABV" element={<ApprovalBoxViewPage />} />
-                <Route path="/SAM" element={<SeqManagePage />} />
+                <Route
+                  path="/SAM"
+                  element={checkUserAuthority(2, <SeqManagePage />)}
+                />
                 <Route path="/FL" element={<FormListPage />} />
                 <Route path="/AD" element={<ApprovalDetail />} />
                 <Route path="/ADD" element={<ApprovalUpdatePage />} />

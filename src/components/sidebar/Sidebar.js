@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import getApprovalBoxList from '../../apis/approvalBoxAPI/getApprovalBoxList';
 import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
 import getDocumentsCount from '../../apis/approvalBoxAPI/getDocumentCount';
+import { getAuthrity } from '../../utils/getUser';
 
 //추후 backend data변경예정
 const userData = [
@@ -155,7 +156,9 @@ function Sidebar() {
         />
       ))}
 
-      <AuthorityBtn authorityManage={authorityManage} />
+      {getAuthrity() < 3 ? (
+        <AuthorityBtn authorityManage={authorityManage} />
+      ) : null}
     </div>
   );
 }
