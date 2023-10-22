@@ -8,6 +8,7 @@ import getFormAndCompList from '../apis/commonAPI/getFormAndCompList';
 import { useFormManage } from '../contexts/FormManageContext';
 import { usePage } from '../contexts/PageContext';
 import { useLoading } from '../contexts/LoadingContext';
+import { checkSearchData } from '../validation/formManage/searchSchema';
 
 export default function FormManagePage() {
   const [formListData, setFormListData] = useState([]);
@@ -15,37 +16,7 @@ export default function FormManagePage() {
   const { showLoading, hideLoading } = useLoading();
   const { state, setState } = usePage();
 
-  useEffect(() => {
-    //페이지 데이터 셋팅
-    setState({ ...state, curPage: 'FormManage' });
-
-    //회사명, 기본 데이터 셋팅
-    getCompanyList()
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setSearchData({ ...searchData, compId: data[0].id });
-        setSetData({ ...setData, compList: data });
-      })
-      .catch((err) => {
-        hideLoading();
-        console.error(err);
-      })
-      .finally(() => {
-        hideLoading();
-      });
-  }, []);
-
-  useEffect(() => {
-    if (setData.compList.length > 0) {
-      searchHandler();
-    }
-  }, [setData.compList]);
-
-  // 검색 및 테이블 데이터 셋팅
-  const searchHandler = () => {
-    showLoading();
+  const searchFormData = () => {
     getFormAndCompList(searchData)
       .then((res) => {
         if (!res.ok) {
@@ -56,19 +27,59 @@ export default function FormManagePage() {
       .then((data) => {
         setFormListData(data);
       })
-      .then(() => {
-        hideLoading();
-      })
       .catch((err) => {
-        hideLoading();
         if (err.message === '404') {
           alert('검색된 양식가 없습니다.');
+          setFormListData({});
         }
       })
       .finally(() => {
         hideLoading();
       });
   };
+
+  const setCompListData = () => {
+    getCompanyList()
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setSearchData({ ...searchData, compId: data[0].id });
+        setSetData({ ...setData, compList: data });
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  };
+
+  // 검색 및 테이블 데이터 셋팅
+  const searchHandler = () => {
+    checkSearchData(searchData)
+      .then(() => {
+        showLoading();
+        searchFormData();
+      })
+      .catch((errors) => {
+        alert(errors.message);
+      });
+  };
+
+  useEffect(() => {
+    //페이지 데이터 셋팅
+    setState({ ...state, curPage: 'FormManage' });
+
+    //회사명, 기본 데이터 셋팅
+    setCompListData();
+  }, []);
+
+  useEffect(() => {
+    if (setData.compList.length > 0) {
+      searchHandler();
+    }
+  }, [setData.compList]);
 
   return (
     <div className={styled.container}>

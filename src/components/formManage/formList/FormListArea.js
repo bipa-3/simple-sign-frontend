@@ -56,7 +56,6 @@ export default function FormListArea({ rows, searchHandler }) {
       })
       .then(() => {
         updateDetailData();
-        hideLoading();
       })
       .catch((err) => {
         console.error(err);

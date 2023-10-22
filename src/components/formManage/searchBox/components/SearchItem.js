@@ -33,8 +33,7 @@ const SelectComp = ({ id, width, options, dataHandler, values }) => {
       style={{ width: `${width}` }}
       value={values}
       onChange={(e) => {
-        console.log(e.target.value);
-        dataHandler(id, e.target.value);
+        dataHandler(id, parseInt(e.target.value));
       }}
     >
       {options

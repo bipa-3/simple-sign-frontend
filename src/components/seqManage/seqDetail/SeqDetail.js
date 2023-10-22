@@ -7,57 +7,81 @@ import InnerBox from '../../common/InnerBox';
 import insertSeq from '../../../apis/commonAPI/insertSeq';
 import updateSeq from '../../../apis/commonAPI/updateSeq';
 import { useLoading } from '../../../contexts/LoadingContext';
+import {
+  checkSeqCreateData,
+  checkSeqUpdateData,
+} from '../../../validation/seqManage/seqSchema';
 
 export default function SeqDetail({ searchHandler }) {
   const { detailData, flagData, createDetailData } = useSeqManage();
   const { showLoading, hideLoading } = useLoading();
 
+  const createNewSeq = () => {
+    insertSeq(detailData)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.status);
+        }
+        alert('새 채번이 생성되었습니다.');
+      })
+      .then(() => {
+        searchHandler();
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.message === '404') {
+          alert('검색된 데이터가 없습니다.');
+        }
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  };
+
+  const updateExistSeq = () => {
+    updateSeq(detailData)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.status);
+        }
+        alert('양식이 수정되었습니다.');
+      })
+      .then(() => {
+        searchHandler();
+      })
+      .catch((err) => {
+        console.error(err);
+        if (err.message === '404') {
+          alert('검색된 데이터가 없습니다.');
+        }
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  };
+
   const updateDetailFunc = () => {
     if (flagData === 2) {
-      showLoading();
-      updateSeq(detailData)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(res.status);
-          }
-          alert('양식이 수정되었습니다.');
-        })
+      checkSeqUpdateData(detailData)
         .then(() => {
-          searchHandler();
+          showLoading();
+          updateExistSeq();
         })
-        .catch((err) => {
-          console.error(err);
-          if (err.message === '404') {
-            alert('검색된 데이터가 없습니다.');
-          }
-        })
-        .finally(() => {
-          hideLoading();
+        .catch((errors) => {
+          alert(errors.message);
         });
     }
   };
 
   const createDetailFunc = () => {
     if (flagData === 1) {
-      showLoading();
-      insertSeq(detailData)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(res.status);
-          }
-          alert('새 채번이 생성되었습니다.');
-        })
+      checkSeqCreateData(detailData)
         .then(() => {
-          searchHandler();
+          showLoading();
+          createNewSeq();
         })
-        .catch((err) => {
-          console.error(err);
-          if (err.message === '404') {
-            alert('검색된 데이터가 없습니다.');
-          }
-        })
-        .finally(() => {
-          hideLoading();
+        .catch((errors) => {
+          alert(errors.message);
         });
     }
   };

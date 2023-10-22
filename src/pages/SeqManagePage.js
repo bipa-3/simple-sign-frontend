@@ -8,6 +8,7 @@ import getCompanyList from '../apis/commonAPI/getCompanyList';
 import { useSeqManage } from '../contexts/SeqManageContext';
 import getSeqAndCompList from '../apis/commonAPI/getSeqAndCompList';
 import { useLoading } from '../contexts/LoadingContext';
+import { checkSearchData } from '../validation/seqManage/searchSchema';
 
 export default function SeqManagePage() {
   const { state, setState } = usePage();
@@ -15,11 +16,7 @@ export default function SeqManagePage() {
   const { searchData, setSearchData, setData, setSetData } = useSeqManage();
   const { showLoading, hideLoading } = useLoading();
 
-  useEffect(() => {
-    //페이지 데이터 셋팅
-    setState({ ...state, curPage: 'SeqManage' });
-
-    //회사명, 기본 데이터 셋팅
+  const setCompListData = () => {
     getCompanyList()
       .then((res) => {
         return res.json();
@@ -31,17 +28,9 @@ export default function SeqManagePage() {
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  };
 
-  useEffect(() => {
-    if (setData.compList.length > 0) {
-      searchHandler();
-    }
-  }, [setData.compList]);
-
-  // 검색 및 테이블 데이터 셋팅
-  const searchHandler = () => {
-    showLoading();
+  const searchSeqListData = () => {
     getSeqAndCompList(searchData)
       .then((res) => {
         if (!res.ok) {
@@ -59,6 +48,32 @@ export default function SeqManagePage() {
       })
       .finally(() => {
         hideLoading();
+      });
+  };
+
+  useEffect(() => {
+    //페이지 데이터 셋팅
+    setState({ ...state, curPage: 'SeqManage' });
+
+    //회사명, 기본 데이터 셋팅
+    setCompListData();
+  }, []);
+
+  useEffect(() => {
+    if (setData.compList.length > 0) {
+      searchHandler();
+    }
+  }, [setData.compList]);
+
+  // 검색 및 테이블 데이터 셋팅
+  const searchHandler = () => {
+    checkSearchData(searchData)
+      .then(() => {
+        showLoading();
+        searchSeqListData();
+      })
+      .catch((errors) => {
+        alert(errors.message);
       });
   };
 

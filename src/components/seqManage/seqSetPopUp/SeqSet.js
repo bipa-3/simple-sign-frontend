@@ -6,7 +6,6 @@ import DataList from '../../formManage/formList/DataList';
 import { columns } from '../../../assets/datas/seq_popup_list';
 
 export default function SeqSet({ seqItems, seqList, setSeqList }) {
-  console.log(seqItems, seqList);
   const [previewData, setPreviewData] = useState('');
   const [leftSelectedRow, setLeftSelectedRow] = useState({});
   const [rightSelectedRow, setRightSelectedRow] = useState({});

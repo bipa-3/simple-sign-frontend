@@ -10,6 +10,10 @@ import FormDetailNav from './components/FormDetailNav';
 import DataList from '../formList/DataList';
 import { columns } from '../../../assets/datas/form_approval_line';
 import { useLoading } from '../../../contexts/LoadingContext';
+import {
+  checkFormCreateData,
+  checkFormUpdateData,
+} from '../../../validation/formManage/formSchema';
 
 export default function FormDetail({ searchHandler }) {
   const { detailData, flagData, createDetailData } = useFormManage();
@@ -25,52 +29,70 @@ export default function FormDetail({ searchHandler }) {
     console.log(data);
   };
 
+  const createNewForm = () => {
+    insertForm(detailData)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.status);
+        }
+        alert('새 양식이 생성되었습니다.');
+      })
+      .then(() => {
+        searchHandler();
+      })
+      .catch((err) => {
+        if (err.message === '404') {
+          alert('검색된 데이터가 없습니다.');
+        }
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  };
+
+  const updateExistForm = () => {
+    updateForm(detailData)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.status);
+        }
+        alert('양식이 수정되었습니다.');
+      })
+      .then(() => {
+        searchHandler();
+      })
+      .catch((err) => {
+        if (err.message === '404') {
+          alert('검색된 데이터가 없습니다.');
+        }
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  };
+
   const updateDetailFunc = () => {
     if (flagData === 2) {
-      showLoading();
-      updateForm(detailData)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(res.status);
-          }
-          alert('양식이 수정되었습니다.');
-        })
+      checkFormUpdateData(detailData)
         .then(() => {
-          searchHandler();
+          showLoading();
+          updateExistForm();
         })
-        .catch((err) => {
-          console.error(err);
-          if (err.message === '404') {
-            alert('검색된 데이터가 없습니다.');
-          }
-        })
-        .finally(() => {
-          hideLoading();
+        .catch((errors) => {
+          alert(errors.message);
         });
     }
   };
 
   const createDetailFunc = () => {
     if (flagData === 1) {
-      showLoading();
-      insertForm(detailData)
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(res.status);
-          }
-          alert('새 양식이 생성되었습니다.');
-        })
+      checkFormCreateData(detailData)
         .then(() => {
-          searchHandler();
+          showLoading();
+          createNewForm();
         })
-        .catch((err) => {
-          console.error(err);
-          if (err.message === '404') {
-            alert('검색된 데이터가 없습니다.');
-          }
-        })
-        .finally(() => {
-          hideLoading();
+        .catch((errors) => {
+          alert(errors.message);
         });
     }
   };

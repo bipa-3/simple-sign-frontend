@@ -1,6 +1,7 @@
 import React from 'react';
 
 export const columns = [
+  { field: 'id', headerName: '코드', width: 70 },
   { field: 'compName', headerName: '회사', width: 150 },
   { field: 'formName', headerName: '양식명', width: 150 },
   {

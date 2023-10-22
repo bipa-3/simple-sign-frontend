@@ -49,9 +49,9 @@ export default function DetailTable() {
     { name: '미사용', value: false },
   ];
 
-  useEffect(() => {
-    console.log('data:', detailData);
-  }, [detailData]);
+  // useEffect(() => {
+  //   console.log('data:', detailData);
+  // }, [detailData]);
 
   return (
     <div className={styled.detailContainer}>

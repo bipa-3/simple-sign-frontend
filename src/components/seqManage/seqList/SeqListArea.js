@@ -25,7 +25,7 @@ export default function SeqListArea({ rows, searchHandler }) {
         searchHandler();
       })
       .catch((err) => {
-        console.log(`데이터 삭제를 실패했습니다. [${err}]`);
+        alert(`데이터 삭제를 실패했습니다. [${err}]`);
       })
       .finally(() => {
         hideLoading();
@@ -36,11 +36,13 @@ export default function SeqListArea({ rows, searchHandler }) {
     showLoading();
     getSeqDetail(data.id)
       .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.status);
+        }
         return res.json();
       })
       .then((res) => {
         updateDetailData();
-        console.log(res);
         setDetailData({
           ...detailData,
           ...res,
@@ -48,7 +50,7 @@ export default function SeqListArea({ rows, searchHandler }) {
         });
       })
       .catch((err) => {
-        console.error(err);
+        alert(`데이터 삭제를 실패했습니다. [${err}]`);
       })
       .finally(() => {
         hideLoading();

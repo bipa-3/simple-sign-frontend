@@ -70,7 +70,6 @@ export default function SeqDetailTable() {
       .then((data) => {
         setSeqItems(
           data.map((ele, index) => {
-            console.log(ele.id);
             ele.code = ele.id.toString().padStart(2, '0');
             ele.id = index;
             return ele;
@@ -87,7 +86,6 @@ export default function SeqDetailTable() {
     if (detailData.seqString !== '') {
       let result = itemIdList.map((ele, index) => {
         const foundItem = seqItems.find((item) => item.code === ele);
-        console.log(foundItem);
         return { id: index, value: foundItem.value, code: foundItem.code };
       });
       setSeqList([...result]);
@@ -111,7 +109,6 @@ export default function SeqDetailTable() {
       ...detailData,
       seqList: seqList
         .map((ele) => {
-          console.log(ele);
           return ele.value;
         })
         .join(' '),
@@ -138,7 +135,6 @@ export default function SeqDetailTable() {
   };
 
   const formScopefilterHandler = (id, category, useId) => {
-    console.log(id, category, useId);
     let filetedData = detailData.formScope.filter((ele) => {
       if (ele.category === category && ele.useId === useId) {
         return false;
