@@ -5,7 +5,7 @@ import getCompanyList from '../../apis/commonAPI/getCompanyList';
 import getUserCompany from '../../apis/approvalBoxAPI/getUserCompany';
 import { getAuthrity } from '../../utils/getUser';
 
-function Datalist({ onCompanyChange, selectedCompId }) {
+function Datalist({ onCompanyChange, selectedCompId, readonly }) {
   const authority = getAuthrity();
   const [selectedOption, setSelectedOption] = useState(null);
   const [companyOptions, setCompanyOptions] = useState([]);
@@ -98,7 +98,12 @@ function Datalist({ onCompanyChange, selectedCompId }) {
         value: 0,
         label: '전체',
       });
-      setSelectedOption({ value: 0, label: '전체' });
+      const selectedOptionFromCompId = transformedData.find(
+        (option) => option.value === selectedCompId
+      );
+      setSelectedOption(
+        selectedOptionFromCompId || { value: 0, label: '전체' }
+      );
     } else if (authority === '2') {
       transformedData = data.map((company) => ({
         value: company.id,
@@ -119,6 +124,7 @@ function Datalist({ onCompanyChange, selectedCompId }) {
         onChange={handleChange}
         options={companyOptions}
         isSearchable={true}
+        isDisabled={readonly} // 읽기 전용 설정
         className={styled.customSelect}
         styles={customStyles}
       />

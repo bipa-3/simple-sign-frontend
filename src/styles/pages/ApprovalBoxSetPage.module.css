@@ -201,3 +201,9 @@ input[type='checkbox'] {
   color: #6c757d;
   width: 100%;
 }
+
+.notnull {
+  color: red;
+  padding-right: 3px;
+  font-size: 14px;
+}

@@ -23,6 +23,7 @@ function BoxCompany(props) {
         <Datalist
           selectedCompId={props.compId}
           onCompanyChange={handleCompanyChange}
+          readonly={props.boxId ? true : false}
         />
       </div>
     </div>

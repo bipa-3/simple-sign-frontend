@@ -76,7 +76,9 @@ function Sidebar() {
         const newCustomBoxViewItems = response.boxList.map((item) => ({
           boxId: item.approvalBoxId,
           approvalBoxName: item.approvalBoxName,
-          viewItems: response.viewItems.map((viewItem) => viewItem.codeValue),
+          viewItems: response.viewItems
+            .filter((viewItem) => viewItem.boxId === item.approvalBoxId)
+            .map((viewItem) => viewItem.codeValue),
         }));
 
         setCustomBoxViewItemState(newCustomBoxViewItems);

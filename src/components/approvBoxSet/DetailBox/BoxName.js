@@ -25,7 +25,9 @@ function BoxName(props) {
   return (
     <div className={styled.inputItem}>
       <div style={props.commonCellStyle}>
-        <div className={styled.text}>명칭</div>
+        <div className={styled.text}>
+          <span className={styled.notnull}>*</span>명칭
+        </div>
       </div>
       <div style={props.commonDataStyle}>
         <div>

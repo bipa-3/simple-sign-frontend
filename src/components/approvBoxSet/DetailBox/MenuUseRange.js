@@ -29,11 +29,28 @@ function MenuUseRange(props) {
 
         const response = await getBoxUseDept(props.boxId);
 
-        // 받아온 데이터를 detailData.scope에 할당
+        // 받아온 데이터를 detailData.scope에 할당하면서 id 부여
         if (response && response.data) {
+          const dataWithIds = response.data.map((item, index) => ({
+            category: item.category || '',
+            compId: item.compId || '',
+            company: item.company || '',
+            department: item.department || '',
+            deptId: item.deptId || '',
+            estId: item.estId || '',
+            establishment: item.establishment || '',
+            grade: item.grade || '',
+            id: index + 1,
+            position: item.position || '',
+            useId: item.useId || '',
+            user: item.user || '',
+            userId: item.userId || '',
+          }));
+
           setDetailData((prevState) => ({
             ...prevState,
-            scope: response.data, // 여기서는 response.data가 예시의 데이터 구조와 동일하다고 가정
+            scope: dataWithIds,
+            scope2: response.data, // 원본 데이터를 scope2에 저장
           }));
         }
       } catch (err) {
@@ -50,6 +67,10 @@ function MenuUseRange(props) {
     }));
   }, [props.menuOption, setApprovalBoxState]);
 
+  useEffect(() => {
+    console.log('변경 : ', approvalBoxState);
+  }, [approvalBoxState]);
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -61,21 +82,32 @@ function MenuUseRange(props) {
 
   const dataUpdateHandler = (id, data) => {
     setDetailData({ ...detailData, [id]: data });
-    console.log(detailData);
   };
 
   const scopeConfirm = (data) => {
     dataUpdateHandler('scope', data);
+    setApprovalBoxState({ ...detailData, boxUseDept: data });
   };
 
   const scopefilterHandler = (id, category, useId) => {
-    let filetedData = detailData.scope.filter((ele) => {
+    let filteredData = detailData.scope.filter((ele) => {
       if (ele.category === category && ele.useId === useId) {
         return false;
       }
       return true;
     });
-    setDetailData({ ...detailData, [id]: filetedData });
+
+    setDetailData((prevData) => {
+      const updatedData = { ...prevData, [id]: filteredData };
+
+      // setApprovalBoxState 호출하여 boxUseDept에 결과를 설정
+      setApprovalBoxState((prevState) => ({
+        ...prevState,
+        boxUseDept: updatedData.scope,
+      }));
+
+      return updatedData;
+    });
   };
 
   const handleMenuOptionChange = (event) => {
@@ -94,7 +126,9 @@ function MenuUseRange(props) {
   return (
     <div className={styled.inputItem}>
       <div style={props.commonCellStyle}>
-        <div className={styled.text}>메뉴 사용범위</div>
+        <div className={styled.text}>
+          <span className={styled.notnull}>*</span>메뉴 사용범위
+        </div>
       </div>
       <div style={props.commonDataStyle}>
         <Radiobtn

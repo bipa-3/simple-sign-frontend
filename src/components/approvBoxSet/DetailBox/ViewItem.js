@@ -107,26 +107,35 @@ function ViewItem(props) {
   return (
     <div className={styled.inputItem}>
       <div style={props.commonCellStyle}>
-        <div className={styled.text}>조회항목</div>
+        <div className={styled.text}>
+          <span className={styled.notnull}>*</span>조회항목
+        </div>
       </div>
       <div style={props.commonDataStyle}>
         <div className={styled.viewUseField}>
           <div className={styled.viewItemBox}>
-            {itemsToRender.map((viewItemValue, index) => (
-              <Optionbox
-                id={viewItemValue}
-                key={index}
-                initData={
-                  initDataItems[index]
-                    ? initDataItems[index]
-                    : initDataState.name
-                    ? initDataState.name[index]
-                    : null
-                }
-                name={viewItemValue}
-                dataHandler={handleDataChange}
-              />
-            ))}
+            {itemsToRender.map((viewItemValue, index) => {
+              const initDataValue =
+                initDataItems[index] ||
+                (initDataState.name && initDataState.name[index]) ||
+                null;
+
+              const enhancedInitData = {
+                ...initDataValue,
+                category: 'v',
+                name: viewItemValue,
+              };
+
+              return (
+                <Optionbox
+                  id={viewItemValue}
+                  key={index}
+                  initData={enhancedInitData}
+                  name={viewItemValue}
+                  dataHandler={handleDataChange}
+                />
+              );
+            })}
           </div>
 
           <ViewItemPopup

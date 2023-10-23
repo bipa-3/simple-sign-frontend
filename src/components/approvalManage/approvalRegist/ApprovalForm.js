@@ -39,7 +39,7 @@ export default function ApprovalForm({
   const { showLoading, hideLoading } = useLoading();
   const { detailData, setDetailData, resetDetailData } = useFormManage();
   const userOrgList = JSON.parse(localStorage.getItem('userOrgList'));
-  const deptName = userOrgList[0].deptName;
+  const deptName = localStorage.getItem('deptName');
 
   const openModal = () => {
     setIsModalOpen(true);

@@ -10,9 +10,11 @@ import TableHeader from './TableHeader';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { usePage } from '../../../contexts/PageContext';
 import insertDocView from '../../../apis/approvalBoxAPI/insertDocView';
+import { useLoading } from '../../../contexts/LoadingContext';
 
 function ViewDocBox() {
   const { state, setState, detailSearchState } = useApprovalBox();
+  const { showLoading, hideLoading } = useLoading();
   const [docData, setDocData] = useState([]);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -25,6 +27,7 @@ function ViewDocBox() {
   const { state: pageState, setState: setPageState } = usePage();
 
   const fetchData = async () => {
+    showLoading();
     try {
       const offset = (page - 1) * 10;
       const response = state.shouldFetchDocs
@@ -69,6 +72,7 @@ function ViewDocBox() {
 
       setTotalCount(count);
       setTotalPages(Math.ceil(count / 10));
+      hideLoading();
     } catch (error) {
       console.error('Error fetching data:', error);
     }

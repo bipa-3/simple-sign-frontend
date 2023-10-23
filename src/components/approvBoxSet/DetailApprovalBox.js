@@ -13,7 +13,7 @@ function DetailApprovalBox() {
     try {
       if (state.insertStatus === 1) {
         const response = await insertApprovalBox(approvalBoxState);
-      } else if (state.insertStatus === 0) {
+      } else if (state.insertStatus === 0 && approvalBoxState.boxId != null) {
         const response = await updateApprovalBox(approvalBoxState);
       }
     } catch (error) {

@@ -83,6 +83,10 @@ function AppContent() {
                   element={checkUserAuthority(3, <FormListPage />)}
                 />
                 <Route
+                  path="/FL"
+                  element={checkUserAuthority(3, <FormListPage />)}
+                />
+                <Route
                   path="/AD"
                   element={checkUserAuthority(3, <ApprovalDetail />)}
                 />
