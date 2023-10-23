@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const initialState = {
   isLoggedIn: false,
@@ -6,14 +6,16 @@ const initialState = {
 
 const AppContext = createContext();
 
-export const AppProvider = ({ children }) => {
-  const [state, setState] = useState({
-    isLoggedIn: JSON.parse(localStorage.getItem('isLoggedIn')) || false,
-  });
+function getCookie(name) {
+  const value = ';' + document.cookie;
+  const parts = value.split(';' + name + '=');
+  return parts.pop().split(';')[0];
+}
 
-  useEffect(() => {
-    localStorage.setItem('isLoggedIn', JSON.stringify(state.isLoggedIn));
-  }, [state.isLoggedIn]);
+export const AppProvider = ({ children }) => {
+  // const sessionCookie = getCookie('LOGIN_COOKIE');
+
+  const [state, setState] = useState(initialState);
 
   return (
     <AppContext.Provider value={{ state, setState }}>

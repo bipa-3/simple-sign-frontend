@@ -53,20 +53,30 @@ export default function Login() {
       .then((response) => {
         if (response.status === 200) {
           localStorage.setItem(
-            'authority',
-            response.data.userOrgList[0].authorityCode
-          );
-          localStorage.setItem('compId', response.data.userOrgList[0].compId);
-          localStorage.setItem(
             'orgUserId',
             response.data.userOrgList[0].orgUserId
           );
+
+          localStorage.setItem(
+            'authority',
+            response.data.userOrgList[0].authorityCode
+          );
+
+          localStorage.setItem('compId', response.data.userOrgList[0].compId);
+          localStorage.setItem(
+            'compName',
+            response.data.userOrgList[0].compName
+          );
+
+          localStorage.setItem('deptId', response.data.userOrgList[0].deptId);
+          localStorage.setItem(
+            'deptName',
+            response.data.userOrgList[0].deptName
+          );
+
           localStorage.setItem('userId', response.data.userId);
           localStorage.setItem('userName', response.data.userName);
-          localStorage.setItem(
-            'userOrgList',
-            JSON.stringify(response.data.userOrgList)
-          );
+
           setState({ ...state, isLoggedIn: true });
           navigate('/');
         }

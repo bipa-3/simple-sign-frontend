@@ -26,8 +26,14 @@ import UserInfo from './pages/UserInfo';
 import UpdateUserInfo from './pages/UpdateUserInfo';
 import checkUserAuthority from './utils/checkUserAuthority';
 
+function getCookie(name) {
+  const value = ';' + document.cookie;
+  const parts = value.split(';' + name + '=');
+  return parts.pop().split(';')[0];
+}
+
 function AppContent() {
-  const { state } = useContext(AppContext);
+  const { state, setState } = useContext(AppContext);
   const navigate = useNavigate();
   const { state: pageState, setState: setPageState } = usePage();
   const location = useLocation();
@@ -39,7 +45,11 @@ function AppContent() {
     if (!state.isLoggedIn) {
       navigate('/login');
     }
-  }, [state.isLoggedIn, navigate]);
+  }, [state.isLoggedIn]);
+
+  useEffect(() => {
+    setState({ isLoggedIn: getCookie('LOGIN_COOKIE') });
+  }, [pageState, document.cookie]);
 
   return (
     <>
@@ -69,7 +79,7 @@ function AppContent() {
                   element={checkUserAuthority(2, <SeqManagePage />)}
                 />
                 <Route
-                  path="/FL"
+                  path="/FL/:id"
                   element={checkUserAuthority(3, <FormListPage />)}
                 />
                 <Route

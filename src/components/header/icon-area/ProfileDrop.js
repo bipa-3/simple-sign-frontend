@@ -11,23 +11,24 @@ import { useNavigate } from 'react-router';
 import Radio from '@mui/material/Radio';
 import Button2 from '../../common/Button';
 import { getAuthorityCode } from '../../../apis/headerAPI/getAuthorityCode';
+import { getUserAuthority } from '../../../apis/headerAPI/getUserAuthority';
 
 export default function Profile() {
   // 로그아웃
   const navigate = useNavigate();
   const { state, setState } = useContext(AppContext);
 
-  // 로컬스토리지에 있는 userOrgList
-  const userOrgList = JSON.parse(localStorage.getItem('userOrgList') || '[]');
-
   // 라디오 버튼
   const [selectedValue, setSelectedValue] = useState(
-    localStorage.getItem('orgUSerId') || userOrgList[0].orgUserId
+    localStorage.getItem('orgUserId')
   );
 
   const hadleChange = (e) => {
     setSelectedValue(e.target.value);
   };
+
+  // 권한을 선택 창 데이터
+  const [userOrgList, setUserOrgList] = useState([]);
 
   //로그아웃
   const logout = () => {
@@ -35,7 +36,7 @@ export default function Profile() {
       .then(() => {
         localStorage.clear();
         document.cookie =
-          'JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          'LOGIN_COOKIE=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         setState({ ...state, isLoggedIn: false });
       })
       .catch((err) => {
@@ -43,10 +44,26 @@ export default function Profile() {
       });
   };
 
+  // 권한을 선택할 수 있는 창
+  useEffect(() => {
+    getUserAuthority()
+      .then((response) => {
+        setUserOrgList(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   // 권한
   const authorityCodeAPI = async (orgUserId) => {
     const response = await getAuthorityCode(orgUserId);
-    localStorage.setItem('authority', response.data);
+    localStorage.setItem('orgUserId', response.data.orgUserId);
+    localStorage.setItem('compId', response.data.compId);
+    localStorage.setItem('compName', response.data.compName);
+    localStorage.setItem('deptId', response.data.deptId);
+    localStorage.setItem('deptName', response.data.deptName);
+    localStorage.setItem('authority', response.data.authorityCode);
   };
 
   return (
@@ -118,14 +135,6 @@ export default function Profile() {
                 fontSize={'12px'}
                 onClick={() => {
                   authorityCodeAPI(selectedValue);
-                  localStorage.setItem('orgUSerId', selectedValue);
-                  const selectedItem = userOrgList.find(
-                    (item) => item.orgUserId == selectedValue
-                  );
-                  if (selectedItem) {
-                    localStorage.setItem('authority', selectedItem.authority);
-                    localStorage.setItem('compId', selectedItem.compId);
-                  }
                   popupState.close();
                 }}
               />
