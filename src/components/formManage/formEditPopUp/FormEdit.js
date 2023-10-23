@@ -3,12 +3,10 @@ import FormItemList from './components/FormItemList';
 import getFormItem from '../../../apis/commonAPI/getFormItem';
 import React, { useState, useEffect } from 'react';
 import { TinyEditor } from '../../common/TinyEditor';
-import { useLoading } from '../../../contexts/LoadingContext';
 
 export default function FormEdit({ data, dataHandler }) {
   const [editor, setEditor] = useState(null);
   const [formItems, setFormItems] = useState([]);
-  const { showLoading, hideLoading } = useLoading();
 
   const formDataHandler = (data) => {
     dataHandler(data);
@@ -20,7 +18,6 @@ export default function FormEdit({ data, dataHandler }) {
 
   useEffect(() => {
     dataHandler(data);
-    showLoading();
     getFormItem()
       .then((res) => {
         return res.json();
@@ -30,9 +27,6 @@ export default function FormEdit({ data, dataHandler }) {
       })
       .catch((err) => {
         console.error(err);
-      })
-      .finally(() => {
-        hideLoading();
       });
   }, []);
   return (

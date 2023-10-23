@@ -9,6 +9,8 @@ import moment from 'moment';
 import { usePage } from '../contexts/PageContext';
 import styled from '../styles/pages/ApprovalUpdatePage.module.css';
 import updateTemporalApprovalDoc from '../apis/approvalManageAPI/updateTemporalApprovalDoc';
+import errorHandle from '../apis/errorHandle';
+import { checkFormCreateData } from '../validation/approvalManage/approvalFormSchema';
 
 export default function ApprovalUpdatePage() {
   const navigate = useNavigate();
@@ -51,12 +53,11 @@ export default function ApprovalUpdatePage() {
   };
 
   const handleUpdate = (type) => {
-    console.log(type);
+    //console.log(type);
     //페이지 데이터 셋팅
     setState({ ...state, curPage: '결재문서수정' });
     showLoading();
-    //console.log('org_use_list');
-    //console.log(org_use_list);
+
     const orgUserIdList = [];
     if (org_use_list !== null) {
       org_use_list.map((data, index) => {
@@ -94,7 +95,7 @@ export default function ApprovalUpdatePage() {
         }
       });
     }
-    console.log(docStatus);
+
     let updateDocStatus = { ...docStatus };
     if (docStatus === 'T' && type === 'update') {
       updateDocStatus = 'W';
@@ -102,7 +103,6 @@ export default function ApprovalUpdatePage() {
       updateDocStatus = docStatus[0];
     }
 
-    console.log(updateDocStatus);
     const data = {
       approvalDocTitle: titleRef.current.innerHTML,
       seqCode: sequence_code,
@@ -114,14 +114,26 @@ export default function ApprovalUpdatePage() {
       approverList: orgUserIdList,
       receiveRefList: recRefList,
     };
+
+    checkFormCreateData(data)
+      .then(() => {
+        updateApprovalDocByType(data, type);
+      })
+      .catch((errors) => {
+        alert(errors.message);
+        hideLoading();
+      });
+  };
+
+  const updateApprovalDocByType = (data, type) => {
     if (type === 'temporal') {
       updateTemporalApprovalDoc(location.search.split('=')[1], data)
         .then((res) => {
           console.log(res);
-          if (res.status == '200') {
+          if (res.status === 200) {
             alert('문서가 수정되었습니다');
           } else {
-            alert('문서수정을 실패했습니다.');
+            errorHandle(res);
           }
         })
         .catch((e) => console.error(e))
@@ -129,16 +141,14 @@ export default function ApprovalUpdatePage() {
           hideLoading();
         });
     } else if (type === 'update') {
-      console.log('문서상신입니다');
-      //문서수정
       updateApprovalDoc(location.search.split('=')[1], data)
         .then((res) => {
-          if (res.status == '200' && docStatus === 'T') {
+          if (res.status === 200 && docStatus === 'T') {
             alert('문서가 상신되었습니다.');
-          } else if (res.status == '200') {
+          } else if (res.status === 200) {
             alert('문서가 수정되었습니다.');
           } else {
-            alert('문서수정을 실패했습니다.');
+            errorHandle(res);
             hideLoading();
           }
         })

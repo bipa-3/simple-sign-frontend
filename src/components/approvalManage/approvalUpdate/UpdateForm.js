@@ -18,6 +18,7 @@ import {
 } from '../../formManage/formDetail/components/DetailTableItem';
 import { useFormManage } from '../../../contexts/FormManageContext';
 import DefaultSign from '../../userinfo/DefaultSign';
+import errorHandle from '../../../apis/errorHandle';
 
 export default function UpdateForm({
   approval_doc_id,
@@ -89,20 +90,26 @@ export default function UpdateForm({
     showLoading();
     //결재문서 상세조회
     getApprovalDoc(approval_doc_id)
-      .then((json) => {
-        console.log(json);
-        setDefaultForm(json.defaultForm);
-        setUserName(json.userName);
-        setDeptName(json.deptName);
-        setProductNum(json.productNum);
-        setTitle(json.approvalDocTitle);
-        setApprovalDate(moment(json.approvalDate));
-        setEnforcementDate(moment(json.enforcementDate));
-        setContents(json.contents);
-        setFormCode(json.formCode);
-        setOrgUseId(json.approvalLineList);
-        setRecRef(json.receivedRefList);
-        setDocStatus(json.docStatus);
+      .then((res) => {
+        if (res.status === 200) {
+          res.json().then((data) => {
+            //console.log(data);
+            setDefaultForm(data.defaultForm);
+            setUserName(data.userName);
+            setDeptName(data.deptName);
+            setProductNum(data.productNum);
+            setTitle(data.approvalDocTitle);
+            setApprovalDate(moment(data.approvalDate));
+            setEnforcementDate(moment(data.enforcementDate));
+            setContents(data.contents);
+            setFormCode(data.formCode);
+            setOrgUseId(data.approvalLineList);
+            setRecRef(data.receivedRefList);
+            setDocStatus(data.docStatus);
+          });
+        } else {
+          errorHandle(res);
+        }
       })
       .catch((e) => {
         console.log(e);
@@ -116,7 +123,6 @@ export default function UpdateForm({
         setSequence(json);
       });
     }
-
     if (rec_ref.length !== 0) {
       scopeConfirm(rec_ref);
     }

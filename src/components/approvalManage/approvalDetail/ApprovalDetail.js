@@ -18,6 +18,7 @@ import getPermissionList from '../../../apis/approvalManageAPI/getPermissionList
 import getHasUpdate from '../../../apis/approvalManageAPI/getHasUpdate';
 import getHasDelete from '../../../apis/approvalManageAPI/getHasDelete';
 import styled from '../../../styles/components/approvalManage/approvalDetail/ApprovalDetail.module.css';
+import errorHandle from '../../../apis/errorHandle';
 
 export default function ApprovalDetail() {
   const navigate = useNavigate();
@@ -87,7 +88,7 @@ export default function ApprovalDetail() {
         if (res.status === 200) {
           alert('결재가 승인되었습니다.');
         } else {
-          alert('결재가 실패했습니다.');
+          errorHandle(res);
           hideLoading();
         }
       })
@@ -108,7 +109,7 @@ export default function ApprovalDetail() {
         if (res.status === 200) {
           alert('결재가 반려되었습니다.');
         } else {
-          alert('결재반려를 실패했습니다.');
+          errorHandle(res);
         }
       })
       .catch((e) => {
@@ -127,7 +128,7 @@ export default function ApprovalDetail() {
         if (res.status === 200) {
           alert('결재가 취소되었습니다.');
         } else {
-          alert('결재취소 실패.');
+          errorHandle(res);
         }
       })
       .catch((e) => {
@@ -171,7 +172,7 @@ export default function ApprovalDetail() {
         if (res.status === 200) {
           alert('문서가 삭제되었습니다.');
         } else {
-          alert('삭제를 실패했습니다.');
+          errorHandle(res);
         }
       })
       .catch((e) => {

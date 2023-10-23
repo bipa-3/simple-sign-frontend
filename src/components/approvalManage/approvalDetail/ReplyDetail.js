@@ -11,6 +11,7 @@ import { json } from 'react-router-dom';
 import getIsEditReply from '../../../apis/approvalManageAPI/getIsEditReply';
 import deleteReply from '../../../apis/approvalManageAPI/deleteReply';
 import updateReply from '../../../apis/approvalManageAPI/updateReply';
+import errorHandle from '../../../apis/errorHandle';
 
 const CustomButton = MUIStyled(Button)({
   width: '0.5em',
@@ -48,10 +49,10 @@ export default function ReplyDetail({
   const deleteHandler = (replyId) => {
     deleteReply(replyId)
       .then((res) => {
-        if (res.status == '200') {
+        if (res.status === 200) {
           alert('댓글이 삭제되었습니다.');
         } else {
-          alert('댓글 삭제 실패');
+          errorHandle(res);
         }
       })
       .catch((e) => {
@@ -67,10 +68,10 @@ export default function ReplyDetail({
     };
     updateReply(replyId, data)
       .then((res) => {
-        if (res.status == '200') {
+        if (res.status === 200) {
           alert('댓글이 수정되었습니다.');
         } else {
-          alert('댓글 수정 실패');
+          errorHandle(res);
         }
       })
       .catch((e) => {

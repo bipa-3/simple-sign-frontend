@@ -7,6 +7,7 @@ import deleteContentEditableError from '../../../apis/approvalManageAPI/deleteCo
 import { useLoading } from '../../../contexts/LoadingContext';
 import { getSign } from '../../../apis/userInfoAPl/getSign';
 import styled from '../../../styles/components/approvalManage/approvalDetail/DetailForm.module.css';
+import errorHandle from '../../../apis/errorHandle';
 
 export default function DetailForm(props) {
   const navigate = useNavigate();
@@ -27,22 +28,29 @@ export default function DetailForm(props) {
     showLoading();
     //문서상세조회
     getApprovalDoc(props.approval_doc_id)
-      .then((json) => {
-        console.log(json);
-        setDefaultForm(json.defaultForm);
-        setUserName(json.userName);
-        setDeptName(json.deptName);
-        setProductNum(json.productNum);
-        setTitle(json.approvalDocTitle);
-        setApprovalDate(json.approvalDate);
-        setEnforcementDate(json.enforcementDate);
-        setContents(json.contents);
-        setApprovalLine(json.approvalLineList);
-        setReceiveRefOpt(json.receivedRefList);
-        if (json.docStatus == 'T') {
-          props.setIsTemporal(true);
+      .then((res) => {
+        if (res.status === 200) {
+          return res.json().then((data) => {
+            setDefaultForm(data.defaultForm);
+            setUserName(data.userName);
+            setDeptName(data.deptName);
+            setProductNum(data.productNum);
+            setTitle(data.approvalDocTitle);
+            setApprovalDate(data.approvalDate);
+            setEnforcementDate(data.enforcementDate);
+            setContents(data.contents);
+            setApprovalLine(data.approvalLineList);
+            setReceiveRefOpt(data.receivedRefList);
+            if (data.docStatus == 'T') {
+              props.setIsTemporal(true);
+            }
+          });
+        } else {
+          errorHandle(res);
+          navigate(`/`);
         }
       })
+
       .catch(() => {
         alert('문서를 찾을 수 없습니다');
         hideLoading();
@@ -56,7 +64,7 @@ export default function DetailForm(props) {
   }, []);
 
   const renderApproval = (approval) => {
-    console.log(approval);
+    //console.log(approval);
     if (
       approval &&
       (approval.approvalStatus === 'R' || approval.approvalStatus === 'A') &&

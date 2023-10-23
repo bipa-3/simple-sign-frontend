@@ -4,6 +4,7 @@ import styled from '../../../styles/components/approvalManage/approvalDetail/Rep
 import getReplyList from '../../../apis/approvalManageAPI/getReplyList';
 import insertLowerReply from '../../../apis/approvalManageAPI/insertLowerReply';
 import ReplyBox from './ReplyBox';
+import errorHandle from '../../../apis/errorHandle';
 
 export default function ReplyForm({ approval_doc_id }) {
   const [replyList, setReplyList] = useState([]);
@@ -72,7 +73,7 @@ export default function ReplyForm({ approval_doc_id }) {
         if (res.status === 200) {
           alert('댓글이 작성되었습니다.');
         } else {
-          alert('댓글작성 실패!');
+          errorHandle(res);
         }
       })
       .catch((e) => {

@@ -7,6 +7,7 @@ import moment from 'moment';
 import { useLoading } from '../contexts/LoadingContext';
 import insertApprovalDoc from '../apis/approvalManageAPI/insertApprovalDoc';
 import errorHandle from '../apis/errorHandle';
+import { checkFormCreateData } from '../validation/approvalManage/approvalFormSchema';
 
 export default function SmallBox(props) {
   const innerBoxStyle = {
@@ -132,10 +133,21 @@ export default function SmallBox(props) {
       contents: editor,
     };
 
+    checkFormCreateData(data)
+      .then(() => {
+        registApprovalDoc(data, docStatus);
+      })
+      .catch((errors) => {
+        alert(errors.message);
+        hideLoading();
+      });
+  };
+
+  const registApprovalDoc = (data, docStatus) => {
     //결재상신
     insertApprovalDoc(data)
       .then((res) => {
-        if (res.status == '200') {
+        if (res.status === 200) {
           console.log(res);
           if (docStatus === 'T') {
             alert('임시저장되었습니다.');

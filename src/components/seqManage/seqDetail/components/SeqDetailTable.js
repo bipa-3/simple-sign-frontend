@@ -16,6 +16,7 @@ import getSeqItemList from '../../../../apis/commonAPI/getSeqItemList';
 import FormListPopUp from '../../popup/FormListPopUp';
 import { AiOutlineOrderedList } from 'react-icons/ai';
 import OrgChart from '../../../org/OrgChart';
+import { isObject } from '@mui/x-data-grid/internals';
 
 export default function SeqDetailTable() {
   const {
@@ -84,10 +85,14 @@ export default function SeqDetailTable() {
   useEffect(() => {
     const itemIdList = detailData.seqString.split(',');
     if (detailData.seqString !== '') {
-      let result = itemIdList.map((ele, index) => {
-        const foundItem = seqItems.find((item) => item.code === ele);
-        return { id: index, value: foundItem.value, code: foundItem.code };
-      });
+      let result = itemIdList
+        .map((ele, index) => {
+          const foundItem = seqItems.find((item) => item.code === ele);
+          if (foundItem) {
+            return { id: index, value: foundItem.value, code: foundItem.code };
+          }
+        })
+        .filter((ele) => ele !== undefined);
       setSeqList([...result]);
     }
   }, [detailData.seqString]);

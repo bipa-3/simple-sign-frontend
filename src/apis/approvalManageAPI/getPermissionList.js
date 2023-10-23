@@ -1,4 +1,5 @@
 import base_url from '../base_url';
+import errorHandle from '../errorHandle';
 
 export default function getPermissionList(page) {
   let url = base_url + `approve/permissionList/${page}`;
@@ -6,6 +7,10 @@ export default function getPermissionList(page) {
     headers: { Accept: 'application/json' },
     credentials: 'include',
   }).then((res) => {
-    return res.json();
+    if (res.status === 200) {
+      return res.json();
+    } else {
+      errorHandle(res);
+    }
   });
 }

@@ -38,13 +38,12 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
   };
 
   useEffect(() => {
-    setPreviewData(
-      seqList
-        .map((ele) => {
-          return ele.value;
-        })
-        .join(' ')
-    );
+    setPreviewData();
+    seqList
+      .map((ele) => {
+        return ele.value;
+      })
+      .join(' ');
   }, [seqList]);
 
   return (
