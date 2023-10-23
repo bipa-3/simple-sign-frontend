@@ -4,15 +4,15 @@ import { AiFillFolder } from 'react-icons/ai';
 import React from 'react';
 
 function Optionbox(props) {
-  // console.log('inidt:', initData);
+  console.log('inidt:', props);
   let icon = null;
   let initData = props.initData;
   let id = props.id;
   let name = '';
-  let category = initData.category;
+  let category = initData?.category;
   let useId = '';
 
-  if (props.category === 'null') {
+  if (props.category === null) {
   } else if (category === 'U') {
     icon = <BiSolidUser />;
     name = initData.name || initData.user;
@@ -29,6 +29,10 @@ function Optionbox(props) {
     icon = <AiFillFolder />;
     name = initData.name || initData.establishment;
     useId = initData.useId || initData.estId;
+  } else if (category === 'F') {
+    name = initData.name;
+    useId = initData.useId;
+  } else {
   }
 
   return (

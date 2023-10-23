@@ -14,8 +14,11 @@ function ViewItem(props) {
   const [viewItemsLocal2, setViewItemsLocal2] = useState([]);
   const [error, setError] = useState(null);
   const { state, setState } = useApprovalBox();
+  const { state: manageState, setState: setManageState } =
+    useApprovalBoxManage();
   const { approvalBoxState, initDataState, setInitDataState } =
     useApprovalBoxManage();
+  const [initDataItems, setInitDataItems] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,17 +31,17 @@ function ViewItem(props) {
 
           response.data.forEach((viewItem) => {
             if (viewItem.codeId.includes('01')) {
-              updatedViewItem.push('상신내역');
+              updatedViewItem.push(viewItem.codeValue);
             } else if (viewItem.codeId.includes('02')) {
-              updatedViewItem.push('미결내역');
+              updatedViewItem.push(viewItem.codeValue);
             } else if (viewItem.codeId.includes('03')) {
-              updatedViewItem.push('기결내역-종결');
+              updatedViewItem.push(viewItem.codeValue);
             } else if (viewItem.codeId.includes('04')) {
-              updatedViewItem.push('기결내역-진행');
+              updatedViewItem.push(viewItem.codeValue);
             } else if (viewItem.codeId.includes('05')) {
-              updatedViewItem.push('반려내역');
+              updatedViewItem.push(viewItem.codeValue);
             } else if (viewItem.codeId.includes('06')) {
-              updatedViewItem.push('수신참조내역');
+              updatedViewItem.push(viewItem.codeValue);
             }
           });
 
@@ -46,7 +49,6 @@ function ViewItem(props) {
             ...prevState,
             name: updatedViewItem,
           }));
-          console.log(initDataState);
 
           setViewItemsLocal2((prevItems) => {
             return updatedViewItem;
@@ -62,7 +64,11 @@ function ViewItem(props) {
       }
     };
     fetchData();
-  }, [props.boxId, approvalBoxState.viewItems]);
+  }, [props.boxId]);
+
+  useEffect(() => {
+    setInitDataItems(approvalBoxState.viewItems || []);
+  }, [approvalBoxState.viewItems]);
 
   useEffect(() => {
     if (approvalBoxState && approvalBoxState.viewItems) {
@@ -70,26 +76,32 @@ function ViewItem(props) {
     }
   }, [approvalBoxState.viewItems, approvalBoxState]); // approvalBoxState.viewItems 값의 변경을 감지
 
+  function onSave(selectedItems) {
+    setViewItemsLocal2(selectedItems);
+  }
+
   let itemsToRender;
 
-  if (viewItemsLocal && viewItemsLocal.length > 0) {
-    itemsToRender = viewItemsLocal;
-  } else if (viewItemsLocal2 && viewItemsLocal2.length > 0) {
+  if (manageState.insertStatus != 1) {
     itemsToRender = viewItemsLocal2;
+  } else if (viewItemsLocal && viewItemsLocal.length > 0) {
+    itemsToRender = viewItemsLocal;
   } else {
     itemsToRender = initDataState.name
       ? initDataState.name.map((item) => item.codeValue)
       : [];
   }
 
-  useEffect(() => {
-    console.log('Updated viewItemsLocal:', viewItemsLocal2);
-  }, [viewItemsLocal2]);
-
   function handleDataChange(name) {
-    setViewItemsLocal2((prevState) => {
-      return prevState.filter((item) => item !== name);
-    });
+    if (manageState.insertStatus != 1) {
+      setViewItemsLocal2((prevState) => {
+        return prevState.filter((item) => item !== name);
+      });
+    } else {
+      setViewItemsLocal((prevState) => {
+        return prevState.filter((item) => item !== name);
+      });
+    }
   }
 
   return (
@@ -104,7 +116,13 @@ function ViewItem(props) {
               <Optionbox
                 id={viewItemValue}
                 key={index}
-                initData={{ ...initDataState, name: viewItemValue }} // name을 단일 값으로 전달
+                initData={
+                  initDataItems[index]
+                    ? initDataItems[index]
+                    : initDataState.name
+                    ? initDataState.name[index]
+                    : null
+                }
                 name={viewItemValue}
                 dataHandler={handleDataChange}
               />
@@ -113,7 +131,8 @@ function ViewItem(props) {
 
           <ViewItemPopup
             checkedItems={data}
-            currentViewItems={viewItemsLocal2}
+            currentViewItems={itemsToRender}
+            onSave={onSave}
           />
         </div>
       </div>

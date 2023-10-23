@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
 export default function DataList({ columns, rows, dataHandler }) {
@@ -14,10 +14,22 @@ export default function DataList({ columns, rows, dataHandler }) {
     }));
   }
 
+  const [selectionModel, setSelectionModel] = useState([]); // 첫 번째 요소를 선택
+
+  useEffect(() => {
+    handleSelectionModelChange(rows[0]?.id);
+  }, [rows]);
+
+  const handleSelectionModelChange = (newSelection) => {
+    setSelectionModel(newSelection);
+  };
+
   return (
     <div style={{ height: '100%', width: '100%', overflow: 'auto' }}>
       <DataGrid
         autoWidth
+        rowSelectionModel={selectionModel}
+        onRowSelectionModelChange={handleSelectionModelChange}
         rows={rows}
         columns={columnsWithFlex}
         hideFooter

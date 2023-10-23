@@ -14,7 +14,12 @@ function OptionboxItem(props) {
         <div
           className={styles.iconX}
           onClick={() => {
-            props.onValueChange(props.id, props.category, props.useId);
+            props.onValueChange(
+              props.id,
+              props.category,
+              props.useId,
+              props.name
+            );
           }}
         >
           <IoMdClose />

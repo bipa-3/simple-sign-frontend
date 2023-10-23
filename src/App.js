@@ -68,9 +68,18 @@ function AppContent() {
                   path="/SAM"
                   element={checkUserAuthority(2, <SeqManagePage />)}
                 />
-                <Route path="/FL" element={<FormListPage />} />
-                <Route path="/AD" element={<ApprovalDetail />} />
-                <Route path="/ADD" element={<ApprovalUpdatePage />} />
+                <Route
+                  path="/FL"
+                  element={checkUserAuthority(3, <FormListPage />)}
+                />
+                <Route
+                  path="/AD"
+                  element={checkUserAuthority(3, <ApprovalDetail />)}
+                />
+                <Route
+                  path="/ADD"
+                  element={checkUserAuthority(3, <ApprovalUpdatePage />)}
+                />
                 <Route path="/userinfo" element={<UserInfo />} />
                 <Route path="/updateuser" element={<UpdateUserInfo />} />
               </Routes>

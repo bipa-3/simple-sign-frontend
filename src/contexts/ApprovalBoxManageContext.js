@@ -12,20 +12,13 @@ const approvalBoxInit = {
   approvalBoxName: null,
   viewItems: [],
   approvalBoxUsedStatus: 1,
-  menuUsingRange: null,
+  menuUsingRange: 'T',
   sortOrder: null,
 };
 
-const orgInitState = {
-  code: '',
-  compId: '',
-  compName: '',
-  formName: '',
+const detailInitState = {
   scope: [],
-  defaultForm: '',
-  mainForm: '',
-  status: '',
-  approvalLine: [],
+  scope2: [],
 };
 
 const initData = {
@@ -47,6 +40,7 @@ export const ApprovalBoxManageProvider = ({ children }) => {
   const [state, setState] = useState(initialState);
   const [approvalBoxState, setApprovalBoxState] = useState(approvalBoxInit);
   const [initDataState, setInitDataState] = useState(initData);
+  const [detailData, setDetailData] = useState(detailInitState);
 
   return (
     <ApprovalBoxManageContext.Provider
@@ -59,6 +53,8 @@ export const ApprovalBoxManageProvider = ({ children }) => {
         initDataState,
         setInitDataState,
         initData,
+        detailData,
+        setDetailData,
       }}
     >
       {children}

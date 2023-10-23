@@ -38,6 +38,8 @@ export default function ApprovalForm({
   const [condition, setCondition] = useState('rec_ref');
   const { showLoading, hideLoading } = useLoading();
   const { detailData, setDetailData, resetDetailData } = useFormManage();
+  const userOrgList = JSON.parse(localStorage.getItem('userOrgList'));
+  const deptName = userOrgList[0].deptName;
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -188,10 +190,18 @@ export default function ApprovalForm({
                 );
               }
               if (domNode.attribs && domNode.attribs.id === 'drafter') {
-                return <div id="drafter" contentEditable="false"></div>;
+                return (
+                  <div id="drafter" contentEditable="false">
+                    {localStorage.getItem('userName')}
+                  </div>
+                );
               }
               if (domNode.attribs && domNode.attribs.id === 'drafter_dept') {
-                return <div id="drafter_dept" contentEditable="false"></div>;
+                return (
+                  <div id="drafter_dept" contentEditable="false">
+                    {deptName}
+                  </div>
+                );
               }
               if (domNode.attribs && domNode.attribs.id == 'form_title') {
                 return (

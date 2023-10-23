@@ -35,6 +35,13 @@ function DetailBox() {
   const handleInputChange = (e) => {};
 
   useEffect(() => {
+    if (isNaN(boxId)) {
+      setUseStatus('사용');
+      setMenuOption('T');
+    }
+  }, [boxId]);
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const parsedBoxId = parseInt(boxId, 10);
@@ -46,6 +53,7 @@ function DetailBox() {
 
         const response = await getBoxDetail(parsedBoxId);
         setData(response.data);
+        console.log(response.data);
         if (response.data.length > 0) {
           setUseStatus(
             response.data[0].approvalBoxUsedStatus === 1 ? '사용' : '미사용'
@@ -79,6 +87,7 @@ function DetailBox() {
           commonCellStyle={commonCellStyle}
           commonDataStyle={commonDataStyle}
           handleUseStatusChange={handleUseStatusChange}
+          useStatus={useStatus}
         />
         <MenuUseRange
           commonCellStyle={commonCellStyle}
@@ -125,6 +134,7 @@ function DetailBox() {
             commonDataStyle={commonDataStyle}
             menuOption={menuOption}
             setMenuOption={setMenuOption}
+            boxId={boxId}
           />
           <SortOrder
             commonCellStyle={commonCellStyle}

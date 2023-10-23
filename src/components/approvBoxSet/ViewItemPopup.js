@@ -5,7 +5,7 @@ import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
 import Button from '../common/Button';
 import { useApprovalBoxManage } from '../../contexts/ApprovalBoxManageContext';
 
-function ViewItemPopup({ checkedItems, currentViewItems }) {
+function ViewItemPopup({ checkedItems, currentViewItems, onSave }) {
   const [selectAll, setSelectAll] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { approvalBoxState, setApprovalBoxState } = useApprovalBoxManage();
@@ -73,14 +73,14 @@ function ViewItemPopup({ checkedItems, currentViewItems }) {
     const selectedItems = Object.keys(checkboxStates).filter(
       (itemName) => checkboxStates[itemName]
     );
-
-    setSavedItems(selectedItems); // 추가된 코드
+    setSavedItems(selectedItems);
     setApprovalBoxState({
       ...approvalBoxState,
       viewItems: selectedItems,
     });
 
-    // 모달 닫기
+    onSave && onSave(selectedItems);
+
     closeModal();
   };
 

@@ -11,6 +11,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { TreeView } from '@mui/x-tree-view/TreeView';
 import { TreeItem, treeItemClasses } from '@mui/x-tree-view/TreeItem';
 import { getTreeView } from '../../apis/orgAPI/getTreeView';
+import { getCompId } from '../../utils/getUser';
 
 const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
   color: theme.palette.text.secondary,
@@ -121,7 +122,6 @@ function renderTreeItems(data) {
 export default function OrgTreeView({ onNodeSelect }) {
   const handleNode = (e, nodeId) => {
     if (onNodeSelect) {
-      console.log('nid:', nodeId);
       onNodeSelect(nodeId);
     }
   };
@@ -160,7 +160,7 @@ export default function OrgTreeView({ onNodeSelect }) {
   useEffect(() => {
     const orgdata = async () => {
       try {
-        const response = await getTreeView();
+        const response = await getTreeView(getCompId());
         if (response && response.data) {
           setOrg(response.data);
         }

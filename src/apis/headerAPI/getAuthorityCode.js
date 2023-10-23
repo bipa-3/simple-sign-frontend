@@ -5,10 +5,10 @@ const api = axios.create({
   baseURL: base_url,
 });
 
-export const getTreeView = (compId) => {
-  return api.get('/orgTreeView', {
+export const getAuthorityCode = (orgUserId) => {
+  return api.get(`authority`, {
     params: {
-      compId: compId,
+      orgUserId: orgUserId,
     },
   });
 };

@@ -10,6 +10,11 @@
   height: 70px;
 }
 
+.menuitem {
+  display: flex;
+  flex-direction: row;
+}
+
 .menubox {
   width: 175px !important;
   height: 40px !important;

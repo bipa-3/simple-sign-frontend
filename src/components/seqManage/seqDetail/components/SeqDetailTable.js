@@ -174,7 +174,7 @@ export default function SeqDetailTable() {
             <TitleBox title={'회사명'} />
             {flagData === 1 ? (
               <SelectBox
-                id={'compName'}
+                id={'compId'}
                 data={setData.compList}
                 dataHandler={dataUpdateHandler}
               />

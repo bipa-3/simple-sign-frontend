@@ -6,7 +6,7 @@ import PopUpFoot from '../components/common/PopUpFoot';
 import moment from 'moment';
 import { useLoading } from '../contexts/LoadingContext';
 import insertApprovalDoc from '../apis/approvalManageAPI/insertApprovalDoc';
-import { useFormManage } from '../contexts/FormManageContext';
+import errorHandle from '../apis/errorHandle';
 
 export default function SmallBox(props) {
   const innerBoxStyle = {
@@ -31,7 +31,6 @@ export default function SmallBox(props) {
   const titleRef = useRef(null); //제목
   const [rec_ref, setRecRef] = useState([]); //수신참조
   const [org_use_list, setOrgUseId] = useState([]); //결재라인
-  const { detailData, flagData, setDetailData, setData } = useFormManage();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -86,33 +85,35 @@ export default function SmallBox(props) {
     }
 
     const recRefList = [];
-    rec_ref.map((data) => {
-      if (data.category === 'C') {
-        recRefList.push({
-          id: data.compId,
-          category: 'C',
-          name: data.company,
-        });
-      } else if (data.category === 'E') {
-        recRefList.push({
-          id: data.estId,
-          category: 'E',
-          name: data.establishment,
-        });
-      } else if (data.category === 'D') {
-        recRefList.push({
-          id: data.deptId,
-          category: 'D',
-          name: data.department,
-        });
-      } else if (data.category === 'U') {
-        recRefList.push({
-          id: data.userId,
-          category: 'U',
-          name: data.user,
-        });
-      }
-    });
+    if (rec_ref.length != 0) {
+      rec_ref.map((data) => {
+        if (data.category === 'C') {
+          recRefList.push({
+            id: data.compId,
+            category: 'C',
+            name: data.company,
+          });
+        } else if (data.category === 'E') {
+          recRefList.push({
+            id: data.estId,
+            category: 'E',
+            name: data.establishment,
+          });
+        } else if (data.category === 'D') {
+          recRefList.push({
+            id: data.deptId,
+            category: 'D',
+            name: data.department,
+          });
+        } else if (data.category === 'U') {
+          recRefList.push({
+            id: data.userId,
+            category: 'U',
+            name: data.user,
+          });
+        }
+      });
+    }
 
     let docStatus = 'T';
     if (state === 'regist') {
@@ -135,6 +136,7 @@ export default function SmallBox(props) {
     insertApprovalDoc(data)
       .then((res) => {
         if (res.status == '200') {
+          console.log(res);
           if (docStatus === 'T') {
             alert('임시저장되었습니다.');
           } else if (docStatus === 'W') {
@@ -142,6 +144,8 @@ export default function SmallBox(props) {
           }
           setRecRef('');
           closeModal();
+        } else {
+          errorHandle(res);
         }
       })
       .catch((e) => {

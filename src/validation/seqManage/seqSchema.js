@@ -6,7 +6,7 @@ const scopeSchema = object().shape({
 });
 
 const seqCreateSchema = object().shape({
-  code: number().required('선택된 채번번호가 없습니다.'),
+  // code: number().required('선택된 채번번호가 없습니다.'),
   compId: number().required('회사번호는 필수 선택 사항입니다.'),
   compName: string().max(20, '양식명은 필수 입력 사항입니다.'),
   deptScope: array().of(scopeSchema),
@@ -23,7 +23,7 @@ const seqCreateSchema = object().shape({
 });
 
 const seqUpdateSchema = object().shape({
-  code: number().required('선택된 채번번호가 없습니다.'),
+  // code: number().required('선택된 채번번호가 없습니다.'),
   compId: number().required('회사번호는 필수 선택 사항입니다.'),
   compName: string().max(20, '양식명은 필수 입력 사항입니다.'),
   deptScope: array().of(scopeSchema),

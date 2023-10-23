@@ -3,8 +3,10 @@ import Select from 'react-select';
 import styled from '../../styles/pages/ApprovalBoxSetPage.module.css';
 import getCompanyList from '../../apis/commonAPI/getCompanyList';
 import getUserCompany from '../../apis/approvalBoxAPI/getUserCompany';
+import { getAuthrity } from '../../utils/getUser';
 
-function Datalist({ onCompanyChange, selectedCompId, authority }) {
+function Datalist({ onCompanyChange, selectedCompId }) {
+  const authority = getAuthrity();
   const [selectedOption, setSelectedOption] = useState(null);
   const [companyOptions, setCompanyOptions] = useState([]);
 
@@ -70,7 +72,6 @@ function Datalist({ onCompanyChange, selectedCompId, authority }) {
   useEffect(() => {
     if (selectedOption && typeof onCompanyChange === 'function') {
       onCompanyChange(selectedOption.value);
-      console.log('onCompanyChange1' + selectedOption.value);
     }
   }, [selectedOption]);
 
@@ -78,7 +79,6 @@ function Datalist({ onCompanyChange, selectedCompId, authority }) {
     setSelectedOption(selectedOption);
     if (typeof onCompanyChange === 'function') {
       onCompanyChange(selectedOption.value);
-      console.log('onCompanyChange2' + selectedOption.value);
     }
   };
   function handleError(error) {
@@ -111,8 +111,6 @@ function Datalist({ onCompanyChange, selectedCompId, authority }) {
 
     setCompanyOptions(transformedData);
   }
-
-  console.log(selectedOption);
 
   return (
     <div className={styled.selectbox}>

@@ -27,6 +27,7 @@ function ViewApprovalBoxList() {
       insertStatus: 1,
     }));
     setInitDataState((prevState) => ({
+      //조직도
       initData,
     }));
     setApprovalBoxState((prevState) => ({
@@ -61,7 +62,7 @@ function ViewApprovalBoxList() {
       <div className={styled.searchbox}>
         <div className={styled.selectContainer}>
           {' '}
-          <Datalist onCompanyChange={setSelectedCompanyId} authority="2" />
+          <Datalist onCompanyChange={setSelectedCompanyId} />
         </div>
 
         <div className={styled.inputSearch}>
@@ -76,7 +77,7 @@ function ViewApprovalBoxList() {
         </div>
       </div>
       <div className={styled.boxlist}>
-        <ApprovalBoxList companyId={selectedCompanyId} authority="2" />
+        <ApprovalBoxList companyId={selectedCompanyId} />
       </div>
     </InnerBox>
   );
