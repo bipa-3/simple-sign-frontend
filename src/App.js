@@ -47,12 +47,11 @@ function AppContent() {
   //   }
   // }, [state.isLoggedIn]);
 
-  // useEffect(() => {
-  //   let cookieData = getCookie('LOGIN_COOKIE');
-  //   if (cookieData !== '') {
-  //     setState({ isLoggedIn: getCookie('LOGIN_COOKIE') });
-  //   }
-  // }, [pageState, document.cookie]);
+  useEffect(() => {
+    let cookieData = getCookie('LOGIN_COOKIE');
+    console.log(cookieData);
+    setState({ isLoggedIn: cookieData })
+  }, []);
 
   return (
     <>
