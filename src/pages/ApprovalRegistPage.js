@@ -10,7 +10,8 @@ import errorHandle from '../apis/errorHandle';
 import { checkFormCreateData } from '../validation/approvalManage/approvalFormSchema';
 import { useParams } from 'react-router-dom';
 
-export default function SmallBox(props) {
+
+export default function ApprovalRegist(props) {
   const { id } = useParams();
   let status = props.form_code === parseInt(id) ? true : false;
 
@@ -36,6 +37,8 @@ export default function SmallBox(props) {
   const titleRef = useRef(null); //제목
   const [rec_ref, setRecRef] = useState([]); //수신참조
   const [org_use_list, setOrgUseId] = useState([]); //결재라인
+  const [files, setFiles] = useState([]);
+  const [fileNames, setFileNames] = useState([]);
 
   useEffect(() => {
     if (status) {
@@ -47,6 +50,8 @@ export default function SmallBox(props) {
     setIsModalOpen(true);
   };
   const closeModal = () => {
+    setFiles([]);
+    setFileNames([]);
     setIsModalOpen(false);
   };
 
@@ -68,6 +73,16 @@ export default function SmallBox(props) {
     setEnforceDate(newValue);
   };
 
+  const fileUpdateHandler = (id, file) => {
+    console.log('fileUpdateHandler');
+    console.log(file.object);
+
+    const formData = new FormData();
+    formData.append('file', file.object);
+    console.log(files);
+    //insertApprovalDocFile(formData);
+  };
+
   // const extractTableData = () => {
   //   const table = document.querySelector('table');
   //   const rows = table.querySelectorAll('tr');
@@ -86,8 +101,6 @@ export default function SmallBox(props) {
 
   const handleClick = (state) => {
     showLoading();
-    // console.log('결재라인: ' + org_use_list);
-    //console.log('수신참조: ' + rec_ref);
     const orgUserIdList = [];
     if (org_use_list.length != 0) {
       org_use_list.map((data, index) => {
@@ -130,8 +143,9 @@ export default function SmallBox(props) {
     if (state === 'regist') {
       docStatus = 'W';
     }
+
     // let searchContents = extractTableData(editor);
-    const data = {
+    const approvalDocReqDTO = {
       formCode: props.form_code,
       approvalDocTitle: titleRef.current.innerHTML,
       docStatus: docStatus,
@@ -143,7 +157,19 @@ export default function SmallBox(props) {
       contents: editor,
     };
 
-    checkFormCreateData(data)
+    const data = new FormData();
+
+    data.append(
+      'approvalDocReqDTO',
+      new Blob([JSON.stringify(approvalDocReqDTO)], {
+        type: 'application/json',
+      })
+    );
+    files.forEach((file, index) => {
+      data.append('files', file.object);
+    });
+
+    checkFormCreateData(approvalDocReqDTO)
       .then(() => {
         registApprovalDoc(data, docStatus);
       })
@@ -167,6 +193,7 @@ export default function SmallBox(props) {
           setRecRef('');
           closeModal();
         } else {
+          //console.log(res);
           errorHandle(res);
         }
       })
@@ -235,6 +262,11 @@ export default function SmallBox(props) {
               handleSelectBoxChange={handleSelectBoxChange}
               handleDraftingTime={handleDraftingTime}
               handleEnforcementTime={handleEnforcementTime}
+              files={files}
+              fileNames={fileNames}
+              setFiles={setFiles}
+              setFileNames={setFileNames}
+              fileUpdateHandler={fileUpdateHandler}
             />
 
             <PopUpFoot buttons={BlueAndGrayBtn} />

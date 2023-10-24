@@ -176,6 +176,7 @@ export default function UpdateUserInfo() {
 
   const handleProfileChange = (e) => {
     const file = e.target.files[0];
+    //console.log(file);
     setProfileFile(file);
 
     const reader = new FileReader();

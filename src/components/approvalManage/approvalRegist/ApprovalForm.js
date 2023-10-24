@@ -31,6 +31,11 @@ export default function ApprovalForm({
   handleSelectBoxChange,
   handleEnforcementTime,
   handleDraftingTime,
+  files,
+  fileNames,
+  setFiles,
+  setFileNames,
+  fileUpdateHandler,
 }) {
   const [sequence, setSequence] = useState([]);
   const [default_form, setDefaultForm] = useState('');
@@ -273,10 +278,12 @@ export default function ApprovalForm({
           })}
         </div>
         <FileBox
-          id={'defaultForm'}
-          name={'파일'}
-          data={detailData.defaultForm}
-          dataHandler={closeModal}
+          id={'file'}
+          files={files}
+          fileNames={fileNames}
+          setFiles={setFiles}
+          setFileNames={setFileNames}
+          dataHandler={fileUpdateHandler}
         />
       </div>
 

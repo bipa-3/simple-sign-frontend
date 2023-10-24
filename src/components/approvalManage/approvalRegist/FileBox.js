@@ -4,7 +4,14 @@ import styled from '../../../styles/components/approvalManage/approvalRegist/Fil
 import Button from '../../../components/common/Button';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
-export default function FileBox({ id, name, data, dataHandler }) {
+export default function FileBox({
+  id,
+  files,
+  fileNames,
+  setFiles,
+  setFileNames,
+  dataHandler,
+}) {
   return (
     <div className={styled.container}>
       <div className={styled.attachNameBox}>
@@ -20,7 +27,14 @@ export default function FileBox({ id, name, data, dataHandler }) {
       </div>
       <div className={styled.dataBox}>
         <div className={styled.fileContent}>
-          <DragDrop name={name} id={id} data={data} dataHandler={dataHandler} />
+          <DragDrop
+            id={id}
+            files={files}
+            fileNames={fileNames}
+            setFiles={setFiles}
+            setFileNames={setFileNames}
+            dataHandler={dataHandler}
+          />
         </div>
       </div>
     </div>

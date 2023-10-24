@@ -7,12 +7,16 @@ import React, { useEffect, useState } from 'react';
 import { useLoading } from '../contexts/LoadingContext';
 import getFormList from '../apis/approvalManageAPI/getFormList';
 import { usePage } from '../contexts/PageContext';
+import errorHandle from '../apis/errorHandle';
+import { useNavigate } from 'react-router-dom';
 
 export default function FormListPage() {
   const [formList, setFormList] = useState([]);
   const [searchContent, setSearchContent] = useState('');
   const { showLoading, hideLoading } = useLoading();
   const { state: pageState, setState: setPageState } = usePage();
+  const navigate = useNavigate();
+
   useEffect(() => {
     setPageState({ ...pageState, curPage: '양식조회' });
     showLoading();
@@ -20,7 +24,12 @@ export default function FormListPage() {
     //양식리스트 조회
     getFormList({ searchContent })
       .then((res) => {
-        return res.json();
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          errorHandle(res);
+          navigate('/');
+        }
       })
       .then((json) => setFormList(json))
       .catch((e) => {
@@ -49,17 +58,19 @@ export default function FormListPage() {
       <div className={styled.containers}>
         <InnerBox width="100%" height="100%" text="전체양식" font_size="18px">
           <div className={styled.innerBox}>
-            {formList.map(({ formName, formExplain, formCode }) => {
-              return (
-                <ApprovalRegist
-                  width="100%"
-                  height="78px"
-                  form_name={formName}
-                  form_explain={formExplain}
-                  form_code={formCode}
-                />
-              );
-            })}
+            {!formList.isEmpty
+              ? formList.map(({ formName, formExplain, formCode }) => {
+                  return (
+                    <ApprovalRegist
+                      width="100%"
+                      height="78px"
+                      form_name={formName}
+                      form_explain={formExplain}
+                      form_code={formCode}
+                    />
+                  );
+                })
+              : null}
           </div>
         </InnerBox>
       </div>
