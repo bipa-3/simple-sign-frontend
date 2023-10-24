@@ -197,7 +197,11 @@ const FileBox = ({ id, name, data, dataHandler }) => {
             btnHeihgt="30px"
             children={
               <>
-                <FormEdit data={data} dataHandler={setFormData} />
+                <FormEdit
+                  data={data}
+                  dataHandler={setFormData}
+                  curForm={formData}
+                />
                 <PopUpFoot buttons={grayAndBlueBtn} />
               </>
             }

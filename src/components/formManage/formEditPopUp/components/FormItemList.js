@@ -1,13 +1,30 @@
 import styled from '../../../../styles/components/formManage/formEdit/components/FormList.module.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CustomButton } from '../../../common/TinyEditor';
+import ReactHtmlParser from 'html-react-parser';
 
-export default function FormItemList({ formItems, editor }) {
+export default function FormItemList({
+  formItems,
+  setFormItems,
+  editor,
+  curForm,
+}) {
   const [searchText, SetSearchText] = useState('');
 
   const searchTexthandler = (e) => {
     SetSearchText(e.target.value);
   };
+
+  useEffect(() => {
+    let checkClass = formItems.map((ele) => {
+      let buttonTag = ReactHtmlParser(ele.formListTag).props.className.split(
+        ' '
+      )[0];
+      ele.status = curForm.includes(buttonTag) ? true : false;
+      return ele;
+    });
+    setFormItems(checkClass);
+  }, [formItems, curForm]);
 
   return (
     <div className={styled.formListContainer}>
@@ -30,6 +47,7 @@ export default function FormItemList({ formItems, editor }) {
                 label={ele.formListName}
                 editor={editor}
                 text={ele.formListTag}
+                disadledStatus={ele.status}
               ></CustomButton>
             );
           })}

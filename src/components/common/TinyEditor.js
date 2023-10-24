@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import styled from '../../styles/components/formManage/formEdit/components/FormList.module.css';
 
-export const CustomButton = ({ label, editor, text }) => {
+export const CustomButton = ({ label, editor, text, disadledStatus }) => {
   const handleInsertDiv = () => {
     if (editor) {
       const test = text || '';
@@ -11,7 +11,11 @@ export const CustomButton = ({ label, editor, text }) => {
   };
 
   return (
-    <button className={styled.customBtnStyle} onClick={handleInsertDiv}>
+    <button
+      className={styled.customBtnStyle}
+      onClick={handleInsertDiv}
+      disabled={disadledStatus}
+    >
       {label}
     </button>
   );
