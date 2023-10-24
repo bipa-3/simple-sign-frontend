@@ -21,6 +21,16 @@ export default function FormEdit({ data, dataHandler, curForm }) {
     setFormItems(data);
   };
 
+  const checkUsedItem = (data) => {
+    return data.map((ele) => {
+      let buttonTag = ReactHtmlParser(ele.formListTag).props.className.split(
+        ' '
+      )[0];
+      ele.status = curForm.includes(buttonTag) ? true : false;
+      return ele;
+    });
+  };
+
   useEffect(() => {
     dataHandler(data);
     getFormItem()
@@ -28,17 +38,16 @@ export default function FormEdit({ data, dataHandler, curForm }) {
         return res.json();
       })
       .then((data) => {
-        setFormItems(
-          data.map((ele) => {
-            ele.status = false;
-            return ele;
-          })
-        );
+        setFormItems(checkUsedItem(data));
       })
       .catch((err) => {
         console.error(err);
       });
   }, []);
+
+  useEffect(() => {
+    setFormItems(checkUsedItem(formItems));
+  }, [curForm]);
 
   return (
     <div className={styled.formEditContainer}>

@@ -15,16 +15,16 @@ export default function FormItemList({
     SetSearchText(e.target.value);
   };
 
-  useEffect(() => {
-    let checkClass = formItems.map((ele) => {
-      let buttonTag = ReactHtmlParser(ele.formListTag).props.className.split(
-        ' '
-      )[0];
-      ele.status = curForm.includes(buttonTag) ? true : false;
-      return ele;
-    });
-    setFormItems(checkClass);
-  }, [formItems, curForm]);
+  // useEffect(() => {
+  //   let checkClass = formItems.map((ele) => {
+  //     let buttonTag = ReactHtmlParser(ele.formListTag).props.className.split(
+  //       ' '
+  //     )[0];
+  //     ele.status = curForm.includes(buttonTag) ? true : false;
+  //     return ele;
+  //   });
+  //   setFormItems(checkClass);
+  // }, [formItems, curForm]);
 
   return (
     <div className={styled.formListContainer}>
