@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { TinyEditor } from '../../common/TinyEditor';
 import ReactHtmlParser from 'html-react-parser';
 
-export default function FormEdit({ data, dataHandler, curForm }) {
+export default function FormEdit({ data, dataHandler, curForm, isModalOpen }) {
   const [editor, setEditor] = useState(null);
   const [formItems, setFormItems] = useState([]);
 
@@ -38,7 +38,9 @@ export default function FormEdit({ data, dataHandler, curForm }) {
         return res.json();
       })
       .then((data) => {
-        setFormItems(checkUsedItem(data));
+        let result = checkUsedItem(data);
+        console.log(result);
+        setFormItems(result);
       })
       .catch((err) => {
         console.error(err);
@@ -47,7 +49,7 @@ export default function FormEdit({ data, dataHandler, curForm }) {
 
   useEffect(() => {
     setFormItems(checkUsedItem(formItems));
-  }, [curForm]);
+  }, [curForm, isModalOpen]);
 
   return (
     <div className={styled.formEditContainer}>

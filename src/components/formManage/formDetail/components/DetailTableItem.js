@@ -201,6 +201,7 @@ const FileBox = ({ id, name, data, dataHandler }) => {
                   data={data}
                   dataHandler={setFormData}
                   curForm={formData}
+                  isModalOpen={isModalOpen}
                 />
                 <PopUpFoot buttons={grayAndBlueBtn} />
               </>
