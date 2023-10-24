@@ -48,7 +48,10 @@ function AppContent() {
   }, [state.isLoggedIn]);
 
   useEffect(() => {
-    setState({ isLoggedIn: getCookie('LOGIN_COOKIE') });
+    let cookieData = getCookie('LOGIN_COOKIE');
+    if (cookieData !== '') {
+      setState({ isLoggedIn: getCookie('LOGIN_COOKIE') });
+    }
   }, [pageState, document.cookie]);
 
   return (
