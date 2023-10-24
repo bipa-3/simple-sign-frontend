@@ -101,14 +101,14 @@ function AppContent() {
                 <Route path="/updateuser" element={<UpdateUserInfo />} />
               </Routes>
             </div>
-          </>
-        ) : (
-          <Routes>
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        )}
-      </>
-
+          </div>
+        </>
+      ) : (
+        //로그인이 되지 않았을 때 로그인 페이지
+        <Routes>
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      )}
       <Loading />
     </>
   );
