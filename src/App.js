@@ -40,23 +40,23 @@ function AppContent() {
   const queryParams = new URLSearchParams(location.search);
   const getname = queryParams.get('name');
 
-  //로그인이 되지 않으면 로그인 페이지로
-  useEffect(() => {
-    if (!state.isLoggedIn) {
-      navigate('/login');
-    }
-  }, [state.isLoggedIn]);
+  // //로그인이 되지 않으면 로그인 페이지로
+  // useEffect(() => {
+  //   if (!state.isLoggedIn) {
+  //     navigate('/login');
+  //   }
+  // }, [state.isLoggedIn]);
 
-  useEffect(() => {
-    let cookieData = getCookie('LOGIN_COOKIE');
-    if (cookieData !== '') {
-      setState({ isLoggedIn: getCookie('LOGIN_COOKIE') });
-    }
-  }, [pageState, document.cookie]);
+  // useEffect(() => {
+  //   let cookieData = getCookie('LOGIN_COOKIE');
+  //   if (cookieData !== '') {
+  //     setState({ isLoggedIn: getCookie('LOGIN_COOKIE') });
+  //   }
+  // }, [pageState, document.cookie]);
 
   return (
     <>
-      {state.isLoggedIn ? ( //로그인이 되었을 때 모든 페이지
+      {getCookie('LOGIN_COOKIE') ? ( //로그인이 되었을 때 모든 페이지
         <>
           <Header />
           <Sidebar />
