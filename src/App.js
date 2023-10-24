@@ -40,76 +40,77 @@ function AppContent() {
   const queryParams = new URLSearchParams(location.search);
   const getname = queryParams.get('name');
 
-  //로그인이 되지 않으면 로그인 페이지로
   useEffect(() => {
-    if (!state.isLoggedIn) {
+    // 1. 초기 로딩 시 쿠키를 확인하여 초기 상태를 설정
+    const isLoggedIn = getCookie('LOGIN_COOKIE') === 'true';
+    setState({ isLoggedIn });
+  }, []);
+
+  // 다시 로딩 시에도 쿠키를 확인하여 로그인 상태를 유지하거나 다시 설정
+  useEffect(() => {
+    const isLoggedIn = getCookie('LOGIN_COOKIE') === 'true';
+    if (!isLoggedIn) {
       navigate('/login');
     }
-  }, [state.isLoggedIn]);
-
-  useEffect(() => {
-    let cookieData = getCookie('LOGIN_COOKIE');
-    if (cookieData !== '') {
-      setState({ isLoggedIn: getCookie('LOGIN_COOKIE') });
-    }
-  }, [pageState, document.cookie]);
+  }, [document.cookie]);
 
   return (
     <>
-      {state.isLoggedIn ? ( //로그인이 되었을 때 모든 페이지
-        <>
-          <Header />
-          <Sidebar />
-          <div className="contentContainer">
-            <Titlebox
-              title={getname}
-              view={pageState.isApprovalBox ? 'approval' : ''}
-              componentProp={
-                pageState.isApprovalBox ? <ApprovalRightHeader /> : ''
-              }
-            ></Titlebox>
-            <div className="contentsArea">
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route
-                  path="/EAM"
-                  element={checkUserAuthority(2, <FormManagePage />)}
-                />
-                <Route path="/ABS" element={<ApprovalBoxSetPage />} />
-                <Route path="/ABV" element={<ApprovalBoxViewPage />} />
-                <Route
-                  path="/SAM"
-                  element={checkUserAuthority(2, <SeqManagePage />)}
-                />
-                <Route
-                  path="/FL/:id"
-                  element={checkUserAuthority(3, <FormListPage />)}
-                />
-                <Route
-                  path="/FL"
-                  element={checkUserAuthority(3, <FormListPage />)}
-                />
-                <Route
-                  path="/AD"
-                  element={checkUserAuthority(3, <ApprovalDetail />)}
-                />
-                <Route
-                  path="/ADD"
-                  element={checkUserAuthority(3, <ApprovalUpdatePage />)}
-                />
-                <Route path="/userinfo" element={<UserInfo />} />
-                <Route path="/updateuser" element={<UpdateUserInfo />} />
-              </Routes>
+      <>
+        {state.isLoggedIn ? (
+          <>
+            <Header />
+            <Sidebar />
+            <div className="contentContainer">
+              <Titlebox
+                title={getname}
+                view={pageState.isApprovalBox ? 'approval' : ''}
+                componentProp={
+                  pageState.isApprovalBox ? <ApprovalRightHeader /> : ''
+                }
+              ></Titlebox>
+              <div className="contentsArea">
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route
+                    path="/EAM"
+                    element={checkUserAuthority(2, <FormManagePage />)}
+                  />
+                  <Route path="/ABS" element={<ApprovalBoxSetPage />} />
+                  <Route path="/ABV" element={<ApprovalBoxViewPage />} />
+                  <Route
+                    path="/SAM"
+                    element={checkUserAuthority(2, <SeqManagePage />)}
+                  />
+                  <Route
+                    path="/FL/:id"
+                    element={checkUserAuthority(3, <FormListPage />)}
+                  />
+                  <Route
+                    path="/FL"
+                    element={checkUserAuthority(3, <FormListPage />)}
+                  />
+                  <Route
+                    path="/AD"
+                    element={checkUserAuthority(3, <ApprovalDetail />)}
+                  />
+                  <Route
+                    path="/ADD"
+                    element={checkUserAuthority(3, <ApprovalUpdatePage />)}
+                  />
+                  <Route path="/userinfo" element={<UserInfo />} />
+                  <Route path="/updateuser" element={<UpdateUserInfo />} />
+                </Routes>
+              </div>
             </div>
-          </div>
-        </>
-      ) : (
-        //로그인이 되지 않았을 때 로그인 페이지
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/*" element={<Navigate to="/login" />} />
-        </Routes>
-      )}
+          </>
+        ) : (
+          <Routes>
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        )}
+      </>
+
       <Loading />
     </>
   );
