@@ -15,6 +15,7 @@ export const columns = [
     header: {
       text: '양식명',
     },
+    sortable: false,
   },
 ];
 

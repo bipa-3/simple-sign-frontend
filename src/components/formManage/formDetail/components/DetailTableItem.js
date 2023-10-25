@@ -141,6 +141,8 @@ const AreaBox = ({ id, data, dataHandler, children }) => {
 
 const FileBox = ({ id, name, data, dataHandler }) => {
   const [formData, setFormData] = useState(data);
+  const [formItems, setFormItems] = useState([]);
+  const required = [1, 6, 10];
 
   let previewWindow = null;
   const openPreviewWindow = (data) => {
@@ -173,8 +175,20 @@ const FileBox = ({ id, name, data, dataHandler }) => {
     {
       label: '반영',
       onClick: () => {
-        dataHandler(id, formData);
-        closeModal();
+        let confirmStatus = true;
+        if (id === 'defaultForm') {
+          for (let i of formItems) {
+            if (required.includes(i.formListCode) && i.status === false) {
+              confirmStatus = false;
+            }
+          }
+        }
+        if (confirmStatus) {
+          dataHandler(id, formData);
+          closeModal();
+        } else {
+          alert('필수 항목을 입력하세요');
+        }
       },
       btnStyle: 'popup_blue_btn',
     },
@@ -201,6 +215,9 @@ const FileBox = ({ id, name, data, dataHandler }) => {
                   data={data}
                   dataHandler={setFormData}
                   curForm={formData}
+                  formItems={formItems}
+                  setFormItems={setFormItems}
+                  requiredItems={required}
                   isModalOpen={isModalOpen}
                 />
                 <PopUpFoot buttons={grayAndBlueBtn} />

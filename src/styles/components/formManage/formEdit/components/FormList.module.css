@@ -49,3 +49,9 @@
   font-size: 15px;
   padding: 10px 0px;
 }
+
+.notnull {
+  color: red;
+  padding-right: 3px;
+  font-size: 14px;
+}

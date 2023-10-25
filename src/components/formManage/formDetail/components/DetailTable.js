@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   DetailBox,
   TitleBox,
@@ -49,10 +49,6 @@ export default function DetailTable() {
     { name: '미사용', value: false },
   ];
 
-  // useEffect(() => {
-  //   console.log('data:', detailData);
-  // }, [detailData]);
-
   return (
     <div className={styled.detailContainer}>
       <DetailBox
@@ -79,7 +75,14 @@ export default function DetailTable() {
       <DetailBox
         children={
           <>
-            <TitleBox title={'양식명'} />
+            <TitleBox
+              title={
+                <>
+                  <span className={styled.notnull}>*</span>
+                  {'양식명'}
+                </>
+              }
+            />
             <InputBox
               id={'formName'}
               data={detailData.formName}
@@ -141,7 +144,14 @@ export default function DetailTable() {
       <DetailBox
         children={
           <>
-            <TitleBox title={'기본파일'} />
+            <TitleBox
+              title={
+                <>
+                  <span className={styled.notnull}>*</span>
+                  {'기본파일'}
+                </>
+              }
+            />
             <FileBox
               id={'defaultForm'}
               name={'기본파일'}

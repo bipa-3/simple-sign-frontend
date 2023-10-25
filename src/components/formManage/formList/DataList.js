@@ -33,6 +33,7 @@ export default function DataList({ columns, rows, dataHandler }) {
         rows={rows}
         columns={columnsWithFlex}
         hideFooter
+        disableColumnMenu={true}
         onRowClick={(event) => {
           dataHandler(event.row);
         }}
