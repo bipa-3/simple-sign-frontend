@@ -26,6 +26,7 @@ import UserInfo from './pages/UserInfo';
 import UpdateUserInfo from './pages/UpdateUserInfo';
 import checkUserAuthority from './utils/checkUserAuthority';
 import axios from 'axios';
+import base_url from './apis/base_url';
 
 function getCookie(name) {
   const value = ';' + document.cookie;
@@ -48,9 +49,9 @@ function AppContent() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios(`http://localhost:8080/login/checkout`);
+        const response = await axios(`${base_url}/login/checkout`);
         if (response.status === 200) {
-          setState({ ...state, isLoggedIn: getCookie('LOGIN_COOKIE') });
+          setState({ ...state, isLoggedIn: true });
         }
       } catch (err) {
         document.cookie =
