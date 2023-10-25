@@ -9,6 +9,7 @@ import { useSeqManage } from '../contexts/SeqManageContext';
 import getSeqAndCompList from '../apis/commonAPI/getSeqAndCompList';
 import { useLoading } from '../contexts/LoadingContext';
 import { checkSearchData } from '../validation/seqManage/searchSchema';
+import { getAuthrity } from '../utils/getUser';
 
 export default function SeqManagePage() {
   const { state, setState } = usePage();
@@ -22,6 +23,9 @@ export default function SeqManagePage() {
         return res.json();
       })
       .then((data) => {
+        if (getAuthrity() === '1') {
+          data = [{ id: 0, name: '전체' }, ...data];
+        }
         setSearchData({ ...searchData, compId: data[0].id });
         setSetData({ ...setData, compList: data });
       })

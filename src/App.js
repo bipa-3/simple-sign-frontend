@@ -25,8 +25,7 @@ import { usePage } from './contexts/PageContext';
 import UserInfo from './pages/UserInfo';
 import UpdateUserInfo from './pages/UpdateUserInfo';
 import checkUserAuthority from './utils/checkUserAuthority';
-import axios from 'axios';
-import base_url from './apis/base_url';
+import { getLoginCheck } from './apis/loginAPI/postLogin';
 
 function getCookie(name) {
   const value = ';' + document.cookie;
@@ -36,20 +35,17 @@ function getCookie(name) {
 
 function AppContent() {
   const { state, setState } = useContext(AppContext);
-  //const navigate = useNavigate();
   const { state: pageState, setState: setPageState } = usePage();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const getname = queryParams.get('name');
-
-  //const [login, setLogin] = useState(); //appContext 리렌더링을 위한 상태값
 
   let loginValue = getCookie('LOGIN_COOKIE');
   //세션 확인 후 쿠키값 삭제 요청 api
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const response = await axios(`${base_url}/login/checkout`);
+        const response = await getLoginCheck();
         if (response.status === 200) {
           setState({ ...state, isLoggedIn: true });
         }

@@ -12,3 +12,7 @@ export const postLogin = (loginId, password) => {
     password,
   });
 };
+
+export const getLoginCheck = () => {
+  return api.get(`/login/checkout`);
+};

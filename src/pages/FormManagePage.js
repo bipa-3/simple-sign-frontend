@@ -9,6 +9,7 @@ import { useFormManage } from '../contexts/FormManageContext';
 import { usePage } from '../contexts/PageContext';
 import { useLoading } from '../contexts/LoadingContext';
 import { checkSearchData } from '../validation/formManage/searchSchema';
+import { getAuthrity } from '../utils/getUser';
 
 export default function FormManagePage() {
   const [formListData, setFormListData] = useState([]);
@@ -44,6 +45,10 @@ export default function FormManagePage() {
         return res.json();
       })
       .then((data) => {
+        if (getAuthrity() === '1') {
+          data = [{ id: 0, name: '전체' }, ...data];
+        }
+        console.log(getAuthrity(), data);
         setSearchData({ ...searchData, compId: data[0].id });
         setSetData({ ...setData, compList: data });
       })

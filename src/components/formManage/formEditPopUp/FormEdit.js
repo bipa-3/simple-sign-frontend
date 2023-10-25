@@ -26,7 +26,7 @@ export default function FormEdit({ data, dataHandler, curForm, isModalOpen }) {
       let buttonTag = ReactHtmlParser(ele.formListTag).props.className.split(
         ' '
       )[0];
-      ele.status = curForm.includes(buttonTag) ? true : false;
+      ele.status = curForm.includes(buttonTag + ' box') ? true : false;
       return ele;
     });
   };
