@@ -33,18 +33,23 @@ export default function FormShortCut() {
 
   return (
     <div className={styled.container}>
-      {shorCutBtns.map((ele, index) => {
-        console.log(ele, index);
-        return (
-          <Link
-            key={index}
-            to={`./FL/${ele.formCode}`}
-            className={styled.shortCutBtn}
-          >
-            <RecommentContent icon={<GrDocumentText />} name={ele.formName} />
-          </Link>
-        );
-      })}
+      {shorCutBtns.length > 0
+        ? shorCutBtns.map((ele, index) => {
+            console.log(ele, index);
+            return (
+              <Link
+                key={index}
+                to={`./FL/${ele.formCode}`}
+                className={styled.shortCutBtn}
+              >
+                <RecommentContent
+                  icon={<GrDocumentText />}
+                  name={ele.formName}
+                />
+              </Link>
+            );
+          })
+        : null}
     </div>
   );
 }
