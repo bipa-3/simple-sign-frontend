@@ -24,9 +24,9 @@ const detailSearchInitState = {
   searchDept: '',
   searchWriter: '',
   searchApprovUser: '',
-  searchApprovState: '',
+  searchApprovState: null,
   searchDocForm: '',
-  searchDocNumber: '',
+  searchDocNumber: null,
 };
 
 const approvalDocCount = {

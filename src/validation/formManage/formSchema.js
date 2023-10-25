@@ -17,6 +17,7 @@ const formCreateSchema = object().shape({
   status: number()
     .required('사용여부는 필수 선택 사항입니다.')
     .integer('사용여부는 정수여야 합니다.'),
+  formExplain: string().max(50, '양식설명은 최대 50글자입니다.'),
 });
 
 const formUpdateSchema = object().shape({
@@ -31,6 +32,7 @@ const formUpdateSchema = object().shape({
   status: number()
     .required('사용여부는 필수 선택 사항입니다.')
     .integer('사용여부는 정수여야 합니다.'),
+  formExplain: string().max(50, '양식설명은 최대 50글자입니다.'),
 });
 
 const checkFormCreateData = (data) => {

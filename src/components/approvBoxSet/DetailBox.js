@@ -23,12 +23,13 @@ const commonDataStyle = {
 };
 
 function DetailBox() {
-  const { state } = useApprovalBoxManage();
-  const { showLoading, hideLoading } = useLoading();
+  const { state, setApprovalBoxState, setApprovalBoxState2 } =
+    useApprovalBoxManage();
   const boxId = state.boxId;
   const [menuOption, setMenuOption] = useState('T');
   const [useStatus, setUseStatus] = useState(1);
   const [data, setData] = useState([]);
+  const { showLoading, hideLoading } = useLoading();
 
   const handleUseStatusChange = (event) => {
     setUseStatus(event.target.value);
@@ -55,12 +56,25 @@ function DetailBox() {
         showLoading();
         const response = await getBoxDetail(parsedBoxId);
         setData(response.data);
-        console.log(response.data);
+
         if (response.data.length > 0) {
+          const boxDetail = response.data[0];
+
           setUseStatus(
-            response.data[0].approvalBoxUsedStatus === 1 ? '사용' : '미사용'
+            boxDetail.approvalBoxUsedStatus === 1 ? '사용' : '미사용'
           );
-          setMenuOption(response.data[0].menuUsingRange);
+          setMenuOption(boxDetail.menuUsingRange);
+
+          // Update the approvalBoxState with the fetched data
+          setApprovalBoxState2((prevState) => ({
+            ...prevState,
+            approvalBoxId: boxDetail.approvalBoxId,
+            compId: boxDetail.compId,
+            approvalBoxName: boxDetail.approvalBoxName,
+            approvalBoxUsedStatus: boxDetail.approvalBoxUsedStatus,
+            menuUsingRange: boxDetail.menuUsingRange,
+            sortOrder: boxDetail.sortOrder,
+          }));
           hideLoading();
         }
       } catch (error) {
@@ -70,6 +84,11 @@ function DetailBox() {
 
     fetchData();
   }, [state.boxId]);
+
+  useEffect(() => {
+    setUseStatus('사용');
+    setMenuOption('T');
+  }, [state.count]);
 
   if (isNaN(boxId)) {
     return (
@@ -114,7 +133,6 @@ function DetailBox() {
             commonCellStyle={commonCellStyle}
             commonDataStyle={commonDataStyle}
             compId={boxDetail.compId}
-            boxId={boxId}
           />
           <BoxName
             commonCellStyle={commonCellStyle}
@@ -144,7 +162,8 @@ function DetailBox() {
             commonCellStyle={commonCellStyle}
             commonDataStyle={commonDataStyle}
             handleInputChange={handleInputChange}
-            boxName={boxDetail.sortOrder}
+            sortOrder={boxDetail.sortOrder}
+            boxId={boxId}
           />
         </React.Fragment>
       ))}

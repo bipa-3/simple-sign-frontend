@@ -21,11 +21,11 @@ function RemainSearchDetail() {
   const viewItems = viewItemsString ? viewItemsString.split(',') : [];
 
   const docStatus = [
-    { name: '전체', value: '1' },
-    { name: '상신', value: '2' },
-    { name: '진행', value: '3' },
-    { name: '종결', value: '4' },
-    { name: '반려', value: '5' },
+    { id: '1', name: '전체', value: '1' },
+    { id: '2', name: '상신', value: '2' },
+    { id: '3', name: '진행', value: '3' },
+    { id: '4', name: '종결', value: '4' },
+    { id: '5', name: '반려', value: '5' },
   ];
   const OPTIONS = {
     pend: [

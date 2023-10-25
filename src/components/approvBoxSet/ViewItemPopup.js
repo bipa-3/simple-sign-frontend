@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import styled from '../../styles/pages/ApprovalBoxSetPage.module.css';
 import PopUp from '../common/PopUp';
 import GridViewRoundedIcon from '@mui/icons-material/GridViewRounded';
-import Button from '../common/Button';
 import { useApprovalBoxManage } from '../../contexts/ApprovalBoxManageContext';
+import PopUpFoot from '../common/PopUpFoot';
 
 function ViewItemPopup({ checkedItems, currentViewItems, onSave }) {
   const [selectAll, setSelectAll] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { approvalBoxState, setApprovalBoxState } = useApprovalBoxManage();
+  const { approvalBoxState, setApprovalBoxState, setApprovalBoxState2 } =
+    useApprovalBoxManage();
   const [savedItems, setSavedItems] = useState([]);
 
   const openModal = () => {
@@ -66,6 +67,13 @@ function ViewItemPopup({ checkedItems, currentViewItems, onSave }) {
     const newCheckboxStates = { ...checkboxStates };
     newCheckboxStates[itemName] = !newCheckboxStates[itemName];
     setCheckboxStates(newCheckboxStates);
+
+    // 모든 체크박스가 체크되어 있는지 확인
+    const allChecked = Object.values(newCheckboxStates).every(
+      (value) => value === true
+    );
+
+    setSelectAll(allChecked);
   };
 
   const handleSave = () => {
@@ -74,22 +82,43 @@ function ViewItemPopup({ checkedItems, currentViewItems, onSave }) {
       (itemName) => checkboxStates[itemName]
     );
     setSavedItems(selectedItems);
-    setApprovalBoxState({
-      ...approvalBoxState,
+    setApprovalBoxState((prevState) => ({
+      ...prevState,
       viewItems: selectedItems,
-    });
+    }));
+    setApprovalBoxState2((prevState) => ({
+      ...prevState,
+      viewItems: selectedItems,
+    }));
 
     onSave && onSave(selectedItems);
 
     closeModal();
   };
 
+  const submitBtn = [
+    {
+      label: '취소',
+      onClick: () => {
+        closeModal();
+      },
+      btnStyle: 'light_btn',
+    },
+    {
+      label: '반영',
+      onClick: () => {
+        handleSave();
+      },
+      btnStyle: 'blue_btn',
+    },
+  ];
+
   return (
     <PopUp
       label={<GridViewRoundedIcon style={{ fontSize: '20px' }} />}
       title="조회항목 선택"
       width="400px"
-      height="440px"
+      height="480px"
       isModalOpen={isModalOpen}
       openModal={openModal}
       closeModal={closeModal}
@@ -97,7 +126,7 @@ function ViewItemPopup({ checkedItems, currentViewItems, onSave }) {
       btnWidth="30px"
       btnHeihgt="30px"
       children={
-        <div>
+        <div style={{ height: '100%' }}>
           <div className={styled.viewItemContainer}>
             <div className={styled.viewItemList}>
               <div className={styled.viewitem}>
@@ -112,28 +141,28 @@ function ViewItemPopup({ checkedItems, currentViewItems, onSave }) {
                 <div className={styled.topViewItem}>조회항목</div>
               </div>
               {Object.keys(checkboxStates).map((itemName, index) => (
-                <div className={styled.viewitem} key={index}>
-                  <div className={styled.checkbox}>
-                    <input
-                      type="checkbox"
-                      value={itemName}
-                      checked={checkboxStates[itemName]}
-                      onChange={() => handleCheckboxChange(itemName)}
-                    />
+                <div className={styled.itemcontainer} key={index}>
+                  <div className={styled.viewitem}>
+                    <div className={styled.checkbox}>
+                      <input
+                        type="checkbox"
+                        value={itemName}
+                        checked={checkboxStates[itemName]}
+                        onChange={() => handleCheckboxChange(itemName)}
+                      />
+                    </div>
+                    <div
+                      className={styled.itemName}
+                      onClick={() => handleCheckboxChange(itemName)}
+                    >
+                      {itemName}
+                    </div>
                   </div>
-                  <div className={styled.itemName}>{itemName}</div>
                 </div>
               ))}
             </div>
           </div>
-          <div className={styled.submitBtn}>
-            <div style={{ marginRight: '10px' }}>
-              <Button label="확인" onClick={handleSave} btnStyle="blue_btn" />
-            </div>
-            <div>
-              <Button label="취소" onClick={closeModal} btnStyle="light_btn" />
-            </div>
-          </div>
+          <PopUpFoot buttons={submitBtn} />
         </div>
       }
     />

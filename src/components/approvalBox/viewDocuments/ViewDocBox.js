@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { usePage } from '../../../contexts/PageContext';
 import insertDocView from '../../../apis/approvalBoxAPI/insertDocView';
 import { useLoading } from '../../../contexts/LoadingContext';
+import { checkDocSearchData } from '../../../validation/ApprovalBoxManage/ApprovalDocSearchSchema';
 
 function ViewDocBox() {
   const { state, setState, detailSearchState } = useApprovalBox();
@@ -26,14 +27,56 @@ function ViewDocBox() {
   const viewItems = viewItemsString ? viewItemsString.split(',') : [];
   const { state: pageState, setState: setPageState } = usePage();
 
+  const navigate = useNavigate();
+
+  const handleItemClick = async (docId) => {
+    setState((prevState) => ({ ...prevState, isReadDoc: docId }));
+    navigate(`/AD?page=${docId}`);
+    if (viewItems.includes('reference')) {
+      try {
+        //클릭된 문서 ID를 state.docView 배열에 추가
+        if (!state.docView.includes(docId)) {
+          setState((prevState) => ({
+            ...prevState,
+            docView: [...prevState.docView, docId],
+          }));
+        }
+
+        await insertDocView(docId);
+      } catch (error) {
+        console.error('Error inserting document view:', error);
+      }
+    }
+  };
+
   const fetchData = async () => {
     showLoading();
     try {
       const offset = (page - 1) * 10;
-      const response = state.shouldFetchDocs
-        ? await detailSearchDocs(viewItems, 10, offset, detailSearchState)
-        : await getDocsList(viewItems, 10, offset, state.searchInput);
+      let response;
 
+      if (state.shouldFetchDocs) {
+        // 유효성 검사
+        try {
+          await checkDocSearchData(detailSearchState); // 여기에 await 키워드 추가
+        } catch (validationError) {
+          alert(validationError.message); // 유효성 검사 오류를 alert 창으로 띄웁니다.
+          hideLoading();
+          return; // 이후 코드 실행을 중지하고 함수를 종료합니다.
+        }
+
+        // 검사 후 데이터 가져오기
+        response = await detailSearchDocs(
+          viewItems,
+          10,
+          offset,
+          detailSearchState
+        );
+      } else {
+        response = await getDocsList(viewItems, 10, offset, state.searchInput);
+      }
+
+      hideLoading();
       const { docList, count } = response.data;
 
       //조회 필터링
@@ -72,8 +115,8 @@ function ViewDocBox() {
 
       setTotalCount(count);
       setTotalPages(Math.ceil(count / 10));
-      hideLoading();
     } catch (error) {
+      hideLoading();
       console.error('Error fetching data:', error);
     }
   };
@@ -104,28 +147,6 @@ function ViewDocBox() {
       setState((prevState) => ({ ...prevState, rerender: false }));
     }
   }, [state.rerender]);
-
-  const navigate = useNavigate();
-
-  const handleItemClick = async (docId) => {
-    setState((prevState) => ({ ...prevState, isReadDoc: docId }));
-    navigate(`/AD?page=${docId}`);
-    if (viewItems.includes('reference')) {
-      try {
-        //클릭된 문서 ID를 state.docView 배열에 추가
-        if (!state.docView.includes(docId)) {
-          setState((prevState) => ({
-            ...prevState,
-            docView: [...prevState.docView, docId],
-          }));
-        }
-
-        await insertDocView(docId);
-      } catch (error) {
-        console.error('Error inserting document view:', error);
-      }
-    }
-  };
 
   return (
     <div className={styled.container}>

@@ -36,7 +36,6 @@ function ApprovalBoxList({ companyId }) {
     }));
     setApprovalBoxState((prevState) => ({
       ...prevState,
-      ...approvalBoxInit,
       approvalBoxId: boxId,
     }));
   }
@@ -64,7 +63,7 @@ function ApprovalBoxList({ companyId }) {
 
   useEffect(() => {
     fetchApprovalBoxList();
-  }, [companyId]);
+  }, [companyId, state.insertStatus]);
 
   return (
     <div>
@@ -101,14 +100,14 @@ function ApprovalBoxList({ companyId }) {
                 정말로 삭제하시겠습니까?
                 <div style={{ marginTop: '40px' }}>
                   <Button
-                    btnStyle="blue_btn"
-                    label="확인"
-                    onClick={() => deleteBtnHandler(item.approvalBoxId)}
-                  />
-                  <Button
                     btnStyle="gray_btn"
                     label="취소"
                     onClick={closeModal}
+                  />
+                  <Button
+                    btnStyle="blue_btn"
+                    label="확인"
+                    onClick={() => deleteBtnHandler(item.approvalBoxId)}
                   />
                 </div>
               </div>

@@ -140,7 +140,7 @@ export default function OrgChart({
       onClick: () => {
         closeModal();
       },
-      btnStyle: 'popup_gray_btn',
+      btnStyle: 'light_btn',
     },
     {
       label: '반영',
@@ -148,7 +148,7 @@ export default function OrgChart({
         confirmHandler(dataForParent);
         closeModal();
       },
-      btnStyle: 'popup_blue_btn',
+      btnStyle: 'blue_btn',
     },
   ];
 
@@ -218,7 +218,7 @@ export default function OrgChart({
 
   return (
     <PopUp
-      label={<RiOrganizationChart />}
+      label={<RiOrganizationChart style={{ fontSize: '20px' }} />}
       width={'1200px'}
       height={'700px'}
       title={'부서사업장사용자팝업'}
@@ -227,6 +227,7 @@ export default function OrgChart({
       closeModal={closeModal}
       btnWidth="30px"
       btnHeihgt="30px"
+      btnStyle={'grey_btn'}
       children={
         <>
           {getOrgChart()}

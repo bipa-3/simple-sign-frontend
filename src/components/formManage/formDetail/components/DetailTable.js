@@ -129,6 +129,18 @@ export default function DetailTable() {
       <DetailBox
         children={
           <>
+            <TitleBox title={'양식설명'} />
+            <InputBox
+              id={'formExplain'}
+              data={detailData.formExplain}
+              dataHandler={dataUpdateHandler}
+            />
+          </>
+        }
+      ></DetailBox>
+      <DetailBox
+        children={
+          <>
             <TitleBox title={'기본파일'} />
             <FileBox
               id={'defaultForm'}

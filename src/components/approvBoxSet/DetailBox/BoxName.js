@@ -1,21 +1,33 @@
 import React from 'react';
 import styled from '../../../styles/pages/ApprovalBoxSetPage.module.css';
 import { useApprovalBoxManage } from '../../../contexts/ApprovalBoxManageContext';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function BoxName(props) {
-  const [localBoxName, setLocalBoxName] = useState('');
-  const { approvalBoxState, setApprovalBoxState } = useApprovalBoxManage();
+  const { approvalBoxState, setApprovalBoxState, setApprovalBoxState2, state } =
+    useApprovalBoxManage();
+
+  // 초기 상태를 props.boxName으로 설정
+  const [localBoxName, setLocalBoxName] = useState(props.boxName || '');
 
   useEffect(() => {
-    setLocalBoxName(props.boxName); // props로 전달받은 boxName을 로컬 상태에 설정
+    if (state.count !== 0) {
+      setLocalBoxName('');
+    }
+  }, [state.count]);
+
+  useEffect(() => {
+    setLocalBoxName(props.boxName || '');
   }, [props.boxName]);
 
   const handleLocalInputChange = (e) => {
     const updatedName = e.target.value;
     setLocalBoxName(updatedName);
     setApprovalBoxState((prevState) => ({
+      ...prevState,
+      approvalBoxName: updatedName,
+    }));
+    setApprovalBoxState2((prevState) => ({
       ...prevState,
       approvalBoxName: updatedName,
     }));
@@ -33,7 +45,7 @@ function BoxName(props) {
         <div>
           <input
             type="text"
-            value={localBoxName || ''}
+            value={localBoxName}
             className={styled.inputstyle}
             onChange={handleLocalInputChange}
           />
@@ -42,4 +54,5 @@ function BoxName(props) {
     </div>
   );
 }
+
 export default BoxName;

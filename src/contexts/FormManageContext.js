@@ -27,6 +27,7 @@ const detailInitState = {
   mainForm: '',
   status: '',
   approvalLine: [],
+  formExplain: '',
 };
 
 //0: default, 1: create, 2: update,

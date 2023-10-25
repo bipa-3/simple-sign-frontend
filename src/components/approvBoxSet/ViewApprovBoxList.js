@@ -25,6 +25,7 @@ function ViewApprovalBoxList() {
       ...prevState,
       boxId: undefined,
       insertStatus: 1,
+      count: prevState.count + 1,
     }));
     setInitDataState((prevState) => ({
       //조직도
