@@ -1,16 +1,16 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 const initialState = {
-  isLoggedIn: false,
+  isLoggedIn: null,
 };
 
 const AppContext = createContext();
 
-function getCookie(name) {
-  const value = ';' + document.cookie;
-  const parts = value.split(';' + name + '=');
-  return parts.pop().split(';')[0];
-}
+// function getCookie(name) {
+//   const value = ';' + document.cookie;
+//   const parts = value.split(';' + name + '=');
+//   return parts.pop().split(';')[0];
+// }
 
 export const AppProvider = ({ children }) => {
   // const sessionCookie = getCookie('LOGIN_COOKIE');

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -25,6 +25,7 @@ import { usePage } from './contexts/PageContext';
 import UserInfo from './pages/UserInfo';
 import UpdateUserInfo from './pages/UpdateUserInfo';
 import checkUserAuthority from './utils/checkUserAuthority';
+import axios from 'axios';
 
 function getCookie(name) {
   const value = ';' + document.cookie;
@@ -34,83 +35,94 @@ function getCookie(name) {
 
 function AppContent() {
   const { state, setState } = useContext(AppContext);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
   const { state: pageState, setState: setPageState } = usePage();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const getname = queryParams.get('name');
 
-  useEffect(() => {
-    // 1. 초기 로딩 시 쿠키를 확인하여 초기 상태를 설정
-    const isLoggedIn = getCookie('LOGIN_COOKIE') === 'true';
-    setState({ isLoggedIn });
-  }, []);
+  //const [login, setLogin] = useState(); //appContext 리렌더링을 위한 상태값
 
-  // 다시 로딩 시에도 쿠키를 확인하여 로그인 상태를 유지하거나 다시 설정
+  let loginValue = getCookie('LOGIN_COOKIE');
+  //세션 확인 후 쿠키값 삭제 요청 api
   useEffect(() => {
-    const isLoggedIn = getCookie('LOGIN_COOKIE') === 'true';
-    if (!isLoggedIn) {
-      navigate('/login');
-    }
-  }, [document.cookie]);
+    const checkLoginStatus = async () => {
+      try {
+        const response = await axios(`http://localhost:8080/login/checkout`);
+        if (response.status === 200) {
+          setState({ ...state, isLoggedIn: getCookie('LOGIN_COOKIE') });
+        }
+      } catch (err) {
+        document.cookie =
+          'LOGIN_COOKIE=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        localStorage.clear();
+        setState({ ...state, isLoggedIn: false });
+        //setLogin(false);
+      }
+    };
+
+    checkLoginStatus();
+  }, [location.pathname]); //경로가 변경될 때 마다 요청을 보냄
 
   return (
     <>
-      <>
-        {state.isLoggedIn ? (
-          <>
-            <Header />
-            <Sidebar />
-            <div className="contentContainer">
-              <Titlebox
-                title={getname}
-                view={pageState.isApprovalBox ? 'approval' : ''}
-                componentProp={
-                  pageState.isApprovalBox ? <ApprovalRightHeader /> : ''
-                }
-              ></Titlebox>
-              <div className="contentsArea">
-                <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route
-                    path="/EAM"
-                    element={checkUserAuthority(2, <FormManagePage />)}
-                  />
-                  <Route path="/ABS" element={<ApprovalBoxSetPage />} />
-                  <Route path="/ABV" element={<ApprovalBoxViewPage />} />
-                  <Route
-                    path="/SAM"
-                    element={checkUserAuthority(2, <SeqManagePage />)}
-                  />
-                  <Route
-                    path="/FL/:id"
-                    element={checkUserAuthority(3, <FormListPage />)}
-                  />
-                  <Route
-                    path="/FL"
-                    element={checkUserAuthority(3, <FormListPage />)}
-                  />
-                  <Route
-                    path="/AD"
-                    element={checkUserAuthority(3, <ApprovalDetail />)}
-                  />
-                  <Route
-                    path="/ADD"
-                    element={checkUserAuthority(3, <ApprovalUpdatePage />)}
-                  />
-                  <Route path="/userinfo" element={<UserInfo />} />
-                  <Route path="/updateuser" element={<UpdateUserInfo />} />
-                </Routes>
-              </div>
+      {loginValue || state.isLoggedIn ? ( //로그인이 되었을 때 모든 페이지
+        <>
+          <Header />
+          <Sidebar />
+          <div className="contentContainer">
+            <Titlebox
+              title={getname}
+              view={pageState.isApprovalBox ? 'approval' : ''}
+              componentProp={
+                pageState.isApprovalBox ? <ApprovalRightHeader /> : ''
+              }
+            ></Titlebox>
+            <div className="contentsArea">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route
+                  path="/EAM"
+                  element={checkUserAuthority(2, <FormManagePage />)}
+                />
+                <Route
+                  path="/ABS"
+                  element={checkUserAuthority(2, <ApprovalBoxSetPage />)}
+                />
+                <Route path="/ABV" element={<ApprovalBoxViewPage />} />
+                <Route
+                  path="/SAM"
+                  element={checkUserAuthority(2, <SeqManagePage />)}
+                />
+                <Route
+                  path="/FL/:id"
+                  element={checkUserAuthority(3, <FormListPage />)}
+                />
+                <Route
+                  path="/FL"
+                  element={checkUserAuthority(3, <FormListPage />)}
+                />
+                <Route
+                  path="/AD"
+                  element={checkUserAuthority(3, <ApprovalDetail />)}
+                />
+                <Route
+                  path="/ADD"
+                  element={checkUserAuthority(3, <ApprovalUpdatePage />)}
+                />
+                <Route path="/userinfo" element={<UserInfo />} />
+                <Route path="/updateuser" element={<UpdateUserInfo />} />
+              </Routes>
             </div>
-          </>
-        ) : (
-          <Routes>
-            <Route path="/login" element={<Login />} />
-          </Routes>
-        )}
-      </>
-
+          </div>
+        </>
+      ) : (
+        //로그인이 되지 않았을 때 로그인 페이지
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/*" element={<Navigate to="/login" />} />
+        </Routes>
+      )}
       <Loading />
     </>
   );
