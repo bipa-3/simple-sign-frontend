@@ -39,7 +39,11 @@ export default function ReplyDetail({
     //권한가져오고 권한이 있으면 contentEditable로 바꿔주기
     getIsEditReply(replyId)
       .then((res) => {
-        setIsEdit(res);
+        if (res === true) {
+          setIsEdit(res);
+        } else {
+          alert('해당 메뉴를 사용할 수 있는 권한이 없습니다.');
+        }
       })
       .catch((e) => {
         console.error(e);
