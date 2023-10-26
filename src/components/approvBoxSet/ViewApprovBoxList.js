@@ -32,7 +32,15 @@ function ViewApprovalBoxList() {
       initData,
     }));
     setApprovalBoxState((prevState) => ({
-      approvalBoxInit,
+      ...prevState,
+      approvalBoxId: approvalBoxInit.approvalBoxId,
+      approvalBoxName: approvalBoxInit.approvalBoxName,
+      approvalBoxUsedStatus: approvalBoxInit.approvalBoxUsedStatus,
+      boxUseDept: approvalBoxInit.boxUseDept,
+      compId: approvalBoxInit.compId,
+      menuUsingRange: approvalBoxInit.menuUsingRange,
+      sortOrder: approvalBoxInit.sortOrder,
+      viewItems: approvalBoxInit.viewItems,
     }));
   };
 

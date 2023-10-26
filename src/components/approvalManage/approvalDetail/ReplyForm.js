@@ -5,6 +5,7 @@ import getReplyList from '../../../apis/approvalManageAPI/getReplyList';
 import insertLowerReply from '../../../apis/approvalManageAPI/insertLowerReply';
 import ReplyBox from './ReplyBox';
 import errorHandle from '../../../apis/errorHandle';
+import { checkReplyCreateData } from '../../../validation/approvalManage/replySchema';
 
 export default function ReplyForm({ approval_doc_id }) {
   const [replyList, setReplyList] = useState([]);
@@ -13,16 +14,44 @@ export default function ReplyForm({ approval_doc_id }) {
   const replyRefs = useRef([]);
   const upperReplyRef = useRef(null);
 
-  useEffect(() => {
-    //댓글리스트 가져오기
-    getReplyList(approval_doc_id)
-      .then((res) => {
-        setReplyList(res);
+  const handleInsertReply = (index) => {
+    const updatedShowReplyTextarea = [...showReplyTextarea]; // showReplyTextarea 배열 복사
+    updatedShowReplyTextarea[index] = true; // 원하는 index 위치의 값을 변경
+    setShowReplyTextarea(updatedShowReplyTextarea); // 업데이트된 배열을 상태로 설정
+  };
+  const handleReplyInsert = (upperReplyId, index, groupNo) => {
+    let content = '';
+    if (upperReplyId !== null) {
+      content = replyRefs.current[index].current.value;
+    } else {
+      content = upperReplyRef.current.value;
+    }
+
+    const data = {
+      approvalDocId: approval_doc_id,
+      upperReplyId: upperReplyId,
+      replyContent: content,
+      groupNo: groupNo,
+    };
+    checkReplyCreateData(data)
+      .then(() => {
+        insertLowerReply(data)
+          .then((res) => {
+            if (res.status === 200) {
+              alert('댓글이 작성되었습니다.');
+              getReply();
+            } else {
+              errorHandle(res);
+            }
+          })
+          .catch((e) => {
+            console.error(e);
+          });
       })
       .catch((e) => {
-        console.error(e);
+        alert(e.message);
       });
-  }, [approval_doc_id]);
+  };
 
   useEffect(() => {
     if (replyList.length !== 0) {
@@ -45,41 +74,20 @@ export default function ReplyForm({ approval_doc_id }) {
     }
   }, [replyList]);
 
-  const handleInsertReply = (index) => {
-    const updatedShowReplyTextarea = [...showReplyTextarea]; // showReplyTextarea 배열 복사
-    updatedShowReplyTextarea[index] = true; // 원하는 index 위치의 값을 변경
-    setShowReplyTextarea(updatedShowReplyTextarea); // 업데이트된 배열을 상태로 설정
-  };
-  const handleReplyInsert = (upperReplyId, index, groupNo) => {
-    let content = '';
-    //console.log(upperReplyId);
-    if (upperReplyId !== null) {
-      content = replyRefs.current[index].current.value;
-    } else {
-      content = upperReplyRef.current.value;
-    }
-
-    // console.log(content);
-    // console.log(upperReplyId);
-    const data = {
-      approvalDocId: approval_doc_id,
-      upperReplyId: upperReplyId,
-      replyContent: content,
-      groupNo: groupNo,
-    };
-    insertLowerReply(data)
+  const getReply = () => {
+    getReplyList(approval_doc_id)
       .then((res) => {
-        //console.log(res);
-        if (res.status === 200) {
-          alert('댓글이 작성되었습니다.');
-        } else {
-          errorHandle(res);
-        }
+        setReplyList(res);
       })
       .catch((e) => {
         console.error(e);
       });
   };
+
+  useEffect(() => {
+    //댓글리스트 가져오기
+    getReply();
+  }, [approval_doc_id]);
   return (
     <div className={styled.replyContainer}>
       <div className={styled.replyBox}>
@@ -104,14 +112,14 @@ export default function ReplyForm({ approval_doc_id }) {
                       <ReplyDetail
                         key={data.replyId}
                         replyId={data.replyId}
-                        user={data.orgUserId}
                         regdate={data.regDate}
                         content={data.replyContent}
-                        groupOrd={data.groupOrd}
-                        groupNo={data.groupNo}
+                        filePath={data.approvalFilePath}
+                        userName={data.userName}
                         index={index}
                         isSecondDept={false}
                         handleInsertReply={handleInsertReply}
+                        getReply={getReply}
                       />
                       <div
                         replyId={data.replyId}
@@ -140,10 +148,13 @@ export default function ReplyForm({ approval_doc_id }) {
                         user={data.orgUserId}
                         regdate={data.regDate}
                         content={data.replyContent}
+                        filePath={data.approvalFilePath}
+                        userName={data.userName}
                         groupNo={data.groupNo}
                         index={index}
                         groupOrd={data.groupOrd}
                         isSecondDept={true}
+                        getReply={getReply}
                       />
                     </>
                   );

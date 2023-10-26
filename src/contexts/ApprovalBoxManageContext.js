@@ -15,7 +15,7 @@ const approvalBoxInit = {
   approvalBoxUsedStatus: 1,
   menuUsingRange: 'T',
   boxUseDept: [],
-  sortOrder: '',
+  sortOrder: 0,
 };
 
 const approvalBoxInit2 = {
@@ -26,7 +26,7 @@ const approvalBoxInit2 = {
   approvalBoxUsedStatus: 1,
   menuUsingRange: 'T',
   boxUseDept: [],
-  sortOrder: '',
+  sortOrder: 0,
 };
 
 const detailInitState = {

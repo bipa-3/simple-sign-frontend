@@ -6,9 +6,14 @@ import styled from '../../styles/components/org/OrgBottomGrid.module.css';
 
 export default function OrgBottomGrid({ selectedRow, view, remove }) {
   const deptcolumns = [
-    { field: 'company', headerName: '회사', width: 150 },
-    { field: 'establishment', headerName: '사업장', width: 150 },
-    { field: 'department', headerName: '부서', width: 150 },
+    { field: 'company', headerName: '회사', width: 150, sortable: false },
+    {
+      field: 'establishment',
+      headerName: '사업장',
+      width: 150,
+      sortable: false,
+    },
+    { field: 'department', headerName: '부서', width: 150, sortable: false },
     {
       field: 'delete',
       headerName: '삭제',
@@ -22,16 +27,22 @@ export default function OrgBottomGrid({ selectedRow, view, remove }) {
   ];
 
   const usercolumns = [
-    { field: 'company', headerName: '회사', width: 150 },
-    { field: 'establishment', headerName: '사업장', width: 150 },
-    { field: 'department', headerName: '부서', width: 150 },
-    { field: 'position', headerName: '직급', width: 150 },
-    { field: 'grade', headerName: '직책', width: 150 },
-    { field: 'user', headerName: '사용자', width: 150 },
+    { field: 'company', headerName: '회사', width: 150, sortable: false },
+    {
+      field: 'establishment',
+      headerName: '사업장',
+      width: 150,
+      sortable: false,
+    },
+    { field: 'department', headerName: '부서', width: 150, sortable: false },
+    { field: 'position', headerName: '직급', width: 150, sortable: false },
+    { field: 'grade', headerName: '직책', width: 150, sortable: false },
+    { field: 'user', headerName: '사용자', width: 150, sortable: false },
     {
       field: 'delete',
       headerName: '삭제',
       width: 70,
+      sortable: false,
       renderCell: (params) => (
         <IconButton onClick={() => remove(params.row.id)}>
           <DeleteIcon />

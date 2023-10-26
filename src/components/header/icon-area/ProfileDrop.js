@@ -109,7 +109,7 @@ export default function Profile() {
                 </thead>
                 <tbody>
                   {userOrgList.map((item) => (
-                    <tr>
+                    <tr key={item.orgUserId}>
                       <td>
                         <Radio
                           checked={selectedValue == item.orgUserId}

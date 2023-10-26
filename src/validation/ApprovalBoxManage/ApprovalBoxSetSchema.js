@@ -1,19 +1,14 @@
-import { object, string, number, array } from 'yup';
-
-const checkBoxCreateData = (data) => {
-  console.log(data);
-  return docSearchSchema.validate(data);
-};
+import { object, string, number, array, test } from 'yup';
 
 const docSearchSchema = object().shape({
-  sortOrder: number()
-    .nullable()
-    .notRequired()
-    .integer('숫자만 입력 가능합니다.')
-    .test('max-length', '최대 길이는 5 입니다', (num) => {
+  sortOrder: number('숫자만 입력 가능합니다.').test(
+    'max-length',
+    '최대 길이는 5 입니다',
+    (num) => {
       if (num === null || num === undefined) return true; // undefined와 null 처리
       return String(num).length <= 5;
-    }),
+    }
+  ),
   viewItems: array()
     .min(1, '조회항목을 선택해 주세요')
     .test('unique', '중복된 항목이 있습니다', (list) => {
@@ -28,5 +23,10 @@ const docSearchSchema = object().shape({
 
   compId: number(),
 });
+
+const checkBoxCreateData = (data) => {
+  console.log(data);
+  return docSearchSchema.validate(data);
+};
 
 export { checkBoxCreateData };

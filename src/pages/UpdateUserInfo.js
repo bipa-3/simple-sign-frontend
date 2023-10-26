@@ -13,6 +13,7 @@ import DaumPostcode from 'react-daum-postcode';
 import Radio from '@mui/material/Radio';
 import DefaultSign from '../components/userinfo/DefaultSign';
 import styled from '../styles/pages/UpdateUserInfo.module.css';
+import axiosErrorHandle from '../apis/error/axiosErrorHandle';
 
 export default function UpdateUserInfo() {
   const location = useLocation();
@@ -154,7 +155,8 @@ export default function UpdateUserInfo() {
           closeModal();
         }
       })
-      .catch(() => {
+      .catch((err) => {
+        axiosErrorHandle(err);
         alert('비밀번호 변경에 실패했습니다. 다시 입력해주세요.');
       });
   };
@@ -234,6 +236,7 @@ export default function UpdateUserInfo() {
         }
       })
       .catch((error) => {
+        axiosErrorHandle(error);
         console.log(error);
       });
   };

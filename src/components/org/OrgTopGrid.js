@@ -4,18 +4,18 @@ import styled from '../../styles/components/org/OrgTopGrid.module.css';
 import { getGridView } from '../../apis/orgAPI/getGridView';
 
 const deptcolumns = [
-  { field: 'company', headerName: '회사', width: 150 },
-  { field: 'establishment', headerName: '사업장', width: 150 },
-  { field: 'department', headerName: '부서', width: 150 },
+  { field: 'company', headerName: '회사', width: 150, sortable: false },
+  { field: 'establishment', headerName: '사업장', width: 150, sortable: false },
+  { field: 'department', headerName: '부서', width: 150, sortable: false },
 ];
 
 const usercolumns = [
-  { field: 'company', headerName: '회사', width: 150 },
-  { field: 'establishment', headerName: '사업장', width: 150 },
-  { field: 'department', headerName: '부서', width: 150 },
-  { field: 'position', headerName: '직급', width: 150 },
-  { field: 'grade', headerName: '직책', width: 150 },
-  { field: 'user', headerName: '사용자', width: 150 },
+  { field: 'company', headerName: '회사', width: 150, sortable: false },
+  { field: 'establishment', headerName: '사업장', width: 150, sortable: false },
+  { field: 'department', headerName: '부서', width: 150, sortable: false },
+  { field: 'position', headerName: '직급', width: 150, sortable: false },
+  { field: 'grade', headerName: '직책', width: 150, sortable: false },
+  { field: 'user', headerName: '사용자', width: 150, sortable: false },
 ];
 
 export default function OrgTopGrid({

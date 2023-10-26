@@ -111,7 +111,7 @@ export default function ApprovalDetail() {
       .then((approvalRes) => {
         if (approvalRes.status === 200) {
           alert(`결재가 ${mode}되었습니다.`);
-          getHasPermission();
+          window.location.reload();
         } else {
           errorHandle(approvalRes);
         }
@@ -214,7 +214,10 @@ export default function ApprovalDetail() {
                 ) : null}
               </div>
               {isTemporal ? null : (
-                <ReplyForm approval_doc_id={location.search.split('=')[1]} />
+                <>
+                  <hr></hr>
+                  <ReplyForm approval_doc_id={location.search.split('=')[1]} />
+                </>
               )}
             </>
           }

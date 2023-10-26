@@ -85,7 +85,7 @@ export default function DetailForm(props) {
     ) {
       getSign()
         .then((response) => {
-          console.log(response);
+          //console.log(response);
           setCustomSign(response.data);
         })
         .catch((err) => {

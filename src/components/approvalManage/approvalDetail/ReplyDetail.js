@@ -7,11 +7,11 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { styled as MUIStyled } from '@mui/material';
-import { json } from 'react-router-dom';
 import getIsEditReply from '../../../apis/approvalManageAPI/getIsEditReply';
 import deleteReply from '../../../apis/approvalManageAPI/deleteReply';
 import updateReply from '../../../apis/approvalManageAPI/updateReply';
 import errorHandle from '../../../apis/errorHandle';
+import { checkReplyCreateData } from '../../../validation/approvalManage/replySchema';
 
 const CustomButton = MUIStyled(Button)({
   width: '0.5em',
@@ -22,14 +22,14 @@ const CustomButton = MUIStyled(Button)({
 
 export default function ReplyDetail({
   replyId,
-  user,
   regdate,
   content,
-  groupOrd,
-  groupNo,
+  filePath,
+  userName,
   index,
   isSecondDept,
   handleInsertReply,
+  getReply,
 }) {
   const contentEditableRef = useRef(content);
   const [isEdit, setIsEdit] = useState(false);
@@ -51,6 +51,7 @@ export default function ReplyDetail({
       .then((res) => {
         if (res.status === 200) {
           alert('댓글이 삭제되었습니다.');
+          getReply();
         } else {
           errorHandle(res);
         }
@@ -66,17 +67,25 @@ export default function ReplyDetail({
     const data = {
       replyContent: editedContent,
     };
-    updateReply(replyId, data)
-      .then((res) => {
-        if (res.status === 200) {
-          alert('댓글이 수정되었습니다.');
-        } else {
-          errorHandle(res);
-        }
+    checkReplyCreateData(data)
+      .then(() => {
+        updateReply(replyId, data)
+          .then((res) => {
+            if (res.status === 200) {
+              getReply();
+              setIsEdit(false);
+              alert('댓글이 수정되었습니다.');
+            } else {
+              errorHandle(res);
+            }
+          })
+          .catch((e) => {
+            alert('댓글 수정 실패');
+            console.error(e);
+          });
       })
       .catch((e) => {
-        alert('댓글 수정 실패');
-        console.error(e);
+        alert(e.message);
       });
   };
 
@@ -104,7 +113,7 @@ export default function ReplyDetail({
     >
       {isSecondDept ? <div>ㄴ</div> : null}
       <div>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        <Avatar alt="프로필" src={filePath} />
       </div>
       <div style={{ flex: 1 }}>
         {' '}
@@ -117,7 +126,7 @@ export default function ReplyDetail({
         >
           <CardContent>
             <div className={styled.innerDisplay}>
-              <div style={{ float: 'left' }}>{user}</div>{' '}
+              <div style={{ float: 'left' }}>{userName}</div>{' '}
               <div style={{ float: 'right' }}>{regdate}</div>
             </div>
             <br />

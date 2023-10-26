@@ -15,8 +15,11 @@ const boxCreateSchema = object().shape({
     .typeError('결재상태는 숫자 형식이어야 합니다 .'),
   searchDocForm: string().nullable(),
   searchDocNumber: number()
-    .nullable()
-    .typeError('문서번호는 숫자 형식이어야 합니다 .'),
+    .transform((value, originalValue) => {
+      // originalValue가 빈 문자열인 경우 null로 변환
+      return originalValue === '' ? null : value;
+    })
+    .nullable(),
 });
 
 export { checkDocSearchData };
