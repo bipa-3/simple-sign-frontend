@@ -12,3 +12,9 @@
 .detailContainer {
   overflow: scroll;
 }
+
+.notnull {
+  color: red;
+  padding-right: 3px;
+  font-size: 14px;
+}

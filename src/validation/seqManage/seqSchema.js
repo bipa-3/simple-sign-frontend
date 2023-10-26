@@ -8,7 +8,9 @@ const scopeSchema = object().shape({
 const seqCreateSchema = object().shape({
   // code: number().required('선택된 채번번호가 없습니다.'),
   compId: number().required('회사번호는 필수 선택 사항입니다.'),
-  compName: string().max(20, '양식명은 필수 입력 사항입니다.'),
+  seqName: string()
+    .min(1, '채번명은 필수 입력 사항입니다.')
+    .max(20, '채번명은 최대 20자리까지 입력 가능합니다.'),
   deptScope: array().of(scopeSchema),
   formScope: array().of(scopeSchema),
   description: string().max(40, '설명은 최대 40자까지 입력 가능합니다.'),
@@ -25,7 +27,9 @@ const seqCreateSchema = object().shape({
 const seqUpdateSchema = object().shape({
   // code: number().required('선택된 채번번호가 없습니다.'),
   compId: number().required('회사번호는 필수 선택 사항입니다.'),
-  compName: string().max(20, '양식명은 필수 입력 사항입니다.'),
+  seqName: string()
+    .min(1, '채번명은 필수 입력 사항입니다.')
+    .max(20, '채번명은 최대 20자리까지 입력 가능합니다.'),
   deptScope: array().of(scopeSchema),
   formScope: array().of(scopeSchema),
   description: string().max(40, '설명은 최대 40자까지 입력 가능합니다.'),

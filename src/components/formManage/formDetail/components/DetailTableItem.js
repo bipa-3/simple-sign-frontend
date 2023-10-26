@@ -72,12 +72,14 @@ const TitleBox = ({ title }) => {
 };
 
 const SelectBox = ({ id, data, dataHandler }) => {
+  console.log('test', data);
   const [selectedOption, setSelectedOption] = useState(data[0]);
-  data = data.map((ele, index) => {
-    ele.value = index + 1;
+  data = data.map((ele) => {
+    ele.value = ele.id;
     ele.label = ele.name;
     return ele;
   });
+  console.log('test1', data);
   return (
     <div className={styled.dataBox}>
       <Select

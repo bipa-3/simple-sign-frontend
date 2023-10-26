@@ -58,7 +58,9 @@ export default function DetailTable() {
             {flagData === 1 ? (
               <SelectBox
                 id={'compId'}
-                data={setData.compList}
+                data={setData.compList.filter((ele) => {
+                  return ele.id > 0;
+                })}
                 dataHandler={dataUpdateHandler}
               />
             ) : (

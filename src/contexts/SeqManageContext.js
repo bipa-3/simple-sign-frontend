@@ -47,7 +47,10 @@ const SeqManageProvider = ({ children }) => {
     setFlagData(1);
     setDetailData({
       ...detailInitState,
-      compId: setData.compList[0].id,
+      compId:
+        setData.compList[0].id === 0
+          ? setData.compList[1].id
+          : setData.compList[0].id,
       compName: setData.compList[0].name,
     });
   };

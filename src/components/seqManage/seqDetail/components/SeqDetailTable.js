@@ -16,7 +16,6 @@ import getSeqItemList from '../../../../apis/commonAPI/getSeqItemList';
 import FormListPopUp from '../../popup/FormListPopUp';
 import { AiOutlineOrderedList } from 'react-icons/ai';
 import OrgChart from '../../../org/OrgChart';
-import { isObject } from '@mui/x-data-grid/internals';
 
 export default function SeqDetailTable() {
   const {
@@ -180,7 +179,9 @@ export default function SeqDetailTable() {
             {flagData === 1 ? (
               <SelectBox
                 id={'compId'}
-                data={setData.compList}
+                data={setData.compList.filter((ele) => {
+                  return ele.id > 0;
+                })}
                 dataHandler={dataUpdateHandler}
               />
             ) : (
@@ -197,7 +198,14 @@ export default function SeqDetailTable() {
       <DetailBox
         children={
           <>
-            <TitleBox title={'채번명'} />
+            <TitleBox
+              title={
+                <>
+                  <span className={styled.notnull}>*</span>
+                  {'채번명'}
+                </>
+              }
+            />
             <InputBox
               id={'seqName'}
               data={detailData.seqName}
@@ -276,7 +284,14 @@ export default function SeqDetailTable() {
       <DetailBox
         children={
           <>
-            <TitleBox title={'정렬순서'} />
+            <TitleBox
+              title={
+                <>
+                  <span className={styled.notnull}>*</span>
+                  {'정렬순서'}
+                </>
+              }
+            />
             <InputBox
               id={'sortOrder'}
               data={detailData.sortOrder}
@@ -288,7 +303,14 @@ export default function SeqDetailTable() {
       <DetailBox
         children={
           <>
-            <TitleBox title={'채번값 설정'} />
+            <TitleBox
+              title={
+                <>
+                  <span className={styled.notnull}>*</span>
+                  {'채번값 설정'}
+                </>
+              }
+            />
             <InputBox
               id={'seqList'}
               data={detailData.seqList}
