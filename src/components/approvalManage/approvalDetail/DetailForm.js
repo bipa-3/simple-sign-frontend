@@ -5,7 +5,7 @@ import DefaultSign from '../../userinfo/DefaultSign';
 import getApprovalDoc from '../../../apis/approvalManageAPI/getApprovalDoc';
 import deleteContentEditableError from '../../../apis/approvalManageAPI/deleteContentEditableError';
 import { useLoading } from '../../../contexts/LoadingContext';
-import { getSign } from '../../../apis/userInfoAPl/getSign';
+import { getSign, getApproverSign } from '../../../apis/userInfoAPl/getSign';
 import styled from '../../../styles/components/approvalManage/approvalDetail/DetailForm.module.css';
 import errorHandle from '../../../apis/errorHandle';
 
@@ -31,6 +31,7 @@ export default function DetailForm(props) {
       .then((res) => {
         if (res.status === 200) {
           return res.json().then((data) => {
+            console.log(data);
             setDefaultForm(data.defaultForm);
             setUserName(data.userName);
             setDeptName(data.deptName);
@@ -64,10 +65,9 @@ export default function DetailForm(props) {
   }, []);
 
   const renderApproval = (approval) => {
-    //console.log(approval);
     if (
       approval &&
-      (approval.approvalStatus === 'R' || approval.approvalStatus === 'A') &&
+      approval.approvalStatus === 'A' &&
       approval.signState === 0
     ) {
       return (
@@ -80,12 +80,11 @@ export default function DetailForm(props) {
       );
     } else if (
       approval &&
-      (approval.approvalStatus === 'R' || approval.approvalStatus === 'A') &&
+      approval.approvalStatus === 'A' &&
       approval.signState === 1
     ) {
-      getSign()
+      getApproverSign(approval.userId)
         .then((response) => {
-          //console.log(response);
           setCustomSign(response.data);
         })
         .catch((err) => {
@@ -96,6 +95,13 @@ export default function DetailForm(props) {
           <div>
             <img className={styled.custom_sign} src={customSign} alt="사인" />
           </div>
+          {approval.user}
+        </>
+      );
+    } else if (approval && approval.approvalStatus === 'R') {
+      return (
+        <>
+          <div className={styled.reject}>반려</div>
           {approval.user}
         </>
       );

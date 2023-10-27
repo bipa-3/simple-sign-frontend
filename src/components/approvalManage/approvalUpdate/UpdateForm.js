@@ -5,8 +5,6 @@ import SelectDate from '../approvalRegist/components/SelectDate';
 import SelectBox from '../../common/Selectbox';
 import { TinyEditor } from '../../common/TinyEditor';
 import styled from '../../../styles/components/approvalManage/approvalUpdate/UpdateForm.module.css';
-import PopUp from '../../common/PopUp';
-import PopUpFoot from '../../common/PopUpFoot';
 import OrgChart from '../../org/OrgChart';
 import getApprovalDoc from '../../../apis/approvalManageAPI/getApprovalDoc';
 import getSequenceList from '../../../apis/approvalManageAPI/getSequenceList';
@@ -17,8 +15,8 @@ import {
   AreaBox,
 } from '../../formManage/formDetail/components/DetailTableItem';
 import { useFormManage } from '../../../contexts/FormManageContext';
-import DefaultSign from '../../userinfo/DefaultSign';
 import errorHandle from '../../../apis/errorHandle';
+import { useNavigate } from 'react-router-dom';
 
 export default function UpdateForm({
   approval_doc_id,
@@ -34,6 +32,7 @@ export default function UpdateForm({
   setRecRef,
   setDocStatus,
 }) {
+  const navigate = useNavigate();
   const [default_form, setDefaultForm] = useState('');
   const [userName, setUserName] = useState('');
   const [deptName, setDeptName] = useState('');
@@ -109,10 +108,12 @@ export default function UpdateForm({
           });
         } else {
           errorHandle(res);
+          navigate('/');
         }
       })
       .catch((e) => {
         console.log(e);
+        navigate('/');
       })
       .finally(() => {
         hideLoading();

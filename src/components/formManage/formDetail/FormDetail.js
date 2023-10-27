@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import styled from '../../../styles/components/formManage/formDetail/FormDetail.module.css';
+import React, { useState } from 'react';
 import DetailTable from './components/DetailTable';
 import Button from '../../common/Button';
 import InnerBox from '../../common/InnerBox';
@@ -14,6 +13,7 @@ import {
   checkFormCreateData,
   checkFormUpdateData,
 } from '../../../validation/formManage/formSchema';
+import DetailTableDAL from './components/DetailTableDAL';
 
 export default function FormDetail({ searchHandler }) {
   const { detailData, flagData, createDetailData } = useFormManage();
@@ -22,11 +22,6 @@ export default function FormDetail({ searchHandler }) {
 
   const handleButtonClick = (buttonId) => {
     setActiveButton(buttonId);
-  };
-
-  //결재라인 핸들러
-  const dataHandler = (data) => {
-    console.log(data);
   };
 
   const createNewForm = () => {
@@ -121,15 +116,7 @@ export default function FormDetail({ searchHandler }) {
           activeButton={activeButton}
           handleButtonClick={handleButtonClick}
         ></FormDetailNav>
-        {activeButton === 1 ? (
-          <DetailTable />
-        ) : (
-          <DataList
-            rows={detailData.approvalLine}
-            columns={columns}
-            dataHandler={dataHandler}
-          />
-        )}
+        {activeButton === 1 ? <DetailTable /> : <DetailTableDAL />}
       </>
     );
   };

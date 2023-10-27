@@ -41,7 +41,7 @@ export default function FormListArea({ rows, searchHandler }) {
       })
       .then(([formDetailData, approvalLineData]) => {
         let approvalLineList = approvalLineData.map((ele, index) => {
-          ele.approvalKind = '결재기본라인';
+          ele.approvalKind = '결재(기본결재라인)';
           ele.id = index + 1;
           return ele;
         });
@@ -51,6 +51,8 @@ export default function FormListArea({ rows, searchHandler }) {
           ...formDetailData,
           compName: data.compName,
           status: formDetailData.status === true ? 1 : 0,
+          approvalLineStatus:
+            formDetailData.approvalLineStatus === true ? 1 : 0,
           approvalLine: approvalLineList,
         });
       })

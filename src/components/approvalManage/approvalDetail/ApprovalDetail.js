@@ -13,7 +13,6 @@ import deleteApprovalDoc from '../../../apis/approvalManageAPI/deleteApprovalDoc
 import { useLoading } from '../../../contexts/LoadingContext';
 import ReplyForm from './ReplyForm';
 import { usePage } from '../../../contexts/PageContext';
-import { useApp } from '../../../contexts/AppContext';
 import getHasApproval from '../../../apis/approvalManageAPI/getHasApproval';
 import getPermissionList from '../../../apis/approvalManageAPI/getPermissionList';
 import getHasUpdate from '../../../apis/approvalManageAPI/getHasUpdate';
@@ -32,7 +31,6 @@ export default function ApprovalDetail() {
   const [mode, setMode] = useState('');
   const { showLoading, hideLoading } = useLoading();
   const { state: pageState, setState: setPageState } = usePage();
-  const { state, setState } = useApp();
   const [hasPermission, setHasPermission] = useState(false);
   const [hasApproval, setHasApproval] = useState(false);
   const [hasUpdate, setHasUpdate] = useState(false);
@@ -59,7 +57,6 @@ export default function ApprovalDetail() {
 
   useEffect(() => {
     getHasPermission();
-    console.log(location.search.split('=')[1]);
   }, []);
 
   //권한목록 가져와서 해당 사용자가 있으면 버튼 노출
@@ -111,7 +108,7 @@ export default function ApprovalDetail() {
       .then((approvalRes) => {
         if (approvalRes.status === 200) {
           alert(`결재가 ${mode}되었습니다.`);
-          window.location.reload();
+          //window.location.reload();
         } else {
           errorHandle(approvalRes);
         }

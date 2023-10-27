@@ -6,7 +6,7 @@ export const columns = [
     width: 100,
     sortable: false,
   },
-  { field: 'compName', headerName: '회사', width: 100, sortable: false },
-  { field: 'deptName', headerName: '부서', width: 100, sortable: false },
-  { field: 'userName', headerName: '사원', width: 100, sortable: false },
+  { field: 'company', headerName: '회사', width: 100, sortable: false },
+  { field: 'department', headerName: '부서', width: 100, sortable: false },
+  { field: 'user', headerName: '사원', width: 100, sortable: false },
 ];

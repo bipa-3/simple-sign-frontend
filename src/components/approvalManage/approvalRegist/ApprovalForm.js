@@ -35,7 +35,6 @@ export default function ApprovalForm({
   fileNames,
   setFiles,
   setFileNames,
-  fileUpdateHandler,
 }) {
   const [sequence, setSequence] = useState([]);
   const [default_form, setDefaultForm] = useState('');
@@ -283,7 +282,6 @@ export default function ApprovalForm({
           fileNames={fileNames}
           setFiles={setFiles}
           setFileNames={setFileNames}
-          dataHandler={fileUpdateHandler}
         />
       </div>
 

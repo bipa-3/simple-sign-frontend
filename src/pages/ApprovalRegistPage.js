@@ -10,7 +10,6 @@ import errorHandle from '../apis/errorHandle';
 import { checkFormCreateData } from '../validation/approvalManage/approvalFormSchema';
 import { useParams } from 'react-router-dom';
 
-
 export default function ApprovalRegist(props) {
   const { id } = useParams();
   let status = props.form_code === parseInt(id) ? true : false;
@@ -71,16 +70,6 @@ export default function ApprovalRegist(props) {
   };
   const handleEnforcementTime = (newValue) => {
     setEnforceDate(newValue);
-  };
-
-  const fileUpdateHandler = (id, file) => {
-    console.log('fileUpdateHandler');
-    console.log(file.object);
-
-    const formData = new FormData();
-    formData.append('file', file.object);
-    console.log(files);
-    //insertApprovalDocFile(formData);
   };
 
   // const extractTableData = () => {
@@ -266,7 +255,6 @@ export default function ApprovalRegist(props) {
               fileNames={fileNames}
               setFiles={setFiles}
               setFileNames={setFileNames}
-              fileUpdateHandler={fileUpdateHandler}
             />
 
             <PopUpFoot buttons={BlueAndGrayBtn} />

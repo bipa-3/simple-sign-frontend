@@ -10,7 +10,6 @@ export default function FileBox({
   fileNames,
   setFiles,
   setFileNames,
-  dataHandler,
 }) {
   return (
     <div className={styled.container}>
@@ -33,7 +32,6 @@ export default function FileBox({
             fileNames={fileNames}
             setFiles={setFiles}
             setFileNames={setFileNames}
-            dataHandler={dataHandler}
           />
         </div>
       </div>

@@ -1,0 +1,9 @@
+.dalBox {
+  height: 100%;
+}
+
+.subBox {
+  display: flex;
+  justify-content: end;
+  padding: 5px;
+}

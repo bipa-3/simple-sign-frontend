@@ -2,14 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from '../../../styles/components/approvalManage/approvalRegist/DragDrop.module.css';
 import { AiOutlineFileAdd } from 'react-icons/ai';
 
-const DragDrop = ({
-  id,
-  files,
-  fileNames,
-  setFiles,
-  setFileNames,
-  dataHandler,
-}) => {
+const DragDrop = ({ id, files, fileNames, setFiles, setFileNames }) => {
   console.log(files);
   const fileId = useRef(0);
   const dragRef = useRef(null);
@@ -60,18 +53,26 @@ const DragDrop = ({
     e.stopPropagation();
 
     const droppedFiles = e.dataTransfer.files;
-    console.log(droppedFiles);
-    const newFiles = Array.from(droppedFiles).map((file) => ({
-      id: fileId.current++,
-      object: file,
-    }));
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
 
-    const newFileNames = Array.from(droppedFiles).map((file) => ({
-      id: fileId.current++,
-      name: file.name,
-    }));
-    setFileNames((prevFileNames) => [...prevFileNames, ...newFileNames]);
+    Array.from(droppedFiles).map((file) => {
+      if (file.size > 1024 * 1024 * 5) {
+        alert('파일은 5MB 이하만 삽입가능합니다.');
+      } else {
+        const newFile = {
+          id: fileId.current++,
+          object: file,
+        };
+
+        setFiles((prevFiles) => [...prevFiles, newFile]);
+
+        const newFileName = {
+          id: fileId.current++,
+          name: file.name,
+        };
+
+        setFileNames((prevFileNames) => [...prevFileNames, newFileName]);
+      }
+    });
 
     setIsDragging(false);
   };
@@ -95,29 +96,6 @@ const DragDrop = ({
 
     return () => resetDragEvents();
   }, []);
-
-  useEffect(() => {
-    getFileContent();
-  }, [files]);
-
-  const getFileContent = () => {
-    console.log(files);
-
-    files.map((file, index) => {
-      dataHandler(index, file);
-    });
-    // 모든 파일의 내용을 읽어온 뒤 dataHandler 함수를 호출
-    // Promise.all(readers)
-    //   .then((fileContents) => {
-    //     // fileContents는 [{ file: File, content: string }, ...] 형태의 배열
-    //     // dataHandler 함수를 사용하여 파일 내용을 처리하거나 저장
-    //     dataHandler(id, fileContents);
-    //   })
-    //   .catch((error) => {
-    //     // 에러 처리: 파일 읽기 중에 오류가 발생한 경우
-    //     console.error('파일 읽기 오류:', error);
-    //   });
-  };
 
   return (
     <div

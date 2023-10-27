@@ -132,6 +132,7 @@ export default function ApprovalUpdatePage() {
           console.log(res);
           if (res.status === 200) {
             alert('문서가 수정되었습니다');
+            navigate(`/AD?page=${location.search.split('=')[1]}`);
           } else {
             errorHandle(res);
           }
