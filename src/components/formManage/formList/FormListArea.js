@@ -8,9 +8,11 @@ import Button from '../../common/Button';
 import delForm from '../../../apis/commonAPI/delForm';
 import getDefaultApprovalLine from '../../../apis/commonAPI/getDefaultApprovalLine';
 import { useLoading } from '../../../contexts/LoadingContext';
+import getApprovalKind from '../../../apis/commonAPI/getApprovalKind';
 
 export default function FormListArea({ rows, searchHandler }) {
-  const { detailData, setDetailData, updateDetailData } = useFormManage();
+  const { detailData, setDetailData, updateDetailData, setData, setSetData } =
+    useFormManage();
   const { showLoading, hideLoading } = useLoading();
 
   const delHandler = () => {
@@ -35,11 +37,28 @@ export default function FormListArea({ rows, searchHandler }) {
 
   const dataHandler = (data) => {
     showLoading();
-    Promise.all([getFormDetail(data.id), getDefaultApprovalLine(data.id)])
-      .then(([formDetailRes, approvalLineRes]) => {
-        return Promise.all([formDetailRes.json(), approvalLineRes.json()]);
+    updateDetailData();
+    Promise.all([
+      getFormDetail(data.id),
+      getDefaultApprovalLine(data.id),
+      getApprovalKind(),
+    ])
+      .then(([formDetailRes, approvalLineRes, approvalKindList]) => {
+        return Promise.all([
+          formDetailRes.json(),
+          approvalLineRes.json(),
+          approvalKindList.json(),
+        ]);
       })
-      .then(([formDetailData, approvalLineData]) => {
+      .then(([formDetailData, approvalLineData, approvalKindList]) => {
+        setSetData({
+          ...setData,
+          approvalKindList: approvalKindList.map((ele) => {
+            ele.id = ele.id.toString().padStart(2, '0');
+            return ele;
+          }),
+        });
+
         let approvalLineList = approvalLineData.map((ele, index) => {
           ele.approvalKind = '결재(기본결재라인)';
           ele.id = index + 1;
@@ -55,9 +74,6 @@ export default function FormListArea({ rows, searchHandler }) {
             formDetailData.approvalLineStatus === true ? 1 : 0,
           approvalLine: approvalLineList,
         });
-      })
-      .then(() => {
-        updateDetailData();
       })
       .catch((err) => {
         console.error(err);

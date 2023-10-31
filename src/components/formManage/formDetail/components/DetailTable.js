@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   DetailBox,
   TitleBox,
@@ -27,6 +27,14 @@ export default function DetailTable() {
     setDetailData({ ...detailData, [id]: data });
   };
 
+  const compDataUpdateHandler = (id, data, label) => {
+    setDetailData({
+      ...detailData,
+      scope: [{ category: 'C', compId: data, company: label, useId: data }],
+      [id]: data,
+    });
+  };
+
   const scopeConfirm = (data) => {
     dataUpdateHandler('scope', data);
   };
@@ -49,6 +57,10 @@ export default function DetailTable() {
     { name: '미사용', value: false },
   ];
 
+  useEffect(() => {
+    console.log('detail:', detailData);
+  }, [detailData]);
+
   return (
     <div className={styled.detailContainer}>
       <DetailBox
@@ -61,7 +73,7 @@ export default function DetailTable() {
                 data={setData.compList.filter((ele) => {
                   return ele.id > 0;
                 })}
-                dataHandler={dataUpdateHandler}
+                dataHandler={compDataUpdateHandler}
               />
             ) : (
               <InputBox
@@ -96,7 +108,35 @@ export default function DetailTable() {
       <DetailBox
         children={
           <>
-            <TitleBox title={'공개범위'} />
+            <TitleBox title={'결재종류'} />
+            {flagData === 1 ? (
+              <SelectBox
+                id={'approvalKind'}
+                data={setData.approvalKindList || []}
+                dataHandler={dataUpdateHandler}
+              />
+            ) : (
+              <SelectBox
+                id={'approvalKind'}
+                data={setData.approvalKindList || []}
+                init={detailData.approvalKind}
+                dataHandler={dataUpdateHandler}
+              />
+            )}
+          </>
+        }
+      ></DetailBox>
+      <DetailBox
+        children={
+          <>
+            <TitleBox
+              title={
+                <>
+                  <span className={styled.notnull}>*</span>
+                  {'공개범위'}
+                </>
+              }
+            />
             <AreaBox
               id={'scope'}
               data={detailData.scope}

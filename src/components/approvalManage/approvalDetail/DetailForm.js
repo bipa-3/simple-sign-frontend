@@ -31,7 +31,7 @@ export default function DetailForm(props) {
       .then((res) => {
         if (res.status === 200) {
           return res.json().then((data) => {
-            console.log(data);
+            //console.log(data);
             setDefaultForm(data.defaultForm);
             setUserName(data.userName);
             setDeptName(data.deptName);
@@ -65,15 +65,19 @@ export default function DetailForm(props) {
   }, []);
 
   const renderApproval = (approval) => {
+    console.log(approval);
     if (
       approval &&
       approval.approvalStatus === 'A' &&
-      approval.signState === 0
+      approval.signFileId === 0
     ) {
       return (
         <>
           <div>
             <DefaultSign name={approval.user} />
+          </div>
+          <div className={styled.approvalDate}>
+            결재일:{approval.approvalDate}
           </div>
           {approval.user}
         </>
@@ -81,9 +85,9 @@ export default function DetailForm(props) {
     } else if (
       approval &&
       approval.approvalStatus === 'A' &&
-      approval.signState === 1
+      approval.signFileId !== 0
     ) {
-      getApproverSign(approval.userId)
+      getApproverSign(approval.signFileId)
         .then((response) => {
           setCustomSign(response.data);
         })
@@ -95,18 +99,54 @@ export default function DetailForm(props) {
           <div>
             <img className={styled.custom_sign} src={customSign} alt="사인" />
           </div>
+          <div className={styled.approvalDate}>
+            결재일:{approval.approvalDate}
+          </div>
           {approval.user}
         </>
       );
-    } else if (approval && approval.approvalStatus === 'R') {
+    } else if (
+      approval &&
+      approval.approvalStatus === 'R' &&
+      approval.signFileId === 0
+    ) {
+      return (
+        <div className={styled.container}>
+          <DefaultSign name={approval.user} />
+          <div className={styled.returnSticker}>반려</div>
+          <div className={styled.approvalDate}>
+            반려일:{approval.approvalDate}
+          </div>
+          {approval.user}
+        </div>
+      );
+    } else if (
+      approval &&
+      approval.approvalStatus === 'R' &&
+      approval.signFileId !== 0
+    ) {
+      getApproverSign(approval.signFileId)
+        .then((response) => {
+          setCustomSign(response.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       return (
         <>
-          <div className={styled.reject}>반려</div>
+          <div>
+            <img className={styled.custom_sign} src={customSign} alt="사인" />
+          </div>
+          <div className={styled.returnSticker}>반려</div>
+          {/* <div className={styled.reject}>반려</div> */}
+          <div className={styled.approvalDate}>
+            반려일:{approval.approvalDate}
+          </div>
           {approval.user}
         </>
       );
     } else if (approval) {
-      return approval.user;
+      return <>{approval.user}</>;
     }
   };
 
@@ -117,35 +157,39 @@ export default function DetailForm(props) {
           replace: (domNode) => {
             if (domNode.attribs && domNode.attribs.id == 'approval_line') {
               return (
-                <div id="approval_line">
-                  <table
-                    border={'1px solid'}
-                    style={{ width: '100%', borderCollapse: 'collapse' }}
-                  >
-                    <tr style={{ height: '20px' }}>
-                      <td>결재자1</td>
-                      <td>결재자2</td>
-                      <td>결재자3</td>
-                      <td>결재자4</td>
-                      <td>결재자5</td>
-                      <td>결재자6</td>
-                      <td>결재자7</td>
-                      <td>결재자8</td>
-                    </tr>
-                    <tr style={{ height: '70px' }}>
-                      {[...Array(8)].map((_, index) => (
-                        <td
-                          style={{
-                            textAlign: 'center',
-                          }}
-                          key={index}
-                        >
-                          {renderApproval(approval_line[index])}
-                        </td>
-                      ))}
-                    </tr>
-                  </table>
-                </div>
+                <table
+                  border={'1px solid'}
+                  style={{
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                    height: '100%',
+                  }}
+                >
+                  <tr style={{ height: '20px' }}>
+                    <td>결재자1</td>
+                    <td>결재자2</td>
+                    <td>결재자3</td>
+                    <td>결재자4</td>
+                    <td>결재자5</td>
+                    <td>결재자6</td>
+                    <td>결재자7</td>
+                    <td>결재자8</td>
+                  </tr>
+                  <tr>
+                    {[...Array(8)].map((_, index) => (
+                      <td
+                        style={{
+                          textAlign: 'center',
+                          width: '12.5%',
+                          height: '70px',
+                        }}
+                        key={index}
+                      >
+                        {renderApproval(approval_line[index])}
+                      </td>
+                    ))}
+                  </tr>
+                </table>
               );
             }
             if (domNode.attribs && domNode.attribs.id === 'doc_num') {

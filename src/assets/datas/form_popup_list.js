@@ -1,3 +1,4 @@
 export const columns = [
-  { field: 'formName', headerName: '양식명', width: 150, sortable: false },
+  { field: 'id', headerName: '코드', flex: 1, sortable: false },
+  { field: 'formName', headerName: '양식명', flex: 2, sortable: false },
 ];

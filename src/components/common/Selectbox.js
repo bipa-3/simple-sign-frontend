@@ -7,7 +7,9 @@ import { useState, useEffect } from 'react';
 
 //list는 외부에서 받아서 사용합니다.
 export default function SelectBox({ selectList, width, height, onChange }) {
-  const [selectedValue, setSelectedValue] = useState(''); // 초기값은 빈 문자열로 설정
+  const [selectedValue, setSelectedValue] = useState(
+    selectList.length > 0 ? selectList[0].seqCode : ''
+  );
 
   useEffect(() => {
     if (typeof onChange === 'function') {
@@ -22,7 +24,7 @@ export default function SelectBox({ selectList, width, height, onChange }) {
           id="demo-simple-select-helper"
           className={styled.selectBox}
           style={{ width: `${width}px`, height: `${height}px` }}
-          value={selectedValue} // 현재 선택된 값 설정
+          value={selectedValue}
           onChange={(event) => setSelectedValue(event.target.value)} // 값 변경 시 호출될 콜백 함수
         >
           {!selectList.isEmpty

@@ -6,8 +6,6 @@ import { useFormManage } from '../../../contexts/FormManageContext';
 import insertForm from '../../../apis/commonAPI/insertForm';
 import updateForm from '../../../apis/commonAPI/updateForm';
 import FormDetailNav from './components/FormDetailNav';
-import DataList from '../formList/DataList';
-import { columns } from '../../../assets/datas/form_approval_line';
 import { useLoading } from '../../../contexts/LoadingContext';
 import {
   checkFormCreateData,

@@ -30,7 +30,7 @@ export default function SeqDetailTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeptModalOpen, setIDeptModalOpen] = useState(false);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
-  const [gridData, setGridData] = useState({});
+  const [gridData, setGridData] = useState([]);
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -96,15 +96,20 @@ export default function SeqDetailTable() {
     }
   }, [detailData.seqString]);
 
+  useEffect(() => {
+    console.log('formListData: ', gridData);
+  }, [gridData]);
+
   const formConfirm = () => {
-    gridData.category = 'F';
-    gridData.useId = parseInt(gridData.id);
-    gridData.name = gridData.formName;
-    delete gridData.id;
-    delete gridData.formName;
-    detailData.formScope.push(gridData);
+    const result = gridData.map((ele) => {
+      ele.category = 'F';
+      ele.useId = parseInt(ele.id);
+      ele.name = ele.formName;
+      return ele;
+    });
     setDetailData({
       ...detailData,
+      formScope: [...result],
     });
   };
 
@@ -249,6 +254,7 @@ export default function SeqDetailTable() {
               dataHandler={formScopefilterHandler}
               children={
                 <PopUp
+                  title={'양식선택'}
                   label={<AiOutlineOrderedList />}
                   width={'400px'}
                   height={'600px'}

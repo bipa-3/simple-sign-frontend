@@ -9,24 +9,22 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import DataList from '../../formManage/formList/DataList';
 import { columns } from '../../../assets/datas/form_popup_list';
 import getFormListAll from '../../../apis/commonAPI/getFormListAll';
+import { useSeqManage } from '../../../contexts/SeqManageContext';
 
 export default function FormListPopUp({ setGridData }) {
   const [rows, setRows] = useState([]);
   const [filetedRows, setFiletedRows] = useState([]);
+  const { detailData } = useSeqManage();
 
   const searchDataHandler = (id, data) => {
-    setFiletedRows(
-      rows.filter((ele) => {
-        if (ele.include(data)) {
+    setFiletedRows([
+      ...rows.filter((ele) => {
+        if (ele.formName.includes(data)) {
           return true;
         }
         return false;
-      })
-    );
-  };
-  const gridDataHandler = (data) => {
-    console.log(data);
-    setGridData(data);
+      }),
+    ]);
   };
 
   useEffect(() => {
@@ -44,8 +42,8 @@ export default function FormListPopUp({ setGridData }) {
   }, []);
 
   return (
-    <>
-      <div
+    <div className={styled.formListContainer}>
+      {/* <div
         style={{
           display: 'flex',
           flexDirection: 'row',
@@ -66,12 +64,14 @@ export default function FormListPopUp({ setGridData }) {
           }
         />
         <AiOutlineSearch />
-      </div>
+      </div> */}
       <DataList
-        rows={filetedRows}
+        rows={rows}
         columns={columns}
-        dataHandler={gridDataHandler}
+        dataHandler={setGridData}
+        isCheckTable={true}
+        initData={detailData.formScope}
       />
-    </>
+    </div>
   );
 }

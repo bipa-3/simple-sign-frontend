@@ -9,6 +9,13 @@ import insertApprovalDoc from '../apis/approvalManageAPI/insertApprovalDoc';
 import errorHandle from '../apis/errorHandle';
 import { checkFormCreateData } from '../validation/approvalManage/approvalFormSchema';
 import { useParams } from 'react-router-dom';
+import dayjs from 'dayjs';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarRateIcon from '@mui/icons-material/StarRate';
+import { yellow } from '@mui/material/colors';
+import insertFavorites from '../apis/approvalManageAPI/insertFavorites';
+import deleteFavorites from '../apis/approvalManageAPI/deleteFavorites';
+import getFavorites from '../apis/approvalManageAPI/getFavorites';
 
 export default function ApprovalRegist(props) {
   const { id } = useParams();
@@ -30,28 +37,37 @@ export default function ApprovalRegist(props) {
   //register 데이터
   const [main_form, setMainForm] = useState('');
   const [sequence_code, setSequenceCode] = useState('');
-  const [drafting_time, setDraftingTime] = useState(moment());
-  const [enforce_date, setEnforceDate] = useState(moment());
+  const [drafting_time, setDraftingTime] = useState(dayjs(moment()));
+  const [enforce_date, setEnforceDate] = useState(dayjs(moment()));
   const divRef = useRef(null);
   const titleRef = useRef(null); //제목
   const [rec_ref, setRecRef] = useState([]); //수신참조
   const [org_use_list, setOrgUseId] = useState([]); //결재라인
   const [files, setFiles] = useState([]);
   const [fileNames, setFileNames] = useState([]);
+  const [clickStar, setClickStar] = useState(props.favorites);
 
   useEffect(() => {
     if (status) {
       openModal();
     }
-  }, []);
+    console.log(drafting_time);
+  }, [drafting_time]);
 
   const openModal = () => {
-    setIsModalOpen(true);
+    setIsModalOpen(true); //////////////??? 초기화 안됨..
   };
   const closeModal = () => {
     setFiles([]);
     setFileNames([]);
     setIsModalOpen(false);
+    setMainForm('');
+    titleRef.current = null;
+    setSequenceCode('');
+    setOrgUseId([]);
+    setRecRef([]);
+    setDraftingTime(dayjs(moment()));
+    setEnforceDate(dayjs(moment()));
   };
 
   const dataHandler = (data) => {
@@ -64,12 +80,6 @@ export default function ApprovalRegist(props) {
 
   const handleSelectBoxChange = (newValue) => {
     setSequenceCode(newValue);
-  };
-  const handleDraftingTime = (newValue) => {
-    setDraftingTime(newValue);
-  };
-  const handleEnforcementTime = (newValue) => {
-    setEnforceDate(newValue);
   };
 
   // const extractTableData = () => {
@@ -87,6 +97,16 @@ export default function ApprovalRegist(props) {
   //   });
   //   return data;
   // };
+
+  const handleClickStar = () => {
+    setClickStar(!clickStar);
+
+    if (clickStar) {
+      deleteFavorites(props.form_code);
+    } else if (clickStar === false) {
+      insertFavorites(props.form_code);
+    }
+  };
 
   const handleClick = (state) => {
     showLoading();
@@ -220,7 +240,7 @@ export default function ApprovalRegist(props) {
   ];
 
   return (
-    <>
+    <div className={styled.container}>
       <PopUp
         label={
           <div>
@@ -249,8 +269,10 @@ export default function ApprovalRegist(props) {
               dataHandler={dataHandler}
               editorHandler={editorHandler}
               handleSelectBoxChange={handleSelectBoxChange}
-              handleDraftingTime={handleDraftingTime}
-              handleEnforcementTime={handleEnforcementTime}
+              drafting_time={drafting_time}
+              setDraftingTime={setDraftingTime}
+              enforce_date={enforce_date}
+              setEnforceDate={setEnforceDate}
               files={files}
               fileNames={fileNames}
               setFiles={setFiles}
@@ -264,6 +286,13 @@ export default function ApprovalRegist(props) {
         openModal={openModal}
         closeModal={closeModal}
       ></PopUp>
-    </>
+      <div className={styled.star} onClick={handleClickStar}>
+        {clickStar ? (
+          <StarRateIcon sx={{ color: yellow[500] }} fontSize="large" />
+        ) : (
+          <StarBorderIcon sx={{ color: yellow[500] }} fontSize="large" />
+        )}
+      </div>
+    </div>
   );
 }

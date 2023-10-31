@@ -1,10 +1,13 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import styled from '../../../../styles/components/formManage/formDetail/components/DragDrop.module.css';
 import { AiOutlineFileAdd } from 'react-icons/ai';
+import { useFormManage } from '../../../../contexts/FormManageContext';
+import { saveAs } from 'file-saver';
 
 const DragDrop = ({ id, name, data, dataHandler }) => {
   const fileId = useRef(0);
   const dragRef = useRef(null);
+  const { detailData } = useFormManage();
 
   const [isDragging, setIsDragging] = useState(false);
   const [files, setFiles] = useState([]);
@@ -149,6 +152,13 @@ const DragDrop = ({ id, name, data, dataHandler }) => {
     }
   };
 
+  const downloadFile = () => {
+    console.log('files:', files[0].object);
+
+    const blob = new Blob([detailData[id]], { type: files[0].object.type });
+    saveAs(blob, files[0].object.name);
+  };
+
   useEffect(() => {
     getFileContent();
   }, [files]);
@@ -188,7 +198,9 @@ const DragDrop = ({ id, name, data, dataHandler }) => {
 
             return (
               <div key={id}>
-                <div>{name}</div>
+                <div onClick={downloadFile} className={styled.downBtn}>
+                  {name}
+                </div>
                 <div
                   className={styled.fileItemDelBtn}
                   onClick={() => handleFilterFile(id)}

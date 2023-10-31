@@ -3,8 +3,7 @@
   height: 100%;
 
   display: flex;
-  flex-direction: row;
-  gap: 10px;
+  flex-direction: column;
   margin-bottom: 51px;
   padding: 2px;
 }
@@ -20,4 +19,37 @@
 .editorArea {
   flex: 8;
   /* border: 1px solid #000; */
+}
+
+.optionsArea {
+  width: 100%;
+  height: 8%;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #fff4f4;
+  background-color: rgb(230, 245, 255);
+}
+
+.optionTitleBox {
+  flex: 1;
+  font-weight: bold;
+  display: flex;
+  justify-content: start;
+}
+.optionsBox {
+  flex: 9;
+  display: flex;
+  justify-content: end;
+}
+
+.contentArea {
+  width: 100%;
+  height: 92%;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }

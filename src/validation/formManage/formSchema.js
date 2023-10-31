@@ -11,9 +11,11 @@ const formCreateSchema = object().shape({
     .required('양식명은 필수 입력 사항입니다.')
     .min(3, '양식명은 최소 3글자입니다.')
     .max(20, '양식명은 최대 20글자입니다.'),
-  scope: array().of(scopeSchema),
-  mainForm: string().max(10000, '기본 파일이 최대 크기를 초과했습니다.'),
-  defaultForm: string().max(10000, '본문 파일이 최대 크기를 초과했습니다.'),
+  scope: array().required('공개범위는 필수 입력 사항입니다.').of(scopeSchema),
+  mainForm: string().max(10000, '본문 파일이 최대 크기를 초과했습니다.'),
+  defaultForm: string()
+    .min(1, '기본 파일은 필수항목입니다.')
+    .max(10000, '기본 파일이 최대 크기를 초과했습니다.'),
   status: number()
     .required('사용여부는 필수 선택 사항입니다.')
     .integer('사용여부는 정수여야 합니다.'),
@@ -27,8 +29,10 @@ const formUpdateSchema = object().shape({
     .min(3, '양식명은 최소 3글자입니다.')
     .max(20, '양식명은 최대 20글자입니다.'),
   scope: array().of(scopeSchema),
-  mainForm: string(),
-  defaultForm: string().min(1, '기본파일은 필수 입력 사항입니다.'),
+  mainForm: string().max(10000, '본문 파일이 최대 크기를 초과했습니다.'),
+  defaultForm: string()
+    .min(1, '기본 파일은 필수항목입니다.')
+    .max(10000, '기본 파일이 최대 크기를 초과했습니다.'),
   status: number()
     .required('사용여부는 필수 선택 사항입니다.')
     .integer('사용여부는 정수여야 합니다.'),

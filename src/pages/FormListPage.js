@@ -9,9 +9,11 @@ import getFormList from '../apis/approvalManageAPI/getFormList';
 import { usePage } from '../contexts/PageContext';
 import errorHandle from '../apis/errorHandle';
 import { useNavigate } from 'react-router-dom';
+import getFavorites from '../apis/approvalManageAPI/getFavorites';
 
 export default function FormListPage() {
   const [formList, setFormList] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const [searchContent, setSearchContent] = useState('');
   const { showLoading, hideLoading } = useLoading();
   const { state: pageState, setState: setPageState } = usePage();
@@ -39,6 +41,18 @@ export default function FormListPage() {
       .finally(() => {
         hideLoading();
       });
+
+    getFavorites()
+      .then((res) => {
+        let updateFavorites = [];
+        res.forEach((ele) => {
+          updateFavorites.push(ele.formCode);
+        });
+        setFavorites((prevFavorites) => [...prevFavorites, ...updateFavorites]);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   }, [searchContent]);
 
   const onSearch = (searchItem) => {
@@ -59,17 +73,29 @@ export default function FormListPage() {
         <InnerBox width="100%" height="100%" text="전체양식" font_size="18px">
           <div className={styled.innerBox}>
             {!formList.isEmpty
-              ? formList.map(({ formName, formExplain, formCode }) => {
-                  return (
+              ? formList.map(({ formName, formExplain, formCode }) =>
+                  favorites.includes(formCode) ? (
                     <ApprovalRegist
+                      key={formCode} // 반복 요소에는 고유한 키를 제공해야 합니다.
                       width="100%"
                       height="78px"
                       form_name={formName}
                       form_explain={formExplain}
                       form_code={formCode}
+                      favorites={true}
                     />
-                  );
-                })
+                  ) : (
+                    <ApprovalRegist
+                      key={formCode} // 반복 요소에는 고유한 키를 제공해야 합니다.
+                      width="100%"
+                      height="78px"
+                      form_name={formName}
+                      form_explain={formExplain}
+                      form_code={formCode}
+                      favorites={false}
+                    />
+                  )
+                )
               : null}
           </div>
         </InnerBox>

@@ -3,7 +3,6 @@ import styled from '../../../styles/components/approvalManage/approvalRegist/Dra
 import { AiOutlineFileAdd } from 'react-icons/ai';
 
 const DragDrop = ({ id, files, fileNames, setFiles, setFileNames }) => {
-  console.log(files);
   const fileId = useRef(0);
   const dragRef = useRef(null);
 
@@ -110,7 +109,6 @@ const DragDrop = ({ id, files, fileNames, setFiles, setFileNames }) => {
       />
 
       <div className={styled.display}>
-        {console.log(fileNames)}
         {fileNames.length > 0 ? (
           <>
             {fileNames.map((file, index) => (

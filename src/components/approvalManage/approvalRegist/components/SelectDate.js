@@ -9,34 +9,63 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import moment from 'moment';
 import { styled as MUIStyled } from '@mui/material';
 
-const CustomDatePicker = MUIStyled(
-  DatePicker,
-  TimePicker
-)({
-  marginTop: '10px',
+const CustomDatePicker = MUIStyled(DatePicker)({
   height: '60px',
+  display: 'grid',
+  placeItems: 'center',
   marginRight: '10px',
+  '& .MuiInputLabel-root ': {
+    marginTop: '10px',
+  },
   '& .MuiOutlinedInput-input': {
-    height: '0.3em',
+    height: '0.2em',
   },
 });
 
-export default function SelectDate({ handleSelectTimeChange, baseDate }) {
-  const [value, setValue] = useState(
-    baseDate !== null ? dayjs(baseDate) : dayjs(moment())
-  );
+const CustomTimePicker = MUIStyled(TimePicker)({
+  height: '60px',
+  marginRight: '10px',
+  display: 'grid',
+  placeItems: 'center',
+  '& .MuiInputLabel-root ': {
+    marginTop: '10px',
+  },
+  '& .MuiOutlinedInput-input': {
+    height: '0.2em',
+  },
+});
+
+export default function SelectDate({ value, setValue, baseDate }) {
+  const [shouldStartInterval, setShouldStartInterval] = useState(true);
+
+  const handleChange = (newValue) => {
+    console.log(newValue);
+    setShouldStartInterval(false);
+    setValue(newValue);
+  };
+
+  //baseDate가 없고 change가 안됐을 때에만 호출
+  useEffect(() => {
+    let intervalId;
+
+    if (shouldStartInterval && baseDate === null) {
+      intervalId = setInterval(() => {
+        setValue(dayjs(moment()));
+      }, 10000);
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [baseDate, setValue, shouldStartInterval]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <CustomDatePicker
-        label="날짜"
-        value={value}
-        onChange={(newValue) => handleSelectTimeChange(newValue)}
-      />
-      <CustomDatePicker
+      <CustomDatePicker label="날짜" value={dayjs(moment())} />
+      <CustomTimePicker
         label="시간"
-        value={value}
-        onChange={(newValue) => handleSelectTimeChange(newValue)}
+        value={value == null ? dayjs(moment()) : value}
+        onChange={(newValue) => handleChange(newValue)}
       />
     </LocalizationProvider>
   );

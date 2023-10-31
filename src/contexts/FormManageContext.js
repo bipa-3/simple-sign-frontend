@@ -14,6 +14,7 @@ const setInitState = {
     { name: '사용', id: 1 },
     { name: '미사용', id: 0 },
   ],
+  approvalKindList: [],
 };
 
 const detailInitState = {
@@ -29,6 +30,7 @@ const detailInitState = {
   approvalLineStatus: 0,
   approvalLine: [],
   formExplain: '',
+  approvalKind: '',
 };
 
 //0: default, 1: create, 2: update,
@@ -42,6 +44,10 @@ const FormManageProvider = ({ children }) => {
   const [detailData, setDetailData] = useState(detailInitState);
   const [flagData, setFlagData] = useState(flagInitState);
 
+  const dataInit = () => {
+    setDetailData({ ...detailInitState });
+  };
+
   const createDetailData = () => {
     setFlagData(1);
     setDetailData({
@@ -53,9 +59,19 @@ const FormManageProvider = ({ children }) => {
           : setData.compList[0].id,
       compName: setData.compList[0].name,
       status: 1,
+      approvalKind: setData.approvalKindList[0].id,
+      scope: [
+        {
+          category: 'C',
+          compId: setData.compList[1].id,
+          company: setData.compList[1].name,
+          useId: setData.compList[1].id,
+        },
+      ],
     });
   };
   const updateDetailData = () => {
+    dataInit();
     setFlagData(2);
   };
   const defaultDetailData = () => {

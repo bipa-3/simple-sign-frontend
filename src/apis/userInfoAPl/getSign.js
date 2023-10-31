@@ -13,6 +13,6 @@ export const getUpdateSign = () => {
   return api.get('/updateinfo/sign');
 };
 
-export const getApproverSign = (userId) => {
-  return api.get(`/userinfo/sign/${userId}`);
+export const getApproverSign = (signFileId) => {
+  return api.get(`/userinfo/sign/${signFileId}`);
 };

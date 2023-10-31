@@ -15,6 +15,7 @@ import {
 } from '../../formManage/formDetail/components/DetailTableItem';
 import { useFormManage } from '../../../contexts/FormManageContext';
 import FileBox from './FileBox';
+import getDefaultApprovalLine from '../../../apis/approvalManageAPI/getDefaultApprovalLine';
 
 export default function ApprovalForm({
   form_code,
@@ -29,8 +30,10 @@ export default function ApprovalForm({
   dataHandler,
   editorHandler,
   handleSelectBoxChange,
-  handleEnforcementTime,
-  handleDraftingTime,
+  drafting_time,
+  setDraftingTime,
+  enforce_date,
+  setEnforceDate,
   files,
   fileNames,
   setFiles,
@@ -76,7 +79,14 @@ export default function ApprovalForm({
   };
 
   useEffect(() => {
+    //수신참조 내역 넣기
+    setRecRef(detailData.scope);
+  }, [detailData]);
+
+  useEffect(() => {
     showLoading();
+    setOrgUseId('');
+    resetDetailData();
 
     //양식 상세조회
     getForm(form_code)
@@ -93,15 +103,12 @@ export default function ApprovalForm({
       setSequence(json);
     });
 
+    //기본결재라인 조회
+    getDefaultApprovalLine(form_code).then((res) => {
+      setOrgUseId(res);
+    });
+
     deleteContentEditableError();
-
-    //수신참조 내역 넣기
-    setRecRef(detailData.scope);
-  }, [form_code, detailData]);
-
-  useEffect(() => {
-    setOrgUseId('');
-    resetDetailData();
   }, []);
 
   return (
@@ -113,66 +120,52 @@ export default function ApprovalForm({
               if (domNode.attribs && domNode.attribs.id == 'approval_line') {
                 return (
                   <>
-                    <div id="approval_line">
-                      <table
-                        border={'1px solid'}
-                        style={{ width: '100%', borderCollapse: 'collapse' }}
-                        onClick={handleApprovalClick}
-                      >
-                        <tr style={{ height: '20px' }}>
-                          <td>결재자1</td>
-                          <td>결재자2</td>
-                          <td>결재자3</td>
-                          <td>결재자4</td>
-                          <td>결재자5</td>
-                          <td>결재자6</td>
-                          <td>결재자7</td>
-                          <td>결재자8</td>
-                        </tr>
-                        <tr style={{ height: '70px' }}>
-                          <td>
-                            {org_use_list.length > 0
-                              ? org_use_list[0].user
-                              : ''}
-                          </td>
-                          <td>
-                            {org_use_list.length > 1
-                              ? org_use_list[1].user
-                              : ''}
-                          </td>
-                          <td>
-                            {org_use_list.length > 2
-                              ? org_use_list[2].user
-                              : ''}
-                          </td>
-                          <td>
-                            {org_use_list.length > 3
-                              ? org_use_list[3].user
-                              : ''}
-                          </td>
-                          <td>
-                            {org_use_list.length > 4
-                              ? org_use_list[4].user
-                              : ''}
-                          </td>
-                          <td>
-                            {org_use_list.length > 5
-                              ? org_use_list[5].user
-                              : ''}
-                          </td>
-                          <td>
-                            {org_use_list.length > 6
-                              ? org_use_list[6].user
-                              : ''}
-                          </td>
-                          <td>
-                            {org_use_list.length > 7
-                              ? org_use_list[7].user
-                              : ''}
-                          </td>
-                        </tr>
-                      </table>
-                    </div>
+                    <table
+                      border={'1px solid'}
+                      style={{
+                        width: '100%',
+                        borderCollapse: 'collapse',
+                        height: '100%',
+                      }}
+                      onClick={handleApprovalClick}
+                    >
+                      <tr style={{ height: '20px' }}>
+                        <td>결재자1</td>
+                        <td>결재자2</td>
+                        <td>결재자3</td>
+                        <td>결재자4</td>
+                        <td>결재자5</td>
+                        <td>결재자6</td>
+                        <td>결재자7</td>
+                        <td>결재자8</td>
+                      </tr>
+                      <tr style={{ height: '70px' }}>
+                        <td>
+                          {org_use_list.length > 0 ? org_use_list[0].user : ''}
+                        </td>
+                        <td>
+                          {org_use_list.length > 1 ? org_use_list[1].user : ''}
+                        </td>
+                        <td>
+                          {org_use_list.length > 2 ? org_use_list[2].user : ''}
+                        </td>
+                        <td>
+                          {org_use_list.length > 3 ? org_use_list[3].user : ''}
+                        </td>
+                        <td>
+                          {org_use_list.length > 4 ? org_use_list[4].user : ''}
+                        </td>
+                        <td>
+                          {org_use_list.length > 5 ? org_use_list[5].user : ''}
+                        </td>
+                        <td>
+                          {org_use_list.length > 6 ? org_use_list[6].user : ''}
+                        </td>
+                        <td>
+                          {org_use_list.length > 7 ? org_use_list[7].user : ''}
+                        </td>
+                      </tr>
+                    </table>
                   </>
                 );
               }
@@ -189,7 +182,11 @@ export default function ApprovalForm({
               if (domNode.attribs && domNode.attribs.id === 'drafting_time') {
                 return (
                   <div className={styled.selectContainer}>
-                    <SelectDate handleSelectTimeChange={handleDraftingTime} />
+                    <SelectDate
+                      value={drafting_time}
+                      setValue={setDraftingTime}
+                      baseDate={null}
+                    />
                   </div>
                 );
               }
@@ -222,7 +219,9 @@ export default function ApprovalForm({
                     className={styled.selectContainer}
                   >
                     <SelectDate
-                      handleSelectTimeChange={handleEnforcementTime}
+                      value={enforce_date}
+                      setValue={setEnforceDate}
+                      baseDate={null}
                     />
                   </div>
                 );

@@ -92,7 +92,7 @@ export default function UpdateForm({
       .then((res) => {
         if (res.status === 200) {
           res.json().then((data) => {
-            //console.log(data);
+            console.log(data);
             setDefaultForm(data.defaultForm);
             setUserName(data.userName);
             setDeptName(data.deptName);

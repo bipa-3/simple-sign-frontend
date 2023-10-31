@@ -1,14 +1,19 @@
-.box {
-  background-color: #dfeff8;
-  border-radius: 10px;
-  margin-top: 10px;
+.container {
   display: grid;
-  grid-template-columns: 2fr 5fr;
+  grid-template-columns: 8fr 1fr;
   border: 0.5px solid #3bafda;
+  margin-top: 10px;
+  border-radius: 10px;
 }
 
-.box:hover {
+.container:hover {
   border: 1.5px solid rgb(59, 175, 218);
+}
+.box {
+  border-radius: 10px;
+  background-color: #dfeff8;
+  display: grid;
+  grid-template-columns: 2fr 5fr;
 }
 
 .title {
@@ -20,11 +25,15 @@
 }
 .content {
   background-color: white;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
+
   padding-left: 20px;
   padding-top: 30px;
   font-size: 16px;
   font-weight: bold;
   color: black;
+}
+
+.star {
+  margin-top: 20px;
+  margin-left: 40px;
 }
