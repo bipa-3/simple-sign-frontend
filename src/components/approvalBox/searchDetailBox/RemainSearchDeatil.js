@@ -29,18 +29,27 @@ function RemainSearchDetail() {
   ];
   const OPTIONS = {
     pend: [
-      { name: '기안일', value: '기안일' },
-      { name: '도착일', value: '도착일' },
+      { id: '기안일', name: '기안일', value: 1 },
+      { id: '도착일', name: '도착일', value: 2 },
     ],
     concluded: [
-      { name: '기안일', value: '기안일' },
-      { name: '결재일', value: '결재일' },
-      { name: '종결일', value: '종결일' },
+      { id: '기안일', name: '기안일', value: 1 },
+      { id: '결재일', name: '결재일', value: 3 },
+      { id: '종결일', name: '종결일', value: 4 },
+    ],
+    progress: [
+      { id: '기안일', name: '기안일', value: 1 },
+      { id: '결재일', name: '결재일', value: 3 },
+    ],
+    end: [
+      { id: '기안일', name: '기안일', value: 1 },
+      { id: '결재일', name: '결재일', value: 3 },
+      { id: '종결일', name: '종결일', value: 4 },
     ],
     reference: [
-      { name: '기안일', value: '기안일' },
-      { name: '도착일', value: '도착일' },
-      { name: '종결일', value: '종결일' },
+      { id: '기안일', name: '기안일', value: 1 },
+      { id: '도착일', name: '도착일', value: 2 },
+      { id: '종결일', name: '종결일', value: 4 },
     ],
   };
 
@@ -65,34 +74,24 @@ function RemainSearchDetail() {
   };
 
   const setDatename = () => {
-    if (viewItems.includes('pend')) {
+    if (
+      viewItems.includes('pend') ||
+      viewItems.includes('progress') ||
+      viewItems.includes('concluded') ||
+      viewItems.includes('reference') ||
+      viewItems.includes('end')
+    ) {
       return (
         <SelectComp
           dataHandler={handleSearchDate}
           options={optionlist()}
-          width="100"
-          height="30"
-          values={state.bottomSelectSortDate}
-        />
-      );
-    } else if (viewItems.includes('concluded')) {
-      return (
-        <SelectComp
-          dataHandler={handleSearchDate}
-          options={optionlist()}
-          width="100"
-          height="30"
-          values={state.bottomSelectSortDate}
-        />
-      );
-    } else if (viewItems.includes('reference')) {
-      return (
-        <SelectComp
-          dataHandler={handleSearchDate}
-          options={optionlist()}
-          width="100"
-          height="30"
-          values={state.bottomSelectSortDate}
+          width="64px"
+          height="30px"
+          values={
+            state.topSelectSortDate != ''
+              ? state.topSelectSortDate
+              : state.selectSortDate
+          }
         />
       );
     }

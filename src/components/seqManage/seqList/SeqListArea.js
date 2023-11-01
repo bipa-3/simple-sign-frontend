@@ -1,11 +1,11 @@
 import InnerBox from '../../common/InnerBox';
-import DataList from '../../formManage/formList/DataList';
+import DataList from '../../common/DataList';
 import { columns } from '../../../assets/datas/seq_manage_list';
 import React, { useEffect } from 'react';
 import Button from '../../common/Button';
-import getSeqDetail from '../../../apis/commonAPI/getSeqDetail';
+import getSeqDetail from '../../../apis/seqManageAPI/getSeqDetail';
 import { useSeqManage } from '../../../contexts/SeqManageContext';
-import delSeq from '../../../apis/commonAPI/delSeq';
+import delSeq from '../../../apis/seqManageAPI/delSeq';
 import { useLoading } from '../../../contexts/LoadingContext';
 
 export default function SeqListArea({ rows, searchHandler }) {

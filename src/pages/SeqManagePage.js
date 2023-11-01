@@ -6,7 +6,7 @@ import SeqSearchBox from '../components/seqManage/searchBox/SeqSearchBox';
 import SeqListArea from '../components/seqManage/seqList/SeqListArea';
 import getCompanyList from '../apis/commonAPI/getCompanyList';
 import { useSeqManage } from '../contexts/SeqManageContext';
-import getSeqAndCompList from '../apis/commonAPI/getSeqAndCompList';
+import getSeqAndCompList from '../apis/seqManageAPI/getSeqAndCompList';
 import { useLoading } from '../contexts/LoadingContext';
 import { checkSearchData } from '../validation/seqManage/searchSchema';
 import { getAuthrity } from '../utils/getUser';

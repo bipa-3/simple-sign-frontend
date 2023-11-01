@@ -1,6 +1,6 @@
 import styled from '../../../styles/components/formManage/formEdit/FormEdit.module.css';
 import FormItemList from './components/FormItemList';
-import getFormItem from '../../../apis/commonAPI/getFormItem';
+import getFormItem from '../../../apis/formManageAPI/getFormItem';
 import React, { useState, useEffect } from 'react';
 import { TinyEditor } from '../../common/TinyEditor';
 import ReactHtmlParser from 'html-react-parser';

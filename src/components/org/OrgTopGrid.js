@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DataList from '../formManage/formList/DataList';
+import DataList from '../common/DataList';
 import styled from '../../styles/components/org/OrgTopGrid.module.css';
 import { getGridView } from '../../apis/orgAPI/getGridView';
 

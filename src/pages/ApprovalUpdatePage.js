@@ -32,6 +32,9 @@ export default function ApprovalUpdatePage() {
   const [org_use_list, setOrgUseId] = useState([]); //결재라인
   const [docStatus, setDocStatus] = useState(''); //임시저장여부
 
+  const queryParams = new URLSearchParams(location.search);
+  const approvalDocId = queryParams.get('page');
+
   const handleSelectBoxChange = (newValue) => {
     setSequenceCode(newValue);
   };
@@ -49,7 +52,7 @@ export default function ApprovalUpdatePage() {
   };
 
   const handleCancel = () => {
-    navigate(`/AD?page=${location.search.split('=')[1]}`);
+    navigate(`/AD?page=${approvalDocId}&popup=true`);
   };
 
   const handleUpdate = (type) => {
@@ -127,12 +130,12 @@ export default function ApprovalUpdatePage() {
 
   const updateApprovalDocByType = (data, type) => {
     if (type === 'temporal') {
-      updateTemporalApprovalDoc(location.search.split('=')[1], data)
+      updateTemporalApprovalDoc(approvalDocId, data)
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
             alert('문서가 수정되었습니다');
-            navigate(`/AD?page=${location.search.split('=')[1]}`);
+            navigate(`/AD?page=${approvalDocId}&popup=true`);
           } else {
             errorHandle(res);
           }
@@ -142,7 +145,7 @@ export default function ApprovalUpdatePage() {
           hideLoading();
         });
     } else if (type === 'update') {
-      updateApprovalDoc(location.search.split('=')[1], data)
+      updateApprovalDoc(approvalDocId, data)
         .then((res) => {
           if (res.status === 200 && docStatus === 'T') {
             alert('문서가 상신되었습니다.');
@@ -172,7 +175,7 @@ export default function ApprovalUpdatePage() {
           children={
             <>
               <UpdateForm
-                approval_doc_id={location.search.split('=')[1]}
+                approval_doc_id={approvalDocId}
                 handleDraftingTime={handleDraftingTime}
                 handleEnforcementTime={handleEnforcementTime}
                 handleSelectBoxChange={handleSelectBoxChange}

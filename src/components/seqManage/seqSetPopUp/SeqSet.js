@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Title from '../../common/Title';
 import styled from '../../../styles/components/seqManage/seqSetPopUp/SeqSet.module.css';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
-import DataList from '../../formManage/formList/DataList';
+import DataList from '../../common/DataList';
 import { columns } from '../../../assets/datas/seq_popup_list';
 
 export default function SeqSet({ seqItems, seqList, setSeqList }) {

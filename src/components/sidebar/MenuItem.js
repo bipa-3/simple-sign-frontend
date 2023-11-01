@@ -36,6 +36,22 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
     수신참조내역: 'reference',
     반려내역: 'reject',
   };
+  useEffect(() => {
+    switch (currentPath) {
+      case '/ABV':
+        setPageState((prevState) => ({
+          ...prevState,
+          isApprovalBox: true,
+        }));
+        break;
+      default:
+        setPageState((prevState) => ({
+          ...prevState,
+          isApprovalBox: false,
+        }));
+        break;
+    }
+  }, [currentPath, setPageState]);
 
   useEffect(() => {
     if (!isSubMenuVisible[item.id - 1]) {
@@ -64,8 +80,16 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
       i === index ? true : false
     );
     if (name === '기안양식관리') {
+      setPageState((prevState) => ({
+        ...prevState,
+        isApprovalBox: false,
+      }));
       navigate(`/EAM?name=${name}`);
     } else if (name === '문서채번관리') {
+      setPageState((prevState) => ({
+        ...prevState,
+        isApprovalBox: false,
+      }));
       navigate(`/SAM?name=${name}`);
     } else if (name === '결재함설정') {
       navigate(`/ABS?name=${name}`);
@@ -132,22 +156,6 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
       navigate(`/ABV?viewItems=${viewItemsString}&name=${name}`);
     }
   };
-
-  useEffect(() => {
-    switch (currentPath) {
-      case '/ABV':
-        setPageState((prevState) => ({
-          ...prevState,
-          isApprovalBox: true,
-        }));
-        break;
-      default:
-        setPageState((prevState) => ({
-          ...prevState,
-          isApprovalBox: false,
-        }));
-    }
-  }, [currentPath]);
 
   return (
     <List className={styled.list}>

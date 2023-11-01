@@ -1,12 +1,12 @@
 import InnerBox from '../../common/InnerBox';
-import DataList from './DataList';
+import DataList from '../../common/DataList';
 import { columns } from '../../../assets/datas/form_manage_list';
-import getFormDetail from '../../../apis/commonAPI/getFormDetail';
+import getFormDetail from '../../../apis/formManageAPI/getFormDetail';
 import { useFormManage } from '../../../contexts/FormManageContext';
 import React, { useEffect } from 'react';
 import Button from '../../common/Button';
-import delForm from '../../../apis/commonAPI/delForm';
-import getDefaultApprovalLine from '../../../apis/commonAPI/getDefaultApprovalLine';
+import delForm from '../../../apis/formManageAPI/delForm';
+import getDefaultApprovalLine from '../../../apis/formManageAPI/getDefaultApprovalLine';
 import { useLoading } from '../../../contexts/LoadingContext';
 import getApprovalKind from '../../../apis/commonAPI/getApprovalKind';
 
@@ -28,7 +28,7 @@ export default function FormListArea({ rows, searchHandler }) {
         searchHandler();
       })
       .catch((err) => {
-        console.log(`데이터 삭제를 실패했습니다. [${err}]`);
+        alert(`데이터 삭제를 실패했습니다. [${err}]`);
       })
       .finally(() => {
         hideLoading();
@@ -83,6 +83,7 @@ export default function FormListArea({ rows, searchHandler }) {
       });
   };
 
+  // 검색된 리스트가 있으면 상세 검색
   useEffect(() => {
     if (rows.length > 0) {
       dataHandler(rows[0]);

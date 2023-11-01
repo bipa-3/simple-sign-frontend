@@ -4,35 +4,37 @@ import FormSearchBox from '../components/formManage/searchBox/FormSearchBox';
 import FormDetail from '../components/formManage/formDetail/FormDetail';
 import FormListArea from '../components/formManage/formList/FormListArea';
 import getCompanyList from '../apis/commonAPI/getCompanyList';
-import getFormAndCompList from '../apis/commonAPI/getFormAndCompList';
+import getFormAndCompList from '../apis/formManageAPI/getFormAndCompList';
 import { useFormManage } from '../contexts/FormManageContext';
 import { usePage } from '../contexts/PageContext';
 import { useLoading } from '../contexts/LoadingContext';
 import { checkSearchData } from '../validation/formManage/searchSchema';
 import { getAuthrity } from '../utils/getUser';
+import axiosErrorHandle from '../apis/error/axiosErrorHandle';
 
 export default function FormManagePage() {
   const [formListData, setFormListData] = useState([]);
-  const { searchData, setSearchData, setData, setSetData } = useFormManage();
+  const { searchData, setData, setSearchDataById, setSetDataById } =
+    useFormManage();
   const { showLoading, hideLoading } = useLoading();
   const { state, setState } = usePage();
 
   const searchFormData = () => {
     getFormAndCompList(searchData)
       .then((res) => {
-        if (!res.ok) {
+        if (!(res.status >= 200 && res.status < 300)) {
           throw new Error(res.status);
         }
         return res.json();
       })
       .then((data) => {
+        if (data.length < 0) {
+          alert('검색된 데이터가 없습니다.');
+        }
         setFormListData(data);
       })
       .catch((err) => {
-        if (err.message === '404') {
-          alert('검색된 양식가 없습니다.');
-          setFormListData({});
-        }
+        setFormListData([]);
       })
       .finally(() => {
         hideLoading();
@@ -48,12 +50,11 @@ export default function FormManagePage() {
         if (getAuthrity() === '1') {
           data = [{ id: 0, name: '전체' }, ...data];
         }
-        console.log(getAuthrity(), data);
-        setSearchData({ ...searchData, compId: data[0].id });
-        setSetData({ ...setData, compList: data });
+        setSearchDataById('compId', data[0].id);
+        setSetDataById('compList', data);
       })
       .catch((err) => {
-        console.error(err);
+        axiosErrorHandle(err);
       })
       .finally(() => {
         hideLoading();
@@ -78,8 +79,13 @@ export default function FormManagePage() {
 
     //회사명, 기본 데이터 셋팅
     setCompListData();
+
+    return () => {
+      setSearchDataById('status', 1);
+    };
   }, []);
 
+  //기본 항목 검색
   useEffect(() => {
     if (setData.compList.length > 0) {
       searchHandler();

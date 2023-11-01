@@ -38,6 +38,7 @@ function AppContent() {
   const { state: pageState, setState: setPageState } = usePage();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
+  const isPopup = queryParams.get('popup') === 'true';
   const getname = queryParams.get('name');
 
   let loginValue = getCookie('LOGIN_COOKIE');
@@ -64,9 +65,9 @@ function AppContent() {
   return (
     <>
       {loginValue || state.isLoggedIn ? ( //로그인이 되었을 때 모든 페이지
-        <>
-          <Header />
-          <Sidebar />
+        <div className={`App ${isPopup ? 'popup-mode' : ''}`}>
+          {!isPopup && <Header />}
+          {!isPopup && <Sidebar />}
           <div className="contentContainer">
             <Titlebox
               title={getname}
@@ -112,7 +113,7 @@ function AppContent() {
               </Routes>
             </div>
           </div>
-        </>
+        </div>
       ) : (
         //로그인이 되지 않았을 때 로그인 페이지
         <Routes>

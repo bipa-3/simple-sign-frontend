@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DataList from '../formManage/formList/DataList';
+import DataList from '../common/DataList';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import styled from '../../styles/components/org/OrgBottomGrid.module.css';

@@ -9,6 +9,7 @@ import getApprovalBoxList from '../../apis/approvalBoxAPI/getApprovalBoxList';
 import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
 import getDocumentsCount from '../../apis/approvalBoxAPI/getDocumentCount';
 import { getAuthrity } from '../../utils/getUser';
+import { usePage } from '../../contexts/PageContext';
 
 //추후 backend data변경예정
 const userData = [
@@ -57,6 +58,7 @@ function Sidebar() {
   const [isSubMenuVisible, setSubMenuVisible] = useState([false, false, false]);
   const { customBoxViewItemState, setCustomBoxViewItemState, setCount, state } =
     useApprovalBox();
+  const { state: pageState, setState: setPageState } = usePage();
 
   //결재분류함(커스텀) 데이터 받아오기
   useEffect(() => {
@@ -119,7 +121,7 @@ function Sidebar() {
     };
 
     fetchData();
-  }, [state.isReadDoc]);
+  }, [state.isReadDoc, state.approvalState, state.isReadDoc]);
 
   const authorityManage = (value) => {
     if (value == 'user') {
@@ -138,7 +140,11 @@ function Sidebar() {
 
   const navigate = useNavigate();
   const goApproval = function () {
-    navigate('/FL');
+    setPageState((prevState) => ({
+      ...prevState,
+      isApprovalBox: false,
+    }));
+    navigate(`/FL?name=${'결재하기'}`);
   };
 
   return (

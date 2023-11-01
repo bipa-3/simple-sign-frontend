@@ -13,7 +13,8 @@ import OrgChart from '../../../org/OrgChart';
 import styled from '../../../../styles/components/formManage/formDetail/components/DetailTable.module.css';
 
 export default function DetailTable() {
-  const { detailData, flagData, setDetailData, setData } = useFormManage();
+  const { detailData, flagData, setDetailData, setDetailDataById, setData } =
+    useFormManage();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -21,10 +22,6 @@ export default function DetailTable() {
   };
   const closeModal = () => {
     setIsModalOpen(false);
-  };
-
-  const dataUpdateHandler = (id, data) => {
-    setDetailData({ ...detailData, [id]: data });
   };
 
   const compDataUpdateHandler = (id, data, label) => {
@@ -36,7 +33,7 @@ export default function DetailTable() {
   };
 
   const scopeConfirm = (data) => {
-    dataUpdateHandler('scope', data);
+    setDetailDataById('scope', data);
   };
 
   const scopefilterHandler = (id, category, useId) => {
@@ -49,7 +46,7 @@ export default function DetailTable() {
     setDetailData({ ...detailData, [id]: filetedData });
   };
 
-  const buttons = [
+  const radioButtons = [
     {
       name: '사용',
       value: true,
@@ -79,7 +76,7 @@ export default function DetailTable() {
               <InputBox
                 id={'compId'}
                 data={detailData.compName}
-                dataHandler={dataUpdateHandler}
+                dataHandler={setDetailDataById}
                 disabled={true}
               />
             )}
@@ -100,7 +97,7 @@ export default function DetailTable() {
             <InputBox
               id={'formName'}
               data={detailData.formName}
-              dataHandler={dataUpdateHandler}
+              dataHandler={setDetailDataById}
             />
           </>
         }
@@ -113,14 +110,14 @@ export default function DetailTable() {
               <SelectBox
                 id={'approvalKind'}
                 data={setData.approvalKindList || []}
-                dataHandler={dataUpdateHandler}
+                dataHandler={setDetailDataById}
               />
             ) : (
               <SelectBox
                 id={'approvalKind'}
                 data={setData.approvalKindList || []}
                 init={detailData.approvalKind}
-                dataHandler={dataUpdateHandler}
+                dataHandler={setDetailDataById}
               />
             )}
           </>
@@ -164,9 +161,9 @@ export default function DetailTable() {
             <TitleBox title={'사용여부'} />
             <RadioBox
               id={'status'}
-              buttons={buttons}
+              buttons={radioButtons}
               data={detailData.status}
-              dataHandler={dataUpdateHandler}
+              dataHandler={setDetailDataById}
             ></RadioBox>
           </>
         }
@@ -178,7 +175,7 @@ export default function DetailTable() {
             <InputBox
               id={'formExplain'}
               data={detailData.formExplain}
-              dataHandler={dataUpdateHandler}
+              dataHandler={setDetailDataById}
             />
           </>
         }
@@ -198,7 +195,7 @@ export default function DetailTable() {
               id={'defaultForm'}
               name={'기본파일'}
               data={detailData.defaultForm}
-              dataHandler={dataUpdateHandler}
+              dataHandler={setDetailDataById}
             />
           </>
         }
@@ -211,7 +208,7 @@ export default function DetailTable() {
               id={'mainForm'}
               name={'본문파일'}
               data={detailData.mainForm}
-              dataHandler={dataUpdateHandler}
+              dataHandler={setDetailDataById}
             />
           </>
         }

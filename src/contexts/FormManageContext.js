@@ -44,8 +44,16 @@ const FormManageProvider = ({ children }) => {
   const [detailData, setDetailData] = useState(detailInitState);
   const [flagData, setFlagData] = useState(flagInitState);
 
-  const dataInit = () => {
+  const detailDataInit = () => {
     setDetailData({ ...detailInitState });
+  };
+
+  const searchDataInit = () => {
+    setDetailData({ ...searchInitState });
+  };
+
+  const setDataInit = () => {
+    setDetailData({ ...searchInitState });
   };
 
   const createDetailData = () => {
@@ -71,7 +79,7 @@ const FormManageProvider = ({ children }) => {
     });
   };
   const updateDetailData = () => {
-    dataInit();
+    detailDataInit();
     setFlagData(2);
   };
   const defaultDetailData = () => {
@@ -83,6 +91,18 @@ const FormManageProvider = ({ children }) => {
     setFlagData(0);
   };
 
+  const setDetailDataById = (id, data) => {
+    setDetailData({ ...detailData, [id]: data });
+  };
+
+  const setSearchDataById = (id, data) => {
+    setSearchData({ ...searchData, [id]: data });
+  };
+
+  const setSetDataById = (id, data) => {
+    setSetData({ ...setData, [id]: data });
+  };
+
   return (
     <FormManageContext.Provider
       value={{
@@ -90,6 +110,9 @@ const FormManageProvider = ({ children }) => {
         setSearchData,
         setData,
         setSetData,
+        setDetailDataById,
+        setSearchDataById,
+        setSetDataById,
         detailData,
         setDetailData,
         flagData,
@@ -97,6 +120,7 @@ const FormManageProvider = ({ children }) => {
         updateDetailData,
         defaultDetailData,
         resetDetailData,
+        searchDataInit,
       }}
     >
       {children}

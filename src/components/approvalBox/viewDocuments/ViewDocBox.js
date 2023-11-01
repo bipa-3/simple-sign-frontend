@@ -27,14 +27,28 @@ function ViewDocBox() {
   const viewItems = viewItemsString ? viewItemsString.split(',') : [];
   const { state: pageState, setState: setPageState } = usePage();
 
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === 'approvalState') {
+        const newValue = localStorage.getItem('approvalState');
+        console.log('받아온 스토리지 값 : ', newValue);
+        setState((prevState) => ({ ...prevState, approvalState: newValue }));
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [state]);
+
   const navigate = useNavigate();
 
   const handleItemClick = async (docId) => {
-    setState((prevState) => ({ ...prevState, isReadDoc: docId }));
-    navigate(`/AD?page=${docId}`);
     if (viewItems.includes('reference')) {
       try {
-        //클릭된 문서 ID를 state.docView 배열에 추가
+        // 클릭된 문서 ID를 state.docView 배열에 추가
         if (!state.docView.includes(docId)) {
           setState((prevState) => ({
             ...prevState,
@@ -45,8 +59,12 @@ function ViewDocBox() {
         await insertDocView(docId);
       } catch (error) {
         console.error('Error inserting document view:', error);
+        return;
       }
     }
+
+    const popupOptions = 'width=1200,height=700,left=100,top=100';
+    window.open(`/AD?page=${docId}&popup=true`, '_blank', popupOptions);
   };
 
   const fetchData = async () => {
@@ -62,7 +80,7 @@ function ViewDocBox() {
         } catch (validationError) {
           alert(validationError.message); // 유효성 검사 오류를 alert 창으로 띄웁니다.
           hideLoading();
-          return; // 이후 코드 실행을 중지하고 함수를 종료합니다.
+          return;
         }
 
         // 검사 후 데이터 가져오기
@@ -70,10 +88,17 @@ function ViewDocBox() {
           viewItems,
           10,
           offset,
-          detailSearchState
+          detailSearchState,
+          state.sortStatus
         );
       } else {
-        response = await getDocsList(viewItems, 10, offset, state.searchInput);
+        response = await getDocsList(
+          viewItems,
+          10,
+          offset,
+          state.searchInput,
+          state.sortStatus
+        );
       }
 
       hideLoading();
@@ -129,6 +154,8 @@ function ViewDocBox() {
     page,
     state.radioSortValue,
     state.isReadDoc,
+    state.sortStatus,
+    state.approvalState,
   ]);
 
   useEffect(() => {
@@ -156,7 +183,7 @@ function ViewDocBox() {
           {docData
             .filter(
               (docItem) =>
-                !(state.selectSortDate === '종결일' && docItem.endDate === null)
+                !(state.selectSortDate === 4 && docItem.endDate === null)
             )
             .map((docItem) => (
               <DocItem
@@ -164,16 +191,16 @@ function ViewDocBox() {
                 docNumber={docItem.approvalDocId}
                 formName={docItem.formName}
                 date={
-                  state.selectSortDate === '기안일'
+                  state.selectSortDate === 1
                     ? docItem.sendDate
-                    : state.selectSortDate === '도착일' &&
+                    : state.selectSortDate === 2 &&
                       viewItems.includes('reference')
                     ? docItem.sendDate
-                    : state.selectSortDate === '도착일'
+                    : state.selectSortDate === 2
                     ? docItem.receiveDate
-                    : state.selectSortDate === '종결일'
+                    : state.selectSortDate === 4
                     ? docItem.endDate
-                    : state.selectSortDate === '결재일'
+                    : state.selectSortDate === 3
                     ? docItem.approvalDate
                     : docItem.sendDate // 기본값을 기안일로 설정했습니다.
                 }
@@ -182,12 +209,12 @@ function ViewDocBox() {
                 docStatus={docItem.docStatus}
                 sendDepartDetail={docItem.deptName}
                 lastUser={
-                  docItem.docStatus === 'A' || docItem.docStatus === 'R'
-                    ? docItem.endUser
+                  docItem.docStatus === 'A' ||
+                  docItem.docStatus === 'R' ||
+                  docItem.docStatus === 'P'
+                    ? docItem.lastUser
                     : docItem.docStatus === 'W'
                     ? docItem.userName
-                    : docItem.docStatus === 'P'
-                    ? docItem.approver
                     : ''
                 }
                 isRead={

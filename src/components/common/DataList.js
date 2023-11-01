@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { useSeqManage } from '../../../contexts/SeqManageContext';
+import { useSeqManage } from '../../contexts/SeqManageContext';
 
 export default function DataList({
   columns,

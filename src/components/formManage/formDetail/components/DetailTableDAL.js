@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { columns } from '../../../../assets/datas/form_approval_line';
 import { useFormManage } from '../../../../contexts/FormManageContext';
-import DataList from '../../formList/DataList';
+import DataList from '../../../common/DataList';
 import { DetailBox, TitleBox, RadioBox } from './DetailTableItem';
 import styled from '../../../../styles/components/formManage/formDetail/components/DetailTableDAL.module.css';
 import OrgChart from '../../../org/OrgChart';
@@ -29,10 +29,6 @@ export default function DetailTableDAL() {
     });
     dataUpdateHandler('approvalLine', data);
   };
-
-  useEffect(() => {
-    console.log('my:', detailData);
-  }, [detailData]);
 
   //결재라인 핸들러
   const dataHandler = (data) => {

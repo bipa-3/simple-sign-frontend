@@ -23,6 +23,7 @@ import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import ContentPasteOffOutlinedIcon from '@mui/icons-material/ContentPasteOffOutlined';
 import AssignmentReturnOutlinedIcon from '@mui/icons-material/AssignmentReturnOutlined';
 import { green, red, grey } from '@mui/material/colors';
+import { useApprovalBox } from '../../../contexts/ApprovalBoxContext';
 
 export default function ApprovalDetail() {
   const navigate = useNavigate();
@@ -37,6 +38,10 @@ export default function ApprovalDetail() {
   const [hasDelete, setHasDelete] = useState(false);
   const [isTemporal, setIsTemporal] = useState(false);
   const [password, setPassword] = useState('');
+  const { state, setState } = useApprovalBox();
+
+  const queryParams = new URLSearchParams(location.search);
+  const approvalDocId = queryParams.get('page');
 
   const openModal = (mode) => {
     setIsModalOpen(true);
@@ -64,24 +69,24 @@ export default function ApprovalDetail() {
     if (!isTemporal) {
       //console.log(sessionStorage.getItem('user')); //해당 사용자 권한 가져오기
       //승인/반려 권한 가져오기
-      getPermissionList(location.search.split('=')[1]).then((res) => {
+      getPermissionList(approvalDocId).then((res) => {
         //console.log(res);
         setHasPermission(res);
       });
 
       //결재취소권한 가져오기
-      getHasApproval(location.search.split('=')[1]).then((res) => {
+      getHasApproval(approvalDocId).then((res) => {
         setHasApproval(res);
       });
     }
 
     //문서수정권한 가져오기
-    getHasUpdate(location.search.split('=')[1]).then((res) => {
+    getHasUpdate(approvalDocId).then((res) => {
       setHasUpdate(res);
     });
 
     //문서삭제권한 가져오기
-    getHasDelete(location.search.split('=')[1]).then((res) => {
+    getHasDelete(approvalDocId).then((res) => {
       setHasDelete(res);
     });
   };
@@ -95,11 +100,16 @@ export default function ApprovalDetail() {
         if (passwordRes.status === 200) {
           if (mode === '승인') {
             // 비밀번호가 일치하는 경우에만 결재 승인 수행
-            return insertApproval(location.search.split('=')[1]);
+            localStorage.setItem('approvalState', 'send');
+
+            return insertApproval(approvalDocId);
           } else if (mode === '반려') {
-            return insertReturn(location.search.split('=')[1]);
+            localStorage.setItem('approvalState', 'reject');
+
+            return insertReturn(approvalDocId);
           } else if (mode === '취소') {
-            return insertCancel(location.search.split('=')[1]);
+            localStorage.setItem('approvalState', 'cancel');
+            return insertCancel(approvalDocId);
           }
         } else {
           errorHandle(passwordRes);
@@ -145,11 +155,11 @@ export default function ApprovalDetail() {
   };
 
   const updateHandler = () => {
-    navigate(`/ADD?page=${location.search.split('=')[1]}`);
+    navigate(`/ADD?page=${approvalDocId}&popup=true`);
   };
 
   const deleteHandler = () => {
-    deleteApprovalDoc(location.search.split('=')[1])
+    deleteApprovalDoc(approvalDocId)
       .then((res) => {
         if (res.status === 200) {
           alert('문서가 삭제되었습니다.');
@@ -191,7 +201,7 @@ export default function ApprovalDetail() {
           children={
             <>
               <DetailForm
-                approval_doc_id={location.search.split('=')[1]}
+                approval_doc_id={approvalDocId}
                 setIsTemporal={setIsTemporal}
               />
               <div className={styled.updateAndDeleteBtn}>
@@ -213,7 +223,7 @@ export default function ApprovalDetail() {
               {isTemporal ? null : (
                 <>
                   <hr></hr>
-                  <ReplyForm approval_doc_id={location.search.split('=')[1]} />
+                  <ReplyForm approval_doc_id={approvalDocId} />
                 </>
               )}
             </>

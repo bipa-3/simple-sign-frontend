@@ -8,6 +8,8 @@ import { useLoading } from '../../../contexts/LoadingContext';
 import { getSign, getApproverSign } from '../../../apis/userInfoAPl/getSign';
 import styled from '../../../styles/components/approvalManage/approvalDetail/DetailForm.module.css';
 import errorHandle from '../../../apis/errorHandle';
+import downloadFile from '../../../apis/approvalManageAPI/downloadFile';
+import getFileNames from '../../../apis/approvalManageAPI/getFileNames';
 
 export default function DetailForm(props) {
   const navigate = useNavigate();
@@ -23,7 +25,35 @@ export default function DetailForm(props) {
   const [receiveRefOpt, setReceiveRefOpt] = useState('');
   const { showLoading, hideLoading } = useLoading();
   const [customSign, setCustomSign] = useState('');
+  const [files, setFiles] = useState([]);
 
+  const download = (filePath) => {
+    showLoading();
+    downloadFile(filePath)
+      .then((res) => {
+        if (res.status === 200) {
+          return res.blob();
+        } else {
+          errorHandle(res);
+        }
+      })
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = filePath;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  };
   useEffect(() => {
     showLoading();
     //문서상세조회
@@ -51,7 +81,6 @@ export default function DetailForm(props) {
           navigate(`/`);
         }
       })
-
       .catch(() => {
         alert('문서를 찾을 수 없습니다');
         hideLoading();
@@ -61,11 +90,23 @@ export default function DetailForm(props) {
         hideLoading();
       });
 
+    //파일 조회
+    getFileNames(props.approval_doc_id)
+      .then((res) => {
+        setFiles(res);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        hideLoading();
+      });
+
     deleteContentEditableError();
   }, []);
 
   const renderApproval = (approval) => {
-    console.log(approval);
+    // console.log(approval);
     if (
       approval &&
       approval.approvalStatus === 'A' &&
@@ -268,6 +309,17 @@ export default function DetailForm(props) {
             }
           },
         })}
+      </div>
+
+      <div>
+        {files.map((ele) => (
+          <div key={ele.id}>
+            <span>{ele.fileName}</span>
+            <button onClick={() => download(ele.downloadFilePath)}>
+              다운로드
+            </button>
+          </div>
+        ))}
       </div>
     </>
   );

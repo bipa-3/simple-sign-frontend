@@ -8,14 +8,15 @@ export default function getDocsList(
   viewItems,
   itemsPerPage,
   offset,
-  searchInput
+  searchInput,
+  sortStatus
 ) {
   // viewItems 배열을 쉼표로 구분된 문자열로 변환
   const viewItemsString = viewItems.join(',');
 
   const url =
     base_url +
-    `approvbox/view?viewItems=${viewItemsString}&itemsPerPage=${itemsPerPage}&offset=${offset}&searchInput=${searchInput}`;
+    `approvbox/view?viewItems=${viewItemsString}&itemsPerPage=${itemsPerPage}&offset=${offset}&searchInput=${searchInput}&sortStatus=${sortStatus}`;
 
   return axios.get(url);
 }

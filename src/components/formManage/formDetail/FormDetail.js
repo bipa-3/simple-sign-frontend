@@ -3,8 +3,8 @@ import DetailTable from './components/DetailTable';
 import Button from '../../common/Button';
 import InnerBox from '../../common/InnerBox';
 import { useFormManage } from '../../../contexts/FormManageContext';
-import insertForm from '../../../apis/commonAPI/insertForm';
-import updateForm from '../../../apis/commonAPI/updateForm';
+import insertForm from '../../../apis/formManageAPI/insertForm';
+import updateForm from '../../../apis/formManageAPI/updateForm';
 import FormDetailNav from './components/FormDetailNav';
 import { useLoading } from '../../../contexts/LoadingContext';
 import {
@@ -18,6 +18,7 @@ export default function FormDetail({ searchHandler }) {
   const [activeButton, setActiveButton] = useState(1);
   const { showLoading, hideLoading } = useLoading();
 
+  // 상세 항목 선택
   const handleButtonClick = (buttonId) => {
     setActiveButton(buttonId);
   };
@@ -34,9 +35,7 @@ export default function FormDetail({ searchHandler }) {
         searchHandler();
       })
       .catch((err) => {
-        if (err.message === '404') {
-          alert('검색된 데이터가 없습니다.');
-        }
+        alert('에러가 발생했습니다.');
       })
       .finally(() => {
         hideLoading();
@@ -55,15 +54,14 @@ export default function FormDetail({ searchHandler }) {
         searchHandler();
       })
       .catch((err) => {
-        if (err.message === '404') {
-          alert('검색된 데이터가 없습니다.');
-        }
+        alert('에러가 발생했습니다.');
       })
       .finally(() => {
         hideLoading();
       });
   };
 
+  // 업데이터 유효성 검사
   const updateDetailFunc = () => {
     if (flagData === 2) {
       checkFormUpdateData(detailData)
@@ -77,6 +75,7 @@ export default function FormDetail({ searchHandler }) {
     }
   };
 
+  // 생성 유효성 검사
   const createDetailFunc = () => {
     if (flagData === 1) {
       checkFormCreateData(detailData)

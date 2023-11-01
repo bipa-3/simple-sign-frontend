@@ -12,7 +12,7 @@ import styled from '../../../../styles/components/seqManage/seqDetail/SeqDetailT
 import { FiEdit } from 'react-icons/fi';
 import PopUpFoot from '../../../common/PopUpFoot';
 import SeqSet from '../../seqSetPopUp/SeqSet';
-import getSeqItemList from '../../../../apis/commonAPI/getSeqItemList';
+import getSeqItemList from '../../../../apis/seqManageAPI/getSeqItemList';
 import FormListPopUp from '../../popup/FormListPopUp';
 import { AiOutlineOrderedList } from 'react-icons/ai';
 import OrgChart from '../../../org/OrgChart';

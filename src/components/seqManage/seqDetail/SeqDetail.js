@@ -4,8 +4,8 @@ import SeqDetailTable from './components/SeqDetailTable';
 import Button from '../../common/Button';
 import { useSeqManage } from '../../../contexts/SeqManageContext';
 import InnerBox from '../../common/InnerBox';
-import insertSeq from '../../../apis/commonAPI/insertSeq';
-import updateSeq from '../../../apis/commonAPI/updateSeq';
+import insertSeq from '../../../apis/seqManageAPI/insertSeq';
+import updateSeq from '../../../apis/seqManageAPI/updateSeq';
 import { useLoading } from '../../../contexts/LoadingContext';
 import {
   checkSeqCreateData,
