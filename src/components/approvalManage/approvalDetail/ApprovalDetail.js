@@ -100,14 +100,16 @@ export default function ApprovalDetail() {
         if (passwordRes.status === 200) {
           if (mode === '승인') {
             // 비밀번호가 일치하는 경우에만 결재 승인 수행
+            localStorage.setItem('approvalState', '');
             localStorage.setItem('approvalState', 'send');
-
             return insertApproval(approvalDocId);
           } else if (mode === '반려') {
+            localStorage.setItem('approvalState', '');
             localStorage.setItem('approvalState', 'reject');
 
             return insertReturn(approvalDocId);
           } else if (mode === '취소') {
+            localStorage.setItem('approvalState', '');
             localStorage.setItem('approvalState', 'cancel');
             return insertCancel(approvalDocId);
           }
@@ -163,6 +165,8 @@ export default function ApprovalDetail() {
       .then((res) => {
         if (res.status === 200) {
           alert('문서가 삭제되었습니다.');
+          localStorage.setItem('approvalState', '');
+          localStorage.setItem('approvalState', 'delete');
         } else {
           errorHandle(res);
         }

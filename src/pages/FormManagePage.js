@@ -75,7 +75,7 @@ export default function FormManagePage() {
 
   useEffect(() => {
     //페이지 데이터 셋팅
-    setState({ ...state, curPage: 'FormManage' });
+    setState({ ...state, curPage: '기안양식관리' });
 
     //회사명, 기본 데이터 셋팅
     setCompListData();

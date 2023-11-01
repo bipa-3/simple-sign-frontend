@@ -30,9 +30,11 @@ function ViewDocBox() {
   useEffect(() => {
     const handleStorageChange = (event) => {
       if (event.key === 'approvalState') {
-        const newValue = localStorage.getItem('approvalState');
-        console.log('받아온 스토리지 값 : ', newValue);
-        setState((prevState) => ({ ...prevState, approvalState: newValue }));
+        console.log('받아온 스토리지 값 : ', event.newValue);
+        setState((prevState) => ({
+          ...prevState,
+          approvalState: event.newValue,
+        }));
       }
     };
 
@@ -41,7 +43,7 @@ function ViewDocBox() {
     return () => {
       window.removeEventListener('storage', handleStorageChange);
     };
-  }, [state]);
+  }, []);
 
   const navigate = useNavigate();
 

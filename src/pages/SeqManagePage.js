@@ -57,7 +57,7 @@ export default function SeqManagePage() {
 
   useEffect(() => {
     //페이지 데이터 셋팅
-    setState({ ...state, curPage: 'SeqManage' });
+    setState({ ...state, curPage: '문서채번관리' });
 
     //회사명, 기본 데이터 셋팅
     setCompListData();

@@ -26,6 +26,9 @@ import UserInfo from './pages/UserInfo';
 import UpdateUserInfo from './pages/UpdateUserInfo';
 import checkUserAuthority from './utils/checkUserAuthority';
 import { getLoginCheck } from './apis/loginAPI/postLogin';
+import { useFormManage } from './contexts/FormManageContext';
+import { useSeqManage } from './contexts/SeqManageContext';
+import Button from './components/common/Button';
 
 function getCookie(name) {
   const value = ';' + document.cookie;
@@ -40,6 +43,8 @@ function AppContent() {
   const queryParams = new URLSearchParams(location.search);
   const isPopup = queryParams.get('popup') === 'true';
   const getname = queryParams.get('name');
+  const { createDetailData: createFormState } = useFormManage();
+  const { createDetailData: createSeqState } = useSeqManage();
 
   let loginValue = getCookie('LOGIN_COOKIE');
   //세션 확인 후 쿠키값 삭제 요청 api
@@ -73,7 +78,24 @@ function AppContent() {
               title={getname}
               view={pageState.isApprovalBox ? 'approval' : ''}
               componentProp={
-                pageState.isApprovalBox ? <ApprovalRightHeader /> : ''
+                <>
+                  {console.log(pageState.curPage)}
+                  {pageState.curPage === '기안양식관리' ? (
+                    <Button
+                      label={'추가'}
+                      btnStyle={'gray_btn'}
+                      onClick={createFormState}
+                    />
+                  ) : null}
+                  {pageState.curPage === '문서채번관리' ? (
+                    <Button
+                      label={'추가'}
+                      btnStyle={'gray_btn'}
+                      onClick={createSeqState}
+                    />
+                  ) : null}
+                  {pageState.isApprovalBox ? <ApprovalRightHeader /> : ''}
+                </>
               }
             ></Titlebox>
             <div className="contentsArea">

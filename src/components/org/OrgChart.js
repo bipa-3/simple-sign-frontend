@@ -17,6 +17,8 @@ import { RiOrganizationChart } from 'react-icons/ri';
  * @param {Function} closeModal 모달 닫는 메서드 const closeModal = () => {setIsModalOpen(false)};
  * @param {Boolean} openModal 모달 상태값 const [isModalOpen, setIsModalOpen] = useState(false); //isModalOpen 데이터
  * @param {Function} confirmHandler 확인버튼 이벤트 confirmHandler(dataForParent); //dataForParent는 리턴 데이터
+ * @param {int} comp 회사아이디 - 결재 작성 -> 현재 사용자의 회사 아이디 ex) getCompId()
+ *                   결재함설정, 양식채번관리 -> 전체(그룹): 0 or 회사 아이디
  * @returns ex) {estId: 1, estName: 'Establishment 1'}
                 {deptId: 1, deptName: 'HR Department'}
                 {deptId: 12, deptName: 'HR Department 2'}
@@ -29,6 +31,7 @@ export default function OrgChart({
   openModal,
   closeModal,
   confirmHandler,
+  comp,
 }) {
   // view
   // 임시 상태값 저장 set 메서드
@@ -152,28 +155,6 @@ export default function OrgChart({
     },
   ];
 
-  // const dataForParent = useMemo(() => {
-  //   return selectedRow.map((row) => {
-  //     return {
-  //       compId: row.compId,
-  //       compName: row.company,
-  //       estId: row.estId,
-  //       estName: row.establishment,
-  //       deptId: row.deptId,
-  //       deptName: row.department,
-  //       userId: row.userId,
-  //       userName: row.user,
-  //     };
-  //   });
-  // }, [selectedRow]);
-
-  // useEffect(() => {
-  //   console.log(dataForParent);
-  //   if (onDataUpdate) {
-  //     onDataUpdate(dataForParent);
-  //   }
-  // }, [dataForParent]);
-
   const getOrgChart = () => {
     return (
       <div className={styled.main_container}>
@@ -186,7 +167,7 @@ export default function OrgChart({
         </div>
         <div className={styled.top_container}>
           <div className={styled.tree_container}>
-            <OrgTreeView onNodeSelect={setSelectedNode} />
+            <OrgTreeView onNodeSelect={setSelectedNode} comp={comp} />
           </div>
           <div className={styled.second_container}>
             <div className={styled.top_grid_container}>

@@ -33,6 +33,7 @@ export default function DetailTable() {
   };
 
   const scopeConfirm = (data) => {
+    console.log('scope:', data);
     setDetailDataById('scope', data);
   };
 

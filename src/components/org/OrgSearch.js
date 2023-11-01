@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Select, MenuItem } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
 import styled from '../../styles/components/org/OrgSearch.module.css';
 import { getOrgSeartch } from '../../apis/orgAPI/getOrgSeartch';
 import Search from '../common/SearchBox';
@@ -10,9 +9,8 @@ export default function OrgSearch({ view, onCheckBox, onSearch }) {
   const deptList = [{ name: '회사' }, { name: '사업장' }, { name: '부서' }];
 
   const [category, setCategory] = useState('회사');
-  const [search, setSearch] = useState('');
 
-  const handleSearch = async () => {
+  const handleSearch = async (search) => {
     try {
       const response = await getOrgSeartch(category, search);
       if (response.status === 200) {
