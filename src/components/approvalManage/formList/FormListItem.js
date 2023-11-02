@@ -4,24 +4,34 @@ import ListItemText from '@mui/material/ListItemText';
 import styled from '../../../styles/components/approvalManage/formList/FormListItem.module.css';
 import React from 'react';
 
-export default function FormListItem() {
+export default function FormListItem({ handleFormCategory }) {
   const category = [
-    { id: 2, category_name: '공통' },
-    { id: 3, category_name: '인사' },
-    { id: 4, category_name: '교육' },
-    { id: 5, category_name: '급여' },
+    { id: '01', category_name: '공통' },
+    { id: '02', category_name: '인사' },
+    { id: '03', category_name: '교육' },
+    { id: '04', category_name: '급여' },
   ];
   return (
     <List>
-      <div className={styled.align}>
+      <div
+        className={styled.align}
+        onClick={() => {
+          handleFormCategory('00');
+        }}
+      >
         <FolderIcon className={styled.icon} />
         <ListItemText primary="양식함" className={styled.font} />
       </div>
-      {category.map(({ id, category_name }) => {
+      {category.map((ele, idx) => {
         return (
-          <div className={`${styled.align} ${styled.submenu}`}>
+          <div
+            className={`${styled.align} ${styled.submenu}`}
+            onClick={() => {
+              handleFormCategory(ele.id);
+            }}
+          >
             <FolderIcon className={styled.icon} />
-            <ListItemText primary={category_name} className={styled.font} />
+            <ListItemText primary={ele.category_name} className={styled.font} />
           </div>
         );
       })}

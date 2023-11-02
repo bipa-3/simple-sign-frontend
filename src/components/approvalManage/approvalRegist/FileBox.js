@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import DragDrop from './DragDrop';
 import styled from '../../../styles/components/approvalManage/approvalRegist/FileBox.module.css';
-import Button from '../../../components/common/Button';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
+import FilePresentTwoToneIcon from '@mui/icons-material/FilePresentTwoTone';
 
 export default function FileBox({
   id,
@@ -11,18 +10,48 @@ export default function FileBox({
   setFiles,
   setFileNames,
 }) {
+  const dragRef = useRef(null);
+  const fileId = useRef(0);
+
+  const inputFileUpload = (e) => {
+    const selectFiles = e.target.files;
+    Array.from(selectFiles).map((file) => {
+      if (file.size > 1024 * 1024 * 5) {
+        alert('파일은 5MB 이하만 삽입가능합니다.');
+      } else {
+        const newFile = {
+          id: fileId.current++,
+          object: file,
+        };
+
+        setFiles((prevFiles) => [...prevFiles, newFile]);
+
+        const newFileName = {
+          id: fileId.current++,
+          name: file.name,
+        };
+
+        setFileNames((prevFileNames) => [...prevFileNames, newFileName]);
+      }
+    });
+  };
+
   return (
     <div className={styled.container}>
       <div className={styled.attachNameBox}>
         <div className={styled.name}>첨부파일업로드</div>
-        <div>
-          <Button
-            height={'30px'}
-            width={'50px'}
-            label={<AttachFileIcon />}
-            btnStyle={'clip_non_btn'}
-          />
-        </div>
+        <input
+          type="file"
+          id="fileInput"
+          style={{ display: 'none' }}
+          multiple={true}
+          onChange={inputFileUpload}
+        />
+        <label htmlFor={'fileInput'} ref={dragRef}>
+          <div>
+            <FilePresentTwoToneIcon fontSize="medium" />
+          </div>
+        </label>
       </div>
       <div className={styled.dataBox}>
         <div className={styled.fileContent}>
@@ -32,6 +61,8 @@ export default function FileBox({
             fileNames={fileNames}
             setFiles={setFiles}
             setFileNames={setFileNames}
+            dragRef={dragRef}
+            fileId={fileId}
           />
         </div>
       </div>

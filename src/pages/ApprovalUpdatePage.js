@@ -26,11 +26,12 @@ export default function ApprovalUpdatePage() {
   const [sequence_code, setSequenceCode] = useState('');
   const [drafting_time, setDraftingTime] = useState(moment());
   const [enforce_date, setEnforceDate] = useState(moment());
-  const divRef = useRef(null);
   const titleRef = useRef(null); //제목
   const [rec_ref, setRecRef] = useState([]); //수신참조
   const [org_use_list, setOrgUseId] = useState([]); //결재라인
   const [docStatus, setDocStatus] = useState(''); //임시저장여부
+  const [files, setFiles] = useState([]);
+  const [fileNames, setFileNames] = useState([]);
 
   const queryParams = new URLSearchParams(location.search);
   const approvalDocId = queryParams.get('page');
@@ -149,8 +150,10 @@ export default function ApprovalUpdatePage() {
         .then((res) => {
           if (res.status === 200 && docStatus === 'T') {
             alert('문서가 상신되었습니다.');
+            navigate(`/AD?page=${approvalDocId}&popup=true`);
           } else if (res.status === 200) {
             alert('문서가 수정되었습니다.');
+            navigate(`/AD?page=${approvalDocId}&popup=true`);
           } else {
             errorHandle(res);
             hideLoading();
@@ -187,6 +190,10 @@ export default function ApprovalUpdatePage() {
                 rec_ref={rec_ref}
                 setRecRef={setRecRef}
                 setDocStatus={setDocStatus}
+                files={files}
+                fileNames={fileNames}
+                setFiles={setFiles}
+                setFileNames={setFileNames}
               />
               <div className={styled.updateAndDeleteBtn}>
                 {docStatus === 'T' ? (

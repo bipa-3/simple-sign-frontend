@@ -15,7 +15,7 @@ import StarRateIcon from '@mui/icons-material/StarRate';
 import { yellow } from '@mui/material/colors';
 import insertFavorites from '../apis/approvalManageAPI/insertFavorites';
 import deleteFavorites from '../apis/approvalManageAPI/deleteFavorites';
-import getFavorites from '../apis/approvalManageAPI/getFavorites';
+import { useFormManage } from '../contexts/FormManageContext';
 
 export default function ApprovalRegist(props) {
   const { id } = useParams();
@@ -39,38 +39,42 @@ export default function ApprovalRegist(props) {
   const [sequence_code, setSequenceCode] = useState('');
   const [drafting_time, setDraftingTime] = useState(dayjs(moment()));
   const [enforce_date, setEnforceDate] = useState(dayjs(moment()));
-  const divRef = useRef(null);
   const titleRef = useRef(null); //제목
   const [rec_ref, setRecRef] = useState([]); //수신참조
   const [org_use_list, setOrgUseId] = useState([]); //결재라인
+  const [defaultApprovalLine, setDefaultApprovalLine] = useState([]);
   const [files, setFiles] = useState([]);
   const [fileNames, setFileNames] = useState([]);
   const [clickStar, setClickStar] = useState(props.favorites);
+  const [isFocused, setIsFocused] = useState(false);
+  const { resetDetailData } = useFormManage();
+  const [formName, setFormName] = useState('');
 
   useEffect(() => {
     if (status) {
       openModal();
     }
-    console.log(drafting_time);
-  }, [drafting_time]);
+  }, []);
 
   const openModal = () => {
-    setIsModalOpen(true); //////////////??? 초기화 안됨..
+    setIsModalOpen(true);
   };
   const closeModal = () => {
     setFiles([]);
     setFileNames([]);
     setIsModalOpen(false);
-    setMainForm('');
-    titleRef.current = null;
     setSequenceCode('');
-    setOrgUseId([]);
+    setOrgUseId([...defaultApprovalLine]);
     setRecRef([]);
+    titleRef.current.textContent = '';
+    setIsFocused(false);
+    resetDetailData();
     setDraftingTime(dayjs(moment()));
     setEnforceDate(dayjs(moment()));
   };
 
   const dataHandler = (data) => {
+    console.log(data);
     setFormData(data);
   };
 
@@ -110,6 +114,10 @@ export default function ApprovalRegist(props) {
 
   const handleClick = (state) => {
     showLoading();
+    if (titleRef.current.textContent === '제목을 입력하세요') {
+      titleRef.current.textContent = '';
+      titleRef.current.focus();
+    }
     const orgUserIdList = [];
     if (org_use_list.length != 0) {
       org_use_list.map((data, index) => {
@@ -253,16 +261,14 @@ export default function ApprovalRegist(props) {
         btnStyle={'popup_non_btn'}
         width="1300px"
         height="800px"
-        title="결재작성상세"
+        title={formName}
         children={
           <>
             <ApprovalForm
               form_code={props.form_code}
               main_form={main_form}
               setMainForm={setMainForm}
-              divRef={divRef}
               titleRef={titleRef}
-              rec_ref={rec_ref}
               setRecRef={setRecRef}
               org_use_list={org_use_list}
               setOrgUseId={setOrgUseId}
@@ -277,6 +283,10 @@ export default function ApprovalRegist(props) {
               fileNames={fileNames}
               setFiles={setFiles}
               setFileNames={setFileNames}
+              isFocused={isFocused}
+              setIsFocused={setIsFocused}
+              setDefaultApprovalLine={setDefaultApprovalLine}
+              setFormName={setFormName}
             />
 
             <PopUpFoot buttons={BlueAndGrayBtn} />

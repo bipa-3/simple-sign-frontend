@@ -1,11 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from '../../../styles/components/approvalManage/approvalRegist/DragDrop.module.css';
 import { AiOutlineFileAdd } from 'react-icons/ai';
+import HighlightAltTwoToneIcon from '@mui/icons-material/HighlightAltTwoTone';
 
-const DragDrop = ({ id, files, fileNames, setFiles, setFileNames }) => {
-  const fileId = useRef(0);
-  const dragRef = useRef(null);
-
+const DragDrop = ({
+  id,
+  files,
+  fileNames,
+  setFiles,
+  setFileNames,
+  dragRef,
+  fileId,
+}) => {
   const [isDragging, setIsDragging] = useState(false);
 
   const initDragEvents = () => {
@@ -76,20 +82,6 @@ const DragDrop = ({ id, files, fileNames, setFiles, setFileNames }) => {
     setIsDragging(false);
   };
 
-  const inputFileUpload = (e) => {
-    const selectFiles = e.target.files;
-    const newFiles = Array.from(selectFiles).map((file) => ({
-      id: fileId.current++,
-      object: file,
-    }));
-
-    const updatedFiles = [...files, ...newFiles];
-    setFiles(updatedFiles);
-
-    const fileNames = updatedFiles.map((file) => file.object.name);
-    setFileNames(fileNames);
-  };
-
   useEffect(() => {
     initDragEvents();
 
@@ -101,13 +93,6 @@ const DragDrop = ({ id, files, fileNames, setFiles, setFileNames }) => {
       className={isDragging ? styled.dragDropFileDragging : styled.dragDropFile}
       ref={dragRef}
     >
-      <input
-        type="file"
-        style={{ display: 'none' }}
-        multiple={true}
-        onChange={inputFileUpload}
-      />
-
       <div className={styled.display}>
         {fileNames.length > 0 ? (
           <>
@@ -119,7 +104,7 @@ const DragDrop = ({ id, files, fileNames, setFiles, setFileNames }) => {
           </>
         ) : (
           <div className={styled.logo}>
-            <AiOutlineFileAdd />
+            <HighlightAltTwoToneIcon />
           </div>
         )}
       </div>

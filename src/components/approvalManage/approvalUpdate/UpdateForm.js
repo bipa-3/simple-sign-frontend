@@ -17,6 +17,8 @@ import {
 import { useFormManage } from '../../../contexts/FormManageContext';
 import errorHandle from '../../../apis/errorHandle';
 import { useNavigate } from 'react-router-dom';
+import FileBox from '../approvalRegist/FileBox';
+import getFileNames from '../../../apis/approvalManageAPI/getFileNames';
 
 export default function UpdateForm({
   approval_doc_id,
@@ -31,6 +33,10 @@ export default function UpdateForm({
   rec_ref,
   setRecRef,
   setDocStatus,
+  files,
+  fileNames,
+  setFiles,
+  setFileNames,
 }) {
   const navigate = useNavigate();
   const [default_form, setDefaultForm] = useState('');
@@ -45,6 +51,7 @@ export default function UpdateForm({
   const [sequence, setSequence] = useState([]);
   const [condition, setCondition] = useState('rec_ref');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [initSequence, setInitSequence] = useState(0);
 
   const { showLoading, hideLoading } = useLoading();
   const { detailData, setDetailData } = useFormManage();
@@ -92,7 +99,7 @@ export default function UpdateForm({
       .then((res) => {
         if (res.status === 200) {
           res.json().then((data) => {
-            console.log(data);
+            //console.log(data);
             setDefaultForm(data.defaultForm);
             setUserName(data.userName);
             setDeptName(data.deptName);
@@ -105,6 +112,7 @@ export default function UpdateForm({
             setOrgUseId(data.approvalLineList);
             setRecRef(data.receivedRefList);
             setDocStatus(data.docStatus);
+            setInitSequence(data.seqCode);
           });
         } else {
           errorHandle(res);
@@ -114,6 +122,21 @@ export default function UpdateForm({
       .catch((e) => {
         console.log(e);
         navigate('/');
+      })
+      .finally(() => {
+        hideLoading();
+      });
+
+    //파일 조회
+    getFileNames(approval_doc_id)
+      .then((res) => {
+        res.map((ele) => {
+          const filesWithObjects = ele.map((fileName) => ({ name: fileName }));
+          setFileNames(filesWithObjects);
+        });
+      })
+      .catch((e) => {
+        console.error(e);
       })
       .finally(() => {
         hideLoading();
@@ -152,8 +175,8 @@ export default function UpdateForm({
   }, [detailData]);
 
   return (
-    <>
-      <div>
+    <div className={styled.container}>
+      <div className={styled.subContainer}>
         {ReactHtmlParser(default_form, {
           replace: (domNode) => {
             if (domNode.attribs && domNode.attribs.id == 'approval_line') {
@@ -213,6 +236,7 @@ export default function UpdateForm({
                       width={'300'}
                       height={'30'}
                       onChange={handleSelectBoxChange}
+                      init={initSequence}
                     />
                   ) : (
                     productNum
@@ -222,10 +246,10 @@ export default function UpdateForm({
             }
             if (domNode.attribs && domNode.attribs.id === 'drafting_time') {
               return (
-                <div id="drafting_time" className={styled.selectContainer}>
+                <div className={styled.selectContainer}>
                   <SelectDate
-                    handleSelectTimeChange={handleDraftingTime}
-                    baseDate={approvalDate}
+                    value={approvalDate}
+                    setValue={handleDraftingTime}
                   />
                 </div>
               );
@@ -259,8 +283,8 @@ export default function UpdateForm({
                   className={styled.selectContainer}
                 >
                   <SelectDate
-                    handleSelectTimeChange={handleEnforcementTime}
-                    baseDate={enforcementDate}
+                    value={enforcementDate}
+                    setValue={handleEnforcementTime}
                   />
                 </div>
               );
@@ -299,22 +323,27 @@ export default function UpdateForm({
               );
             }
             if (domNode.attribs && domNode.attribs.id == 'content') {
+              console.log(contents);
               return (
-                <>
-                  <h4>신청내용</h4>
-                  <div id="content" className={styled.container}>
-                    <TinyEditor
-                      init={contents}
-                      editorHandler={editorHandler}
-                      dataHandler={dataHandler}
-                    />
-                  </div>
-                </>
+                <div id="content" className={styled.editor}>
+                  <TinyEditor
+                    init={contents}
+                    editorHandler={editorHandler}
+                    dataHandler={dataHandler}
+                  />
+                </div>
               );
             }
           },
         })}
       </div>
+      <FileBox
+        id={'file'}
+        files={files}
+        fileNames={fileNames}
+        setFiles={setFiles}
+        setFileNames={setFileNames}
+      />
 
       {/*모달*/}
       {condition === 'approval' ? (
@@ -330,6 +359,6 @@ export default function UpdateForm({
           confirmHandler={scopeConfirm}
         />
       ) : null}
-    </>
+    </div>
   );
 }

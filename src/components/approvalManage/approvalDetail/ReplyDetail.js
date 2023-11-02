@@ -12,6 +12,9 @@ import deleteReply from '../../../apis/approvalManageAPI/deleteReply';
 import updateReply from '../../../apis/approvalManageAPI/updateReply';
 import errorHandle from '../../../apis/errorHandle';
 import { checkReplyCreateData } from '../../../validation/approvalManage/replySchema';
+import downloadFile from '../../../apis/approvalManageAPI/downloadFile';
+import { useLoading } from '../../../contexts/LoadingContext';
+import getReplyFileNames from '../../../apis/approvalManageAPI/getReplyFileNames';
 
 const CustomButton = MUIStyled(Button)({
   width: '0.5em',
@@ -34,6 +37,8 @@ export default function ReplyDetail({
   const contentEditableRef = useRef(content);
   const [isEdit, setIsEdit] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
+  const { showLoading, hideLoading } = useLoading();
+  const [filesData, setFilesData] = useState({ replyId: null, object: [] });
 
   const updateHandler = () => {
     //권한가져오고 권한이 있으면 contentEditable로 바꿔주기
@@ -66,8 +71,6 @@ export default function ReplyDetail({
   };
 
   const updateContentHandler = (replyId) => {
-    // console.log(editedContent);
-    // console.log(replyId);
     const data = {
       replyContent: editedContent,
     };
@@ -93,11 +96,52 @@ export default function ReplyDetail({
       });
   };
 
+  const download = (filePath) => {
+    showLoading();
+    downloadFile(filePath)
+      .then((res) => {
+        if (res.status === 200) {
+          return res.blob();
+        } else {
+          errorHandle(res);
+        }
+      })
+      .then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = filePath;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  };
+
   useEffect(() => {
     if (isEdit) {
       contentEditableRef.current.focus();
     }
-  });
+
+    //파일 조회
+
+    getReplyFileNames(replyId)
+      .then((res) => {
+        setFilesData({ replyId, object: res });
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  }, [isEdit]);
 
   const cancelHandler = () => {
     setIsEdit(false);
@@ -164,6 +208,18 @@ export default function ReplyDetail({
             ) : (
               <div className={styled.div}>{content}</div>
             )}
+            <div>
+              {filesData.replyId === replyId
+                ? filesData.object.map((ele, id) => (
+                    <div key={ele.id}>
+                      <span>{ele.fileName}</span>
+                      <button onClick={() => download(ele.downloadFilePath)}>
+                        다운로드
+                      </button>
+                    </div>
+                  ))
+                : null}
+            </div>
           </CardContent>
 
           <div style={{ display: 'block' }}>

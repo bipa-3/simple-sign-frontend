@@ -27,7 +27,10 @@ export default function DetailTable() {
   const compDataUpdateHandler = (id, data, label) => {
     setDetailData({
       ...detailData,
-      scope: [{ category: 'C', compId: data, company: label, useId: data }],
+      scope:
+        label !== 'Group'
+          ? [{ category: 'C', compId: data, company: label, useId: data }]
+          : [],
       [id]: data,
     });
   };
@@ -150,6 +153,7 @@ export default function DetailTable() {
                   openModal={openModal}
                   closeModal={closeModal}
                   confirmHandler={scopeConfirm}
+                  comp={detailData.compId || 0}
                 />
               }
             />

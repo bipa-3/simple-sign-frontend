@@ -23,7 +23,6 @@ import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import ContentPasteOffOutlinedIcon from '@mui/icons-material/ContentPasteOffOutlined';
 import AssignmentReturnOutlinedIcon from '@mui/icons-material/AssignmentReturnOutlined';
 import { green, red, grey } from '@mui/material/colors';
-import { useApprovalBox } from '../../../contexts/ApprovalBoxContext';
 
 export default function ApprovalDetail() {
   const navigate = useNavigate();
@@ -38,7 +37,8 @@ export default function ApprovalDetail() {
   const [hasDelete, setHasDelete] = useState(false);
   const [isTemporal, setIsTemporal] = useState(false);
   const [password, setPassword] = useState('');
-  const { state, setState } = useApprovalBox();
+  const [formName, setFormName] = useState('');
+  const [reload, setReload] = useState(false);
 
   const queryParams = new URLSearchParams(location.search);
   const approvalDocId = queryParams.get('page');
@@ -62,7 +62,7 @@ export default function ApprovalDetail() {
 
   useEffect(() => {
     getHasPermission();
-  }, []);
+  }, [reload]);
 
   //권한목록 가져와서 해당 사용자가 있으면 버튼 노출
   const getHasPermission = () => {
@@ -120,6 +120,7 @@ export default function ApprovalDetail() {
       .then((approvalRes) => {
         if (approvalRes.status === 200) {
           alert(`결재가 ${mode}되었습니다.`);
+          setReload(!reload);
           //window.location.reload();
         } else {
           errorHandle(approvalRes);
@@ -198,7 +199,7 @@ export default function ApprovalDetail() {
     <>
       <div className={styled.detailContainer}>
         <InnerBox
-          text={'결재문서상세페이지'}
+          text={formName}
           width={'100%'}
           height={'100%'}
           titleChildren={returnTitleComponent()}
@@ -207,6 +208,8 @@ export default function ApprovalDetail() {
               <DetailForm
                 approval_doc_id={approvalDocId}
                 setIsTemporal={setIsTemporal}
+                setFormName={setFormName}
+                reload={reload}
               />
               <div className={styled.updateAndDeleteBtn}>
                 {hasUpdate ? (

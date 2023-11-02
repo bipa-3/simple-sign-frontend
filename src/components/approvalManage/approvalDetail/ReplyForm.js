@@ -13,12 +13,22 @@ export default function ReplyForm({ approval_doc_id }) {
   const [showReplyTextarea, setShowReplyTextarea] = useState([false]);
   const replyRefs = useRef([]);
   const upperReplyRef = useRef(null);
+  const [files, setFiles] = useState([]);
+  const [fileNames, setFileNames] = useState([]);
+  const [inputValue, setInputValue] = useState(''); // 입력 값 상태
 
   const handleInsertReply = (index) => {
     const updatedShowReplyTextarea = [...showReplyTextarea]; // showReplyTextarea 배열 복사
     updatedShowReplyTextarea[index] = true; // 원하는 index 위치의 값을 변경
     setShowReplyTextarea(updatedShowReplyTextarea); // 업데이트된 배열을 상태로 설정
   };
+
+  const handleReplyBoxHide = (index) => {
+    const updatedShowReplyTextarea = [...showReplyTextarea]; // showReplyTextarea 배열 복사
+    updatedShowReplyTextarea[index] = false; // 원하는 index 위치의 값을 변경
+    setShowReplyTextarea(updatedShowReplyTextarea); // 업데이트된 배열을 상태로 설정
+  };
+
   const handleReplyInsert = (upperReplyId, index, groupNo) => {
     let content = '';
     if (upperReplyId !== null) {
@@ -27,19 +37,35 @@ export default function ReplyForm({ approval_doc_id }) {
       content = upperReplyRef.current.value;
     }
 
-    const data = {
+    const replyData = {
       approvalDocId: approval_doc_id,
       upperReplyId: upperReplyId,
       replyContent: content,
       groupNo: groupNo,
     };
-    checkReplyCreateData(data)
+
+    const data = new FormData();
+
+    data.append(
+      'replyReqDTO',
+      new Blob([JSON.stringify(replyData)], {
+        type: 'application/json',
+      })
+    );
+    files.forEach((file, index) => {
+      data.append('files', file.object);
+    });
+
+    checkReplyCreateData(replyData)
       .then(() => {
         insertLowerReply(data)
           .then((res) => {
             if (res.status === 200) {
               alert('댓글이 작성되었습니다.');
               getReply();
+              handleReplyBoxHide(index);
+              setInputValue('');
+              replyRefs.current[index].value = '';
             } else {
               errorHandle(res);
             }
@@ -72,12 +98,14 @@ export default function ReplyForm({ approval_doc_id }) {
       });
       setGroupedReplies(updatedGroupReplies);
     }
-  }, [replyList]);
+  }, [replyList, replyRefs]);
 
   const getReply = () => {
     getReplyList(approval_doc_id)
       .then((res) => {
+        console.log(res);
         setReplyList(res);
+        replyRefs.current.textContent = null;
       })
       .catch((e) => {
         console.error(e);
@@ -97,69 +125,82 @@ export default function ReplyForm({ approval_doc_id }) {
           replyId={null}
           groupNo={null}
           handleReplyInsert={handleReplyInsert}
+          files={files}
+          setFiles={setFiles}
+          fileNames={fileNames}
+          setFileNames={setFileNames}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
         />
       </div>
       <div className={styled.subReplyContainer}>
         {Object.keys(groupedReplies).map((groupNo, index) => {
-          // const groupReplies = groupedReplies[groupNo];
-          // groupReplies.sort((a, b) => a.groupOrd - b.groupOrd);
           return (
             <div key={groupNo}>
-              {groupedReplies[groupNo].map((data) => {
-                if (data.depth === 1) {
-                  return (
-                    <>
-                      <ReplyDetail
-                        key={data.replyId}
-                        replyId={data.replyId}
-                        regdate={data.regDate}
-                        content={data.replyContent}
-                        filePath={data.approvalFilePath}
-                        userName={data.userName}
-                        index={index}
-                        isSecondDept={false}
-                        handleInsertReply={handleInsertReply}
-                        getReply={getReply}
-                      />
-                      <div
-                        replyId={data.replyId}
-                        className={
-                          showReplyTextarea[index]
-                            ? styled.replyContent
-                            : styled.hideReplyContent
-                        }
-                      >
-                        <ReplyBox
-                          replyRef={replyRefs.current[index]}
-                          index={index}
+              {groupedReplies[groupNo]
+                .sort((a, b) => a.groupOrd - b.groupOrd)
+                .map((data) => {
+                  if (data.depth === 1) {
+                    return (
+                      <>
+                        <ReplyDetail
+                          key={data.replyId}
                           replyId={data.replyId}
-                          groupNo={data.groupNo}
-                          handleReplyInsert={handleReplyInsert}
+                          regdate={data.regDate}
+                          content={data.replyContent}
+                          filePath={data.approvalFilePath}
+                          userName={data.userName}
+                          index={index}
+                          isSecondDept={false}
+                          handleInsertReply={handleInsertReply}
+                          getReply={getReply}
+                          files={files}
+                          setFiles={setFiles}
                         />
-                      </div>
-                    </>
-                  );
-                } else if (data.depth === 2) {
-                  return (
-                    <>
-                      <ReplyDetail
-                        key={data.replyId}
-                        replyId={data.replyId}
-                        user={data.orgUserId}
-                        regdate={data.regDate}
-                        content={data.replyContent}
-                        filePath={data.approvalFilePath}
-                        userName={data.userName}
-                        groupNo={data.groupNo}
-                        index={index}
-                        groupOrd={data.groupOrd}
-                        isSecondDept={true}
-                        getReply={getReply}
-                      />
-                    </>
-                  );
-                }
-              })}
+                        <div
+                          replyId={data.replyId}
+                          className={
+                            showReplyTextarea[index]
+                              ? styled.replyContent
+                              : styled.hideReplyContent
+                          }
+                        >
+                          <ReplyBox
+                            replyRef={replyRefs.current[index]}
+                            index={index}
+                            replyId={data.replyId}
+                            groupNo={data.groupNo}
+                            handleReplyInsert={handleReplyInsert}
+                            files={files}
+                            setFiles={setFiles}
+                            fileNames={fileNames}
+                            setFileNames={setFileNames}
+                            inputValue={inputValue}
+                            setInputValue={setInputValue}
+                          />
+                        </div>
+                      </>
+                    );
+                  } else if (data.depth === 2) {
+                    return (
+                      <>
+                        <ReplyDetail
+                          key={data.replyId}
+                          replyId={data.replyId}
+                          user={data.orgUserId}
+                          regdate={data.regDate}
+                          content={data.replyContent}
+                          filePath={data.approvalFilePath}
+                          userName={data.userName}
+                          groupNo={data.groupNo}
+                          index={index}
+                          isSecondDept={true}
+                          getReply={getReply}
+                        />
+                      </>
+                    );
+                  }
+                })}
             </div>
           );
         })}

@@ -57,25 +57,19 @@ const FormManageProvider = ({ children }) => {
   };
 
   const createDetailData = () => {
+    let compId = setData.compList[1].id;
+    let scope = [];
+
+    console.log(compId, scope);
     setFlagData(1);
     setDetailData({
       ...detailInitState,
       code: '',
-      compId:
-        setData.compList[0].id === 0
-          ? setData.compList[1].id
-          : setData.compList[0].id,
+      compId,
       compName: setData.compList[0].name,
       status: 1,
       approvalKind: setData.approvalKindList[0].id,
-      scope: [
-        {
-          category: 'C',
-          compId: setData.compList[1].id,
-          company: setData.compList[1].name,
-          useId: setData.compList[1].id,
-        },
-      ],
+      scope,
     });
   };
   const updateDetailData = () => {
@@ -87,7 +81,7 @@ const FormManageProvider = ({ children }) => {
   };
 
   const resetDetailData = () => {
-    setDetailData(detailInitState);
+    detailDataInit();
     setFlagData(0);
   };
 

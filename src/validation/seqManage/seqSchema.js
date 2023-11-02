@@ -11,17 +11,17 @@ const seqCreateSchema = object().shape({
   seqName: string()
     .min(1, '채번명은 필수 입력 사항입니다.')
     .max(20, '채번명은 최대 20자리까지 입력 가능합니다.'),
-  deptScope: array().of(scopeSchema),
-  formScope: array().of(scopeSchema),
+  deptScope: array().min(1, '대상부서는 필수 입력 사항입니다.').of(scopeSchema),
+  formScope: array().min(1, '대상양식은 필수 입력 사항입니다.').of(scopeSchema),
   description: string().max(40, '설명은 최대 40자까지 입력 가능합니다.'),
   seqList: array()
     .min(1, '채번값 설정은 최소 1개의 항목이 필요합니다.')
     .max(10, '채번값 설정은 최대 10개의 항목까지 허용됩니다.'),
   seqString: string(),
   sortOrder: number()
-    .typeError('정렬번호는 숫자만 입력 가능합니다.')
-    .required('정렬번호는 필수 입력 사항입니다.')
-    .integer('정렬번호는 정수만 입력 가능합니다.'),
+    .integer('정렬순서는 정수만 입력 가능합니다.')
+    .typeError('정렬순서는 숫자만 입력 가능합니다.')
+    .max(127, '정렬순서는 최대 127까지 입력 가능합니다.'),
 });
 
 const seqUpdateSchema = object().shape({
@@ -30,17 +30,17 @@ const seqUpdateSchema = object().shape({
   seqName: string()
     .min(1, '채번명은 필수 입력 사항입니다.')
     .max(20, '채번명은 최대 20자리까지 입력 가능합니다.'),
-  deptScope: array().of(scopeSchema),
-  formScope: array().of(scopeSchema),
+  deptScope: array().min(1, '대상부서는 필수 입력 사항입니다.').of(scopeSchema),
+  formScope: array().min(1, '대상양식은 필수 입력 사항입니다.').of(scopeSchema),
   description: string().max(40, '설명은 최대 40자까지 입력 가능합니다.'),
   seqList: array()
     .min(1, '채번값 설정은 최소 1개의 항목이 필요합니다.')
     .max(10, '채번값 설정은 최대 10개의 항목까지 허용됩니다.'),
   seqString: string(),
   sortOrder: number()
-    .typeError('정렬번호는 숫자만 입력 가능합니다.')
-    .integer('정렬번호는 정수만 입력 가능합니다.')
-    .max(127, '정렬번호는 최대 127까지 입력 가능합니다.'),
+    .integer('정렬순서는 정수만 입력 가능합니다.')
+    .typeError('정렬순서는 숫자만 입력 가능합니다.')
+    .max(127, '정렬순서는 최대 127까지 입력 가능합니다.'),
 });
 
 const checkSeqCreateData = (data) => {

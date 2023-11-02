@@ -11,6 +11,7 @@
 
 .font:hover span {
   color: #3bafda;
+  cursor: pointer;
 }
 .icon {
   color: rgb(243, 219, 39);

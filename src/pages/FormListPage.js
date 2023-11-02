@@ -13,6 +13,7 @@ import getFavorites from '../apis/approvalManageAPI/getFavorites';
 
 export default function FormListPage() {
   const [formList, setFormList] = useState([]);
+  const [filteredFormList, setFilteredFormList] = useState([]);
   const [favorites, setFavorites] = useState([]);
   const [searchContent, setSearchContent] = useState('');
   const { showLoading, hideLoading } = useLoading();
@@ -33,7 +34,10 @@ export default function FormListPage() {
           navigate('/');
         }
       })
-      .then((json) => setFormList(json))
+      .then((json) => {
+        setFormList(json);
+        setFilteredFormList(json);
+      })
       .catch((e) => {
         console.error(e);
         hideLoading();
@@ -59,6 +63,17 @@ export default function FormListPage() {
     setSearchContent(searchItem);
   };
 
+  const handleFormCategory = (id) => {
+    if (id === '00') {
+      setFilteredFormList(formList);
+    } else {
+      const filteredForms = formList.filter(
+        (ele) => id === ele.formApprovalKind
+      );
+      setFilteredFormList(filteredForms);
+    }
+  };
+
   return (
     <div className={styled.align}>
       <div className={styled.containers}>
@@ -66,17 +81,17 @@ export default function FormListPage() {
           <div className={styled.searchBoxContainer}>
             <SearchBox width="200px" onSearch={onSearch} />
           </div>
-          <FormListItem />
+          <FormListItem handleFormCategory={handleFormCategory} />
         </InnerBox>
       </div>
       <div className={styled.containers}>
         <InnerBox width="100%" height="100%" text="전체양식" font_size="18px">
           <div className={styled.innerBox}>
-            {!formList.isEmpty
-              ? formList.map(({ formName, formExplain, formCode }) =>
+            {filteredFormList.length > 0
+              ? filteredFormList.map(({ formName, formExplain, formCode }) =>
                   favorites.includes(formCode) ? (
                     <ApprovalRegist
-                      key={formCode} // 반복 요소에는 고유한 키를 제공해야 합니다.
+                      key={formCode}
                       width="100%"
                       height="78px"
                       form_name={formName}
@@ -86,7 +101,7 @@ export default function FormListPage() {
                     />
                   ) : (
                     <ApprovalRegist
-                      key={formCode} // 반복 요소에는 고유한 키를 제공해야 합니다.
+                      key={formCode}
                       width="100%"
                       height="78px"
                       form_name={formName}

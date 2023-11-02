@@ -72,6 +72,7 @@ export default function DetailForm(props) {
             setContents(data.contents);
             setApprovalLine(data.approvalLineList);
             setReceiveRefOpt(data.receivedRefList);
+            props.setFormName(data.formName);
             if (data.docStatus == 'T') {
               props.setIsTemporal(true);
             }
@@ -103,7 +104,7 @@ export default function DetailForm(props) {
       });
 
     deleteContentEditableError();
-  }, []);
+  }, [props.reload]);
 
   const renderApproval = (approval) => {
     // console.log(approval);

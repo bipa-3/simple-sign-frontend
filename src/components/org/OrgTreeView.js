@@ -168,7 +168,7 @@ export default function OrgTreeView({ onNodeSelect, comp }) {
       }
     };
     orgdata();
-  }, []);
+  }, [comp]);
 
   const transformDatas = transformData(org);
 
