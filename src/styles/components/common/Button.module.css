@@ -98,20 +98,20 @@
 }
 
 .green_btn {
+  justify-content: center;
+  align-items: center;
   font-weight: 500;
   border: 0;
   border-radius: 2px;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
+  background-color: #1abc9c;
   color: #fff;
   padding: 5px 5px;
   display: inline-flex;
   align-items: center;
-  justify-content: center; /* 수평 가운데 정렬을 위한 속성 추가 */
   cursor: pointer;
-  transition: background-color 0.3s, border 0.3s;
-  background-color: #1abc9c;
   border: 1px solid #1abc9c;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s, border 0.3s;
 }
 
 .green_btn:hover {
@@ -120,19 +120,19 @@
 }
 
 .red_btn {
+  justify-content: center;
+  align-items: center;
   font-weight: 500;
   border: 0;
   border-radius: 2px;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
   background-color: #f1556c;
   color: #fff;
   padding: 5px 5px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   cursor: pointer;
   border: 1px solid #f1556c;
+  border-radius: 0.25rem;
   transition: background-color 0.3s, border 0.3s;
 }
 
@@ -224,6 +224,7 @@
   transition: background-color 0.3s, border 0.3s;
   border-radius: 0.25rem;
   color: #6c757d;
+  font-weight: 500;
   background-color: rgba(108, 117, 125, 0.18);
   border-color: rgba(108, 117, 125, 0.12);
 }
@@ -255,4 +256,20 @@
 .pupple_btn:hover {
   background-color: #5a4eb3;
   border-color: #5046a0;
+}
+
+.nonstyle_btn {
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  border: 0;
+  border-radius: 2px;
+  background-color: white;
+  border: none;
+  color: #98a6ad;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: background-color 0.3s, border 0.3s;
 }

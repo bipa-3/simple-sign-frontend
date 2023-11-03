@@ -3,7 +3,7 @@ import Title from '../../common/Title';
 import styled from '../../../styles/components/seqManage/seqSetPopUp/SeqSet.module.css';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import DataList from '../../common/DataList';
-import { columns } from '../../../assets/datas/seq_popup_list';
+import { columns, selectedColumns } from '../../../assets/datas/seq_popup_list';
 
 export default function SeqSet({ seqItems, seqList, setSeqList }) {
   const [previewData, setPreviewData] = useState('');
@@ -22,6 +22,9 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
 
   const addselectedRows = () => {
     let data = { ...leftSelectedRow, id: selectedCount };
+    if (data.value === '자리수') {
+      data.value = '자리수 2자리';
+    }
     setSeqList([...seqList, data]);
     selectedCount++;
   };
@@ -37,10 +40,55 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
     setSeqList(filtedSeqList);
   };
 
+  const RenderCellFunc = (params) => {
+    let data = [
+      { value: '12', label: '자리수 2자리' },
+      { value: '13', label: '자리수 3자리' },
+      { value: '14', label: '자리수 4자리' },
+      { value: '15', label: '자리수 5자리' },
+    ];
+
+    const handleChange = (event) => {
+      const newValue = event.target.value;
+      console.log('newValue:', newValue, seqList);
+      let changedLength = seqList.map((ele) => {
+        if (ele.value.includes('자리수')) {
+          ele.code = newValue;
+          ele.value = '자리수 ' + newValue[1] + '자리';
+        }
+        return ele;
+      });
+      setSeqList([...changedLength]);
+    };
+    return (
+      <span>
+        {params.value.includes('자리수') ? (
+          <select className={styled.selectBox} onChange={handleChange}>
+            {data.map((ele) => {
+              console.log(params.value, ele.value, params.value === ele.value);
+              return (
+                <option
+                  key={ele.value}
+                  value={ele.value}
+                  selected={params.row.code === ele.value}
+                >
+                  {ele.label}
+                </option>
+              );
+            })}
+          </select>
+        ) : (
+          params.value
+        )}
+      </span>
+    );
+  };
+
   useEffect(() => {
     setPreviewData(
       seqList
         .map((ele) => {
+          console.log('changedList:', ele);
           return ele.value;
         })
         .join(' ')
@@ -53,7 +101,23 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
       <div className={styled.seqListArea}>
         <div>
           <DataList
-            rows={seqItems}
+            rows={
+              seqItems.length > 0
+                ? seqItems
+                    .filter((ele) => {
+                      if (ele.code > '12' && ele.code < '16') {
+                        return false;
+                      }
+                      return true;
+                    })
+                    .map((ele) => {
+                      if (ele.code === '12') {
+                        ele.value = '자리수';
+                      }
+                      return ele;
+                    })
+                : seqItems
+            }
             columns={columns}
             dataHandler={leftDataHandler}
           />
@@ -75,7 +139,10 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
         <div>
           <DataList
             rows={seqList}
-            columns={columns}
+            columns={selectedColumns.map((ele) => {
+              ele.renderCell = RenderCellFunc;
+              return ele;
+            })}
             dataHandler={rightDataHandler}
           />
         </div>

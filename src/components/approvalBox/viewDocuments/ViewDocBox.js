@@ -76,16 +76,13 @@ function ViewDocBox() {
       let response;
 
       if (state.shouldFetchDocs) {
-        // 유효성 검사
         try {
-          await checkDocSearchData(detailSearchState); // 여기에 await 키워드 추가
+          await checkDocSearchData(detailSearchState);
         } catch (validationError) {
-          alert(validationError.message); // 유효성 검사 오류를 alert 창으로 띄웁니다.
+          alert(validationError.message);
           hideLoading();
           return;
         }
-
-        // 검사 후 데이터 가져오기
         response = await detailSearchDocs(
           viewItems,
           10,
@@ -106,17 +103,20 @@ function ViewDocBox() {
       hideLoading();
       const { docList, count } = response.data;
 
-      //조회 필터링
+      // 조회 필터링
       let filteredDocList = docList;
+      let isFiltered = false;
 
       if (state.radioSortValue === 'ongoingdoc') {
         filteredDocList = docList.filter(
           (docItem) => docItem.docStatus === 'P'
         );
+        isFiltered = true;
       } else if (state.radioSortValue === 'writtendoc') {
         filteredDocList = docList.filter((docItem) =>
           ['A', 'R'].includes(docItem.docStatus)
         );
+        isFiltered = true;
       } else if (
         state.radioSortValue === 'readdoc' &&
         viewItems.includes('reference')
@@ -124,6 +124,7 @@ function ViewDocBox() {
         filteredDocList = docList.filter((docItem) =>
           state.docView.includes(docItem.approvalDocId)
         );
+        isFiltered = true;
       } else if (
         state.radioSortValue === 'notreaddoc' &&
         viewItems.includes('reference')
@@ -131,6 +132,7 @@ function ViewDocBox() {
         filteredDocList = docList.filter(
           (docItem) => !state.docView.includes(docItem.approvalDocId)
         );
+        isFiltered = true;
       }
 
       setDocData(
@@ -140,8 +142,16 @@ function ViewDocBox() {
         }))
       );
 
-      setTotalCount(count);
-      setTotalPages(Math.ceil(count / 10));
+      if (isFiltered) {
+        // 필터링된 데이터의 개수로 페이징 업데이트
+        const filteredCount = filteredDocList.length;
+        setTotalCount(filteredCount);
+        setTotalPages(Math.ceil(filteredCount / 10));
+      } else {
+        // 필터링이 적용되지 않았다면 서버에서 받은 총 문서 개수를 사용
+        setTotalCount(count);
+        setTotalPages(Math.ceil(count / 10));
+      }
     } catch (error) {
       hideLoading();
       console.error('Error fetching data:', error);

@@ -6,7 +6,36 @@
   height: 100%;
   padding: 30px;
 }
+.selectBox {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  width: 100%;
+  cursor: pointer;
+}
 
+.selectBox option {
+  background: #fff;
+  color: #333;
+}
+
+.selectBox:focus {
+  outline: none;
+  border: 1px solid #007bff; /* Add a border when focused */
+}
+
+/* Style the select box when hovered */
+.selectBox:hover {
+  border: 1px solid #007bff; /* Change border color on hover */
+}
+
+.dataGrid {
+  overflow: visible !important; /* overflow: hidden 대신 overflow: visible을 사용합니다. */
+  /* 다른 스타일을 추가하거나 필요에 따라 스타일 속성을 삭제할 수 있습니다. */
+}
+.customSelect {
+  font-size: 13px;
+}
 .seqListArea {
   display: flex;
   flex-direction: row;

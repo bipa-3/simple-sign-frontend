@@ -25,7 +25,8 @@ export function detailSearchDocs(
   viewItems,
   itemsPerPage,
   offset,
-  detailSearchState
+  detailSearchState,
+  sortStatus
 ) {
   const url = base_url + `approvbox/search`;
   const payload = {
@@ -33,6 +34,7 @@ export function detailSearchDocs(
     itemsPerPage: itemsPerPage,
     offset: offset,
     ...detailSearchState,
+    sortStatus: sortStatus,
   };
 
   return axios.post(url, payload);

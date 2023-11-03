@@ -153,7 +153,7 @@ export default function DetailTable() {
                   openModal={openModal}
                   closeModal={closeModal}
                   confirmHandler={scopeConfirm}
-                  comp={detailData.compId || 0}
+                  comp={detailData.compId > 1 ? detailData.compId : 0}
                 />
               }
             />

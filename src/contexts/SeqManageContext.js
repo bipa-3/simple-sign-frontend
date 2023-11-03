@@ -21,6 +21,7 @@ const setInitSeqItems = {
 
 const detailInitState = {
   compName: '',
+  compId: '',
   code: '',
   seqName: '',
   deptScope: [],

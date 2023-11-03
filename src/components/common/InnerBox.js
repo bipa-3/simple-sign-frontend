@@ -23,7 +23,11 @@ export default function InnerBox(props) {
     <div className={styles.box} style={innerBoxStyle}>
       <div className={styles.titleArea}>
         {props.text ? (
-          <Title text={props.text} font_size={props.font_size} />
+          <Title
+            text={props.text}
+            font_size={props.font_size}
+            marginLeft={props.marginLeft}
+          />
         ) : null}
         <div className={styles.titleChildrenBox}>
           {props.titleChildren ? props.titleChildren : null}

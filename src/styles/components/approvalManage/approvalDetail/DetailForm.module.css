@@ -36,3 +36,17 @@
   padding: 0px 15px;
   border-radius: 5px;
 }
+
+.detailformContainer {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.downloadFile {
+  margin-top: 10px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+.Filepath {
+  display: flex;
+  align-items: center;
+}

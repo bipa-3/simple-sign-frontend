@@ -16,7 +16,8 @@ const seqCreateSchema = object().shape({
   description: string().max(40, '설명은 최대 40자까지 입력 가능합니다.'),
   seqList: array()
     .min(1, '채번값 설정은 최소 1개의 항목이 필요합니다.')
-    .max(10, '채번값 설정은 최대 10개의 항목까지 허용됩니다.'),
+    .max(10, '채번값 설정은 최대 10개의 항목까지 허용됩니다.')
+    .typeError('채번값 항목의 자리수는 필수 항목입니다.'),
   seqString: string(),
   sortOrder: number()
     .integer('정렬순서는 정수만 입력 가능합니다.')
@@ -35,7 +36,8 @@ const seqUpdateSchema = object().shape({
   description: string().max(40, '설명은 최대 40자까지 입력 가능합니다.'),
   seqList: array()
     .min(1, '채번값 설정은 최소 1개의 항목이 필요합니다.')
-    .max(10, '채번값 설정은 최대 10개의 항목까지 허용됩니다.'),
+    .max(10, '채번값 설정은 최대 10개의 항목까지 허용됩니다.')
+    .typeError('채번값 항목의 자리수는 필수 항목입니다.'),
   seqString: string(),
   sortOrder: number()
     .integer('정렬순서는 정수만 입력 가능합니다.')
@@ -43,10 +45,25 @@ const seqUpdateSchema = object().shape({
     .max(127, '정렬순서는 최대 127까지 입력 가능합니다.'),
 });
 
+const requiredSeqItems = ['12', '13', '14', '15'];
+
+const checkRequiredSeqItems = (arr) => {
+  for (let i of requiredSeqItems) {
+    if (arr.includes(i)) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const checkSeqCreateData = (data) => {
   console.log(data);
+
   if (data.seqString !== '') {
-    data = { ...data, seqList: data.seqString.split(',') };
+    let splitedSeqArr = data.seqString.split(',');
+    if (splitedSeqArr !== [] && checkRequiredSeqItems(splitedSeqArr)) {
+      data = { ...data, seqList: data.seqString.split(',') };
+    }
   } else {
     data = { ...data, seqList: [] };
   }
@@ -56,7 +73,11 @@ const checkSeqCreateData = (data) => {
 const checkSeqUpdateData = (data) => {
   console.log(data);
   if (data.seqString !== '') {
-    data = { ...data, seqList: data.seqString.split(',') };
+    let splitedSeqArr = data.seqString.split(',');
+    if (splitedSeqArr !== [] && checkRequiredSeqItems(splitedSeqArr)) {
+      data = { ...data, seqList: data.seqString.split(',') };
+    }
+    // data = { ...data, seqList: data.seqString.split(',') };
   } else {
     data = { ...data, seqList: [] };
   }

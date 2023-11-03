@@ -15,6 +15,8 @@ import { checkReplyCreateData } from '../../../validation/approvalManage/replySc
 import downloadFile from '../../../apis/approvalManageAPI/downloadFile';
 import { useLoading } from '../../../contexts/LoadingContext';
 import getReplyFileNames from '../../../apis/approvalManageAPI/getReplyFileNames';
+import { BiDownload } from 'react-icons/bi';
+import Buttons from '../../common/Button';
 
 const CustomButton = MUIStyled(Button)({
   width: '0.5em',
@@ -166,15 +168,21 @@ export default function ReplyDetail({
       <div style={{ flex: 1 }}>
         {' '}
         <Card
+          elevation={0}
           sx={{ minWidth: 275 }}
           style={{
-            backgroundColor: 'rgb(232 232 232 / 61%)',
+            backgroundColor: '#ffffff',
             marginLeft: '10px',
+            border: '1px solid #dee2e6',
           }}
         >
-          <CardContent>
+          <CardContent style={{ color: '#6c757d', fontSize: '14.4px' }}>
             <div className={styled.innerDisplay}>
-              <div style={{ float: 'left' }}>{userName}</div>{' '}
+              <div
+                style={{ float: 'left', fontWeight: '550', fontSize: '15.4px' }}
+              >
+                {userName}
+              </div>{' '}
               <div style={{ float: 'right' }}>{regdate}</div>
             </div>
             <br />
@@ -208,14 +216,21 @@ export default function ReplyDetail({
             ) : (
               <div className={styled.div}>{content}</div>
             )}
-            <div>
+            <div className={styled.downloadFile}>
               {filesData.replyId === replyId
                 ? filesData.object.map((ele, id) => (
-                    <div key={ele.id}>
-                      <span>{ele.fileName}</span>
-                      <button onClick={() => download(ele.downloadFilePath)}>
-                        다운로드
-                      </button>
+                    <div key={ele.id} className={styled.Filepath}>
+                      <span style={{ paddingRight: '5px' }}>
+                        첨부파일 : {ele.fileName}
+                      </span>
+                      <Buttons
+                        onClick={() => download(ele.downloadFilePath)}
+                        btnStyle="nonstyle_btn"
+                        fontSize="28px"
+                        height="28px"
+                        width="28px"
+                        label={<BiDownload size="29px"></BiDownload>}
+                      ></Buttons>
                     </div>
                   ))
                 : null}
@@ -233,7 +248,14 @@ export default function ReplyDetail({
                 >
                   수정
                 </CustomButton>
-                <span>|</span>
+                <span
+                  style={{
+                    color: '#ced4da',
+                    fontSize: '13px',
+                  }}
+                >
+                  |
+                </span>
                 <CustomButton
                   size="small"
                   onClick={() => {
@@ -248,6 +270,7 @@ export default function ReplyDetail({
               <div className={isSecondDept ? styled.hideReplyContent : ''}>
                 <div style={{ float: 'right' }}>
                   <Button
+                    style={{ fontSize: '13px' }}
                     size="large"
                     onClick={() => {
                       handleInsertReply(index);
@@ -261,7 +284,6 @@ export default function ReplyDetail({
           </div>
         </Card>
       </div>
-      <hr></hr>
     </div>
   );
 }

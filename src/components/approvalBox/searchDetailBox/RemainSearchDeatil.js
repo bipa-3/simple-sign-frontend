@@ -102,7 +102,7 @@ function RemainSearchDetail() {
     if (initialDateOption) {
       setDetailSearchState((prevState) => ({
         ...prevState,
-        searchDate: initialDateOption.value,
+        searchDate: initialDateOption.seqCode,
       }));
     }
   }, []);
@@ -113,7 +113,13 @@ function RemainSearchDetail() {
       topSelectSortDate: selectedDate,
       selectSortDate: selectedDate,
     }));
+
+    setDetailSearchState((prevState) => ({
+      ...prevState,
+      searchDate: selectedDate,
+    }));
   };
+
   const handleSelectedData = (id, selectedData) => {
     setDetailSearchState((prevState) => ({
       ...prevState,

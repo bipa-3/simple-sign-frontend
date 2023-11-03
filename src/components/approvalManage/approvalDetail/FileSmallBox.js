@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import FilePresentTwoToneIcon from '@mui/icons-material/FilePresentTwoTone';
+import { BsLink45Deg } from 'react-icons/bs';
+import styled from '../../../styles/components/approvalManage/approvalDetail/ReplyBox.module.css';
 
 export default function FileBox({ files, fileNames, setFiles, setFileNames }) {
   const dragRef = useRef(null);
@@ -29,7 +30,7 @@ export default function FileBox({ files, fileNames, setFiles, setFileNames }) {
   };
 
   return (
-    <div>
+    <div className={styled.fileboxcontainer}>
       <input
         type="file"
         id="fileInput"
@@ -38,8 +39,8 @@ export default function FileBox({ files, fileNames, setFiles, setFileNames }) {
         onChange={inputFileUpload}
       />
       <label htmlFor={'fileInput'} ref={dragRef}>
-        <div>
-          <FilePresentTwoToneIcon fontSize="medium" />
+        <div className={styled.fileboxcontainer}>
+          <BsLink45Deg fontSize="20px" color="#343a40" />
         </div>
       </label>
     </div>

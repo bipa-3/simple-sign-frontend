@@ -46,7 +46,7 @@ function TemporSearchDetail(props) {
   useEffect(() => {
     setDetailSearchState((prevState) => ({
       ...prevState,
-      searchDate: 'sendDate',
+      searchDate: 1,
     }));
   }, [viewItem]);
 

@@ -1,10 +1,5 @@
 import { object, string, number, array, date } from 'yup';
 
-const checkDocSearchData = (data) => {
-  console.log(data);
-  return boxCreateSchema.validate(data);
-};
-
 const boxCreateSchema = object().shape({
   startDate: date().nullable().typeError('유효한 날짜 형식이어야 합니다.'),
   endDate: date().nullable().typeError('유효한 날짜 형식이어야 합니다.'),
@@ -21,5 +16,10 @@ const boxCreateSchema = object().shape({
     })
     .nullable(),
 });
+
+const checkDocSearchData = (data) => {
+  console.log(data);
+  return boxCreateSchema.validate(data);
+};
 
 export { checkDocSearchData };

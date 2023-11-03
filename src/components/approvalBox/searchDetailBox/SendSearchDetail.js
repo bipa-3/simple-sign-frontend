@@ -61,7 +61,7 @@ function SendSearchDetail(props) {
       }));
       setDetailSearchState((prevState) => ({
         ...prevState,
-        searchDate: 'sendDate',
+        searchDate: 1,
       }));
     }
   }, [viewItem]);
