@@ -108,21 +108,23 @@ export default function Profile() {
                   </tr>
                 </thead>
                 <tbody>
-                  {userOrgList.map((item) => (
-                    <tr key={item.orgUserId}>
-                      <td>
-                        <Radio
-                          checked={selectedValue == item.orgUserId}
-                          onChange={hadleChange}
-                          value={item.orgUserId}
-                          name="radio"
-                        />
-                      </td>
-                      <td>{item.compName}</td>
-                      <td>{item.deptName}</td>
-                      <td>{item.authorityName}</td>
-                    </tr>
-                  ))}
+                  {userOrgList.length > 0
+                    ? userOrgList.map((item) => (
+                        <tr key={item.orgUserId}>
+                          <td>
+                            <Radio
+                              checked={selectedValue == item.orgUserId}
+                              onChange={hadleChange}
+                              value={item.orgUserId}
+                              name="radio"
+                            />
+                          </td>
+                          <td>{item.compName}</td>
+                          <td>{item.deptName}</td>
+                          <td>{item.authorityName}</td>
+                        </tr>
+                      ))
+                    : null}
                 </tbody>
               </table>
             </div>
