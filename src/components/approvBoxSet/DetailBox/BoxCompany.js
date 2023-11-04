@@ -27,6 +27,7 @@ function BoxCompany(props) {
           onCompanyChange={handleCompanyChange}
           readonly={props.boxId ? true : false}
           insertState={state.insertStatus}
+          boxId={props.boxId}
         />
       </div>
     </div>

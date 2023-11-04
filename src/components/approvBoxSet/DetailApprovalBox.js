@@ -40,7 +40,10 @@ function DetailApprovalBox() {
         showLoading();
 
         const response = await updateApprovalBox(approvalBoxState2); // API 호출
-
+        setState((prevState) => ({
+          ...prevState,
+          saveStatus: !state.saveStatus,
+        }));
         hideLoading();
       }
     } catch (error) {

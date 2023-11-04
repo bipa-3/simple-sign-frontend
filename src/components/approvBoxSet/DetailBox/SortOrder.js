@@ -36,10 +36,6 @@ function SortOrder(props) {
     }
   };
 
-  useEffect(() => {
-    console.log('insert 값 : ', approvalBoxState);
-  }, [approvalBoxState]);
-
   return (
     <div className={styled.inputItem}>
       <div style={props.commonCellStyle}>

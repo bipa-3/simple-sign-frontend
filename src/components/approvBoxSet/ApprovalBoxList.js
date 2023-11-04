@@ -63,7 +63,7 @@ function ApprovalBoxList({ companyId }) {
 
   useEffect(() => {
     fetchApprovalBoxList();
-  }, [companyId, state.insertStatus]);
+  }, [companyId, state.insertStatus, state.saveStatus]);
 
   return (
     <div>
@@ -73,7 +73,9 @@ function ApprovalBoxList({ companyId }) {
             <BiSolidFolder style={{ fontSize: '18px', color: '#f7b84b' }} />
           </div>
           <div
-            className={styled.boxName}
+            className={`${styled.boxName} ${
+              item.approvalBoxUsedStatus === 0 ? styled.dimmed : ''
+            }`}
             onClick={() => boxNameClickHandler(item.approvalBoxId)}
             style={
               state.boxId === item.approvalBoxId ? { fontWeight: 650 } : {}

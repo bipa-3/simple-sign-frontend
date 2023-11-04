@@ -4,13 +4,21 @@ import Radiobtn from '../Radiobtn';
 import { useApprovalBoxManage } from '../../../contexts/ApprovalBoxManageContext';
 
 function BoxUseStatus(props) {
-  const { approvalBoxState, setApprovalBoxState } = useApprovalBoxManage();
+  const { state, approvalBoxState, setApprovalBoxState, setApprovalBoxState2 } =
+    useApprovalBoxManage();
 
   useEffect(() => {
-    setApprovalBoxState((prevState) => ({
-      ...prevState,
-      approvalBoxUsedStatus: props.useStatus,
-    }));
+    if (state.insertStatus === 1) {
+      setApprovalBoxState((prevState) => ({
+        ...prevState,
+        approvalBoxUsedStatus: props.useStatus,
+      }));
+    } else {
+      setApprovalBoxState2((prevState) => ({
+        ...prevState,
+        approvalBoxUsedStatus: props.useStatus,
+      }));
+    }
   }, [props.useStatus, setApprovalBoxState]);
 
   return (

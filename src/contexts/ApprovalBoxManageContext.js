@@ -5,6 +5,7 @@ const initialState = {
   insertStatus: 0,
   compId: null,
   count: 0,
+  saveStatus: false,
 };
 
 const approvalBoxInit = {

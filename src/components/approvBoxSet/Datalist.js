@@ -6,7 +6,13 @@ import getUserCompany from '../../apis/approvalBoxAPI/getUserCompany';
 import { getAuthrity } from '../../utils/getUser';
 import { useApprovalBoxManage } from '../../contexts/ApprovalBoxManageContext';
 
-function Datalist({ onCompanyChange, selectedCompId, readonly, insertState }) {
+function Datalist({
+  onCompanyChange,
+  selectedCompId,
+  readonly,
+  insertState,
+  boxId,
+}) {
   const authority = getAuthrity();
   const [selectedOption, setSelectedOption] = useState(null);
   const [companyOptions, setCompanyOptions] = useState([]);
@@ -101,13 +107,17 @@ function Datalist({ onCompanyChange, selectedCompId, readonly, insertState }) {
       );
 
       if (insertState != 1) {
-        transformedData.unshift({
-          value: 0,
-          label: '전체',
-        });
-        setSelectedOption(
-          selectedOptionFromCompId || { value: 0, label: '전체' }
-        );
+        if (selectedCompId) {
+          setSelectedOption(selectedOptionFromCompId);
+        } else {
+          transformedData.unshift({
+            value: 0,
+            label: '전체',
+          });
+          setSelectedOption(
+            selectedOptionFromCompId || { value: 0, label: '전체' }
+          );
+        }
       } else {
         setCompanyOptions(transformedData);
         setSelectedOption(selectedOptionFromCompId || transformedData[0]);
@@ -128,6 +138,17 @@ function Datalist({ onCompanyChange, selectedCompId, readonly, insertState }) {
 
     setCompanyOptions(transformedData);
   }
+
+  useEffect(() => {
+    if (boxId && authority === '1') {
+      const correspondingOption = companyOptions.find(
+        (option) => option.value === boxId
+      );
+      if (correspondingOption) {
+        setSelectedOption(correspondingOption);
+      }
+    }
+  }, [boxId, companyOptions, onCompanyChange, authority]);
 
   return (
     <div className={styled.selectbox}>

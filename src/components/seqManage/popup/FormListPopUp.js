@@ -10,36 +10,63 @@ import DataList from '../../common/DataList';
 import { columns } from '../../../assets/datas/form_popup_list';
 import getFormListAll from '../../../apis/formManageAPI/getFormListAll';
 import { useSeqManage } from '../../../contexts/SeqManageContext';
+import getFormListByCompId from '../../../apis/formManageAPI/getFormListByCompId';
 
 export default function FormListPopUp({ setGridData }) {
   const [rows, setRows] = useState([]);
   const [filetedRows, setFiletedRows] = useState([]);
   const { detailData } = useSeqManage();
 
-  const searchDataHandler = (id, data) => {
-    setFiletedRows([
-      ...rows.filter((ele) => {
-        if (ele.formName.includes(data)) {
+  // const searchDataHandler = (id, data) => {
+  //   setFiletedRows([
+  //     ...rows.filter((ele) => {
+  //       if (ele.formName.includes(data)) {
+  //         return true;
+  //       }
+  //       return false;
+  //     }),
+  //   ]);
+  // };
+
+  useEffect(() => {
+    let deptScopeIdList = detailData.deptScope
+      .filter((ele) => {
+        console.log('e:', ele);
+        if (ele.category === 'C') {
           return true;
         }
         return false;
-      }),
-    ]);
-  };
+      })
+      .map((ele) => ele.compId);
+    console.log('목록조회할1:', deptScopeIdList, deptScopeIdList.length < 1);
 
-  useEffect(() => {
-    getFormListAll()
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        setRows(data);
-        setFiletedRows(data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+    if (deptScopeIdList.length < 1) {
+      getFormListAll()
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          setRows(data);
+          // setFiletedRows(data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      console.log('목록조회할2:', deptScopeIdList);
+      getFormListByCompId({ idList: deptScopeIdList })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          setRows(data);
+          // setFiletedRows(data);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
+  }, [detailData.deptScope]);
 
   return (
     <div className={styled.formListContainer}>
