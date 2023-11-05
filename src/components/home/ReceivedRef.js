@@ -4,6 +4,7 @@ import InnerBox from '../common/InnerBox';
 import Button from '../common/Button';
 import { useNavigate } from 'react-router-dom';
 import getDocsList from '../../apis/approvalBoxAPI/getDocsList'; // API 호출 함수 임포트
+import { CiFileOff } from 'react-icons/ci';
 
 export default function ReceivedRef() {
   const navigate = useNavigate();
@@ -62,6 +63,7 @@ export default function ReceivedRef() {
       children={
         <>
           <div className={styled.container}>
+            <hr style={{ margin: 0 }}></hr>
             {recentPDocuments.length > 0 ? (
               recentPDocuments.map((doc) => (
                 <div key={doc.approvalDocId}>
@@ -112,7 +114,12 @@ export default function ReceivedRef() {
                 </div>
               ))
             ) : (
-              <div>No document found.</div>
+              <div className={styled.noDocumentsContainer}>
+                <div className={styled.noDocumentsIcon}>
+                  <CiFileOff />
+                </div>
+                <div>No document found.</div>
+              </div>
             )}
           </div>
         </>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { useSeqManage } from '../../contexts/SeqManageContext';
+import '../../styles/components/org/DataList.css';
 
 export default function DataList({
   columns,
@@ -9,9 +10,11 @@ export default function DataList({
   isCheckTable = false,
   initData = [],
 }) {
+  const [disabledRows, setDisAbledRows] = useState([]);
   const [selectionModel, setSelectionModel] = useState([]); // 첫 번째 요소를 선택
   const [selectionCheckModel, setSelectionCheckModel] = useState(initData); // 첫 번째 요소를 선택
   const { detailData } = useSeqManage();
+
   useEffect(() => {
     handleSelectionModelChange(rows[0]?.id);
   }, [rows]);
@@ -49,8 +52,16 @@ export default function DataList({
       });
       setSelectionCheckModel(result);
     }
-    console.log('selected:', selectionCheckModel);
   }, [detailData]);
+
+  useEffect(() => {
+    console.log(disabledRows);
+    rows.forEach((row) => {
+      if (row.approvalStatus === 'A') {
+        setDisAbledRows((prevDisabledRows) => [...prevDisabledRows, row.id]);
+      }
+    });
+  }, [rows]);
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
@@ -63,6 +74,13 @@ export default function DataList({
         {...(isCheckTable
           ? { ...dataGridCheckBoxOption }
           : { ...dataGridListOption })}
+        getRowClassName={(params) => {
+          const rowData = params.row;
+          if (disabledRows.includes(rowData.id)) {
+            return 'approval-status';
+          }
+          return '';
+        }}
       />
     </div>
   );

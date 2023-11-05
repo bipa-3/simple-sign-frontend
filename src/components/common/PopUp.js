@@ -38,6 +38,7 @@ export default function PopUp(props) {
         disableAutoFocus={true}
         disableEnforceFocus={true}
         keepMounted={true}
+        BackdropProps={{ style: props.backdropStyle }}
       >
         <div className={styles.popUpContainer} style={popUpStyle}>
           <div className={styles.header}>{props.title}</div>

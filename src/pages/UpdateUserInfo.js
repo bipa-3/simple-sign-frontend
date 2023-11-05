@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import InnerBox from '../components/common/InnerBox';
 import Button from '../components/common/Button';
 import { useNavigate, useLocation } from 'react-router';
@@ -13,11 +13,25 @@ import DaumPostcode from 'react-daum-postcode';
 import Radio from '@mui/material/Radio';
 import DefaultSign from '../components/userinfo/DefaultSign';
 import styled from '../styles/pages/UpdateUserInfo.module.css';
+import { useLoading } from '../contexts/LoadingContext';
 import axiosErrorHandle from '../apis/error/axiosErrorHandle';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
 
 export default function UpdateUserInfo() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { showLoading, hideLoading } = useLoading();
+
+  //input 스타일 변경
+  const input = useRef(null);
+  const handleInputStyle = () => {
+    input.current.click();
+  };
+
+  const inputSign = useRef(null);
+  const handleInputSignStyle = () => {
+    inputSign.current.click();
+  };
 
   const initialUserData = {
     employeeNumber: '',
@@ -55,6 +69,20 @@ export default function UpdateUserInfo() {
   const [userData, setUserData] = useState(userDataFromLocation);
   const [profile, setProfile] = useState(initialprofile);
   const [sign, setSign] = useState(location.state.dbSign);
+  // 이미지와 사인이 없을 때
+  const defaultSign = () => {
+    return <div className={styled.default_image}>50x50</div>;
+  };
+  const renderProfile = profile ? (
+    <img className={styled.profile_img} src={profile} alt="프로필" />
+  ) : (
+    defaultSign()
+  );
+  const renderSign = sign ? (
+    <img src={sign} alt="사인" className={styled.sign_img} />
+  ) : (
+    defaultSign()
+  );
 
   const [pwdData, setPwdData] = useState({
     currentPassword: '',
@@ -113,7 +141,30 @@ export default function UpdateUserInfo() {
 
   //input change
   const handleInputChange = (e, key) => {
-    setUserData((prevData) => ({ ...prevData, [key]: e.target.value }));
+    let value = e.target.value;
+
+    if (key === 'phone') {
+      value = value.replace(/[^0-9]/g, '');
+
+      if (value.length > 11) {
+        alert('전화번호의 최대 입력 값은 11자리까지 입니다.');
+        return;
+      }
+
+      if (value.length === 10) {
+        value = `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(
+          6,
+          10
+        )}`;
+      } else if (value.length === 11) {
+        value = `${value.slice(0, 3)}-${value.slice(3, 7)}-${value.slice(
+          7,
+          11
+        )}`;
+      }
+    }
+
+    setUserData((prevData) => ({ ...prevData, [key]: value }));
   };
 
   const handlePwd = (data) => {
@@ -178,28 +229,39 @@ export default function UpdateUserInfo() {
 
   const handleProfileChange = (e) => {
     const file = e.target.files[0];
-    //console.log(file);
-    setProfileFile(file);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfile(reader.result);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
+    if (file.type.match('image.*')) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert('이미지 크기는 2MB까지만 넣어주세요.');
+      } else {
+        setProfileFile(file);
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setProfile(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    } else {
+      alert('이미지 파일만 가능합니다.');
     }
   };
 
   const handleSignChange = (e) => {
     const file = e.target.files[0];
-    setCurrentSign(file);
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setSign(reader.result);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
+    if (file.type.match('image.*')) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert('이미지 크기는 2MB까지만 넣어주세요.');
+      } else {
+        setCurrentSign(file);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setSign(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+    } else {
+      alert('이미지 파일만 가능합니다.');
     }
   };
 
@@ -225,6 +287,7 @@ export default function UpdateUserInfo() {
       promises.push(postSign(formData));
     }
 
+    showLoading();
     // 개인 정보 업데이트
     Promise.all(promises)
       .then(() => {
@@ -232,23 +295,32 @@ export default function UpdateUserInfo() {
       })
       .then((response) => {
         if (response.status === 200) {
-          navigate('/userinfo');
+          window.location.href = `/userinfo?name=${'개인정보 조회'}`;
         }
       })
       .catch((error) => {
         axiosErrorHandle(error);
         console.log(error);
+      })
+      .finally(() => {
+        hideLoading();
       });
   };
 
   return (
-    <div>
+    <div className={styled.container}>
       <InnerBox
         style={{ width: '10%', height: '10%' }}
         text={'개인정보'}
         titleChildren={
           <Button label={'저장'} btnStyle={'gray_btn'} onClick={updateAPI} />
         }
+        childStyle={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        }}
       >
         <table>
           <tbody>
@@ -256,12 +328,19 @@ export default function UpdateUserInfo() {
               <th className={styled.userinfo_table_th}>프로필</th>
               <td>
                 <div className={styled.profile_container}>
-                  <img
-                    className={styled.profile_img}
-                    src={profile}
-                    alt="프로필"
+                  <>{renderProfile}</>
+                  <input
+                    type="file"
+                    ref={input}
+                    onChange={handleProfileChange}
+                    className={styled.profile_input}
                   />
-                  <input type="file" onChange={handleProfileChange} />
+                  <button
+                    onClick={handleInputStyle}
+                    className={styled.customInput}
+                  >
+                    <AttachFileIcon />
+                  </button>
                 </div>
               </td>
               <th className={styled.userinfo_table_th}>서명</th>
@@ -285,12 +364,19 @@ export default function UpdateUserInfo() {
                       name="radio-buttons"
                       inputProps={{ 'aria-label': 'C' }}
                     />
-                    <img src={sign} alt="사인" className={styled.sign_img} />
+                    <>{renderSign}</>
                     <input
                       type="file"
+                      ref={inputSign}
                       onChange={handleSignChange}
                       className={styled.sign_input}
                     />
+                    <button
+                      onClick={handleInputSignStyle}
+                      className={styled.customInput}
+                    >
+                      <AttachFileIcon />
+                    </button>
                   </div>
                 </div>
               </td>
@@ -307,8 +393,8 @@ export default function UpdateUserInfo() {
                 <PopUp
                   label={'비밀번호 변경'}
                   title={'비밀번호 변경'}
-                  width={'300px'}
-                  height={'300px'}
+                  width={'400px'}
+                  height={'400px'}
                   isModalOpen={isModalOpen}
                   openModal={openModal}
                   closeModal={closeModal}
@@ -387,8 +473,16 @@ export default function UpdateUserInfo() {
           </tbody>
         </table>
       </InnerBox>
-      <div className={styled.usercompany}></div>
-      <InnerBox style={{ width: '10%', height: '10%' }} text={'회사정보'}>
+      <InnerBox
+        style={{ width: '10%', height: '10%' }}
+        text={'회사정보'}
+        childStyle={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        }}
+      >
         <table>
           <tbody>
             <tr>

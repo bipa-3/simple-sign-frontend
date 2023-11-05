@@ -26,7 +26,6 @@ export default function FavoritesList() {
     <div className={styled.container}>
       {favorites.length > 0
         ? favorites.map((ele, index) => {
-            console.log(favorites);
             return (
               <RecommentContent icon={<GrDocumentText />} name={ele.formName} />
             );

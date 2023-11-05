@@ -1,3 +1,13 @@
+.container {
+  padding: 15px;
+  display: flex;
+  grid-gap: 30px;
+  gap: 25px;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+}
+
 .profile_container {
   margin: 20px 30px;
 }
@@ -5,6 +15,10 @@
 .profile_img {
   width: 50px;
   height: 50px;
+}
+
+.profile_input {
+  display: none;
 }
 
 .sign_img_container {
@@ -34,14 +48,29 @@
 
 .sign_input {
   margin-left: 80px;
+  display: none;
 }
 
-.usercompany {
-  margin: 20px;
+.default_image {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  background-color: #eaeaea;
+  border-radius: 3px;
 }
 
 .userinfo_table_th {
   background-color: rgb(241, 245, 247);
   padding: 13.6px 13.6px 13.6px 13.6px;
   text-align: right;
+  width: 150px;
+}
+
+.customInput {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
 }

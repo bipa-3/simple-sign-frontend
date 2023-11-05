@@ -11,6 +11,7 @@ function BoxCompany(props) {
   );
 
   const handleCompanyChange = (newValue) => {
+    props.onCompanyChange(newValue);
     setSelectedCompany(newValue);
     setApprovalBoxState((prevState) => ({ ...prevState, compId: newValue }));
     setApprovalBoxState2((prevState) => ({ ...prevState, compId: newValue }));

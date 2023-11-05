@@ -9,6 +9,7 @@ import insertApproval from '../../../apis/approvalManageAPI/insertApproval';
 import insertReturn from '../../../apis/approvalManageAPI/insertReturn';
 import insertCancel from '../../../apis/approvalManageAPI/insertCancel';
 import insertPassword from '../../../apis/approvalManageAPI/insertPassword';
+import insertCancelApproval from '../../../apis/approvalManageAPI/insertCancelApproval';
 import deleteApprovalDoc from '../../../apis/approvalManageAPI/deleteApprovalDoc';
 import { useLoading } from '../../../contexts/LoadingContext';
 import ReplyForm from './ReplyForm';
@@ -17,6 +18,7 @@ import getHasApproval from '../../../apis/approvalManageAPI/getHasApproval';
 import getPermissionList from '../../../apis/approvalManageAPI/getPermissionList';
 import getHasUpdate from '../../../apis/approvalManageAPI/getHasUpdate';
 import getHasDelete from '../../../apis/approvalManageAPI/getHasDelete';
+import getHasCancelApproval from '../../../apis/approvalManageAPI/getHasCancelApproval';
 import styled from '../../../styles/components/approvalManage/approvalDetail/ApprovalDetail.module.css';
 import errorHandle from '../../../apis/errorHandle';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
@@ -35,6 +37,7 @@ export default function ApprovalDetail() {
   const [hasApproval, setHasApproval] = useState(false);
   const [hasUpdate, setHasUpdate] = useState(false);
   const [hasDelete, setHasDelete] = useState(false);
+  const [hasCancelApproval, setHasCancelApproval] = useState(false);
   const [isTemporal, setIsTemporal] = useState(false);
   const [password, setPassword] = useState('');
   const [formName, setFormName] = useState('');
@@ -51,6 +54,8 @@ export default function ApprovalDetail() {
       setMode('반려');
     } else if (mode === 'cancel') {
       setMode('취소');
+    } else if (mode === 'cancelApproval') {
+      setMode('상신취소');
     }
   };
   const closeModal = () => {
@@ -67,16 +72,19 @@ export default function ApprovalDetail() {
   //권한목록 가져와서 해당 사용자가 있으면 버튼 노출
   const getHasPermission = () => {
     if (!isTemporal) {
-      //console.log(sessionStorage.getItem('user')); //해당 사용자 권한 가져오기
       //승인/반려 권한 가져오기
       getPermissionList(approvalDocId).then((res) => {
-        //console.log(res);
         setHasPermission(res);
       });
 
       //결재취소권한 가져오기
       getHasApproval(approvalDocId).then((res) => {
         setHasApproval(res);
+      });
+
+      //상신취소권한 가져오기
+      getHasCancelApproval(approvalDocId).then((res) => {
+        setHasCancelApproval(res);
       });
     }
 
@@ -112,6 +120,10 @@ export default function ApprovalDetail() {
             localStorage.setItem('approvalState', '');
             localStorage.setItem('approvalState', 'cancel');
             return insertCancel(approvalDocId);
+          } else if (mode === '상신취소') {
+            localStorage.setItem('approvalState', '');
+            localStorage.setItem('approvalState', 'cancelApproval');
+            return insertCancelApproval(approvalDocId);
           }
         } else {
           errorHandle(passwordRes);
@@ -121,7 +133,6 @@ export default function ApprovalDetail() {
         if (approvalRes.status === 200) {
           alert(`결재가 ${mode}되었습니다.`);
           setReload(!reload);
-          //window.location.reload();
         } else {
           errorHandle(approvalRes);
         }
@@ -135,7 +146,25 @@ export default function ApprovalDetail() {
   };
 
   const returnTitleComponent = () => {
-    return hasPermission ? (
+    return hasPermission && hasCancelApproval ? (
+      <div className={styled.permissionAndrejectBtn}>
+        <Button
+          label={'승인'}
+          btnStyle={'green_btn'}
+          onClick={() => openModal('approve')}
+        />
+        <Button
+          label={'반려'}
+          btnStyle={'red_btn'}
+          onClick={() => openModal('return')}
+        />
+        <Button
+          label={'상신취소'}
+          btnStyle={'dark_btn'}
+          onClick={() => openModal('cancelApproval')}
+        />
+      </div>
+    ) : hasPermission ? (
       <div className={styled.permissionAndrejectBtn}>
         <Button
           label={'승인'}
@@ -148,6 +177,12 @@ export default function ApprovalDetail() {
           onClick={() => openModal('return')}
         />
       </div>
+    ) : hasCancelApproval ? (
+      <Button
+        label={'상신취소'}
+        btnStyle={'dark_btn'}
+        onClick={() => openModal('cancelApproval')}
+      />
     ) : hasApproval ? (
       <Button
         label={'결재취소'}
@@ -257,7 +292,7 @@ export default function ApprovalDetail() {
                     <InventoryOutlinedIcon
                       sx={{ fontSize: 250, color: green['A700'] }}
                     />
-                  ) : mode === '취소' ? (
+                  ) : mode === '취소' || mode === '상신취소' ? (
                     <AssignmentReturnOutlinedIcon
                       sx={{ fontSize: 250, color: grey[800] }}
                     />

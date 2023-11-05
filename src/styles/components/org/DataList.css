@@ -1,0 +1,4 @@
+.approval-status {
+  background-color: lightgray;
+  pointer-events: none;
+}

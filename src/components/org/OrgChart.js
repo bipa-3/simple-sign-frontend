@@ -50,6 +50,12 @@ export default function OrgChart({
   const [search, setSearch] = useState({});
 
   const handleRow = (row) => {
+    if (view === 'approvalUser') {
+      if (row.user === '') {
+        alert('회사나 부서 선택은 불가합니다.');
+        return;
+      }
+    }
     const isDuplicate = selectedRow.some(
       (selected) =>
         selected.company === row.company &&
@@ -63,7 +69,13 @@ export default function OrgChart({
       const newId =
         selectedRow.length > 0 ? selectedRow[selectedRow.length - 1].id + 1 : 1;
       const updatedRow = { ...row, id: newId };
-      setSelectedRow((prevRows) => [...prevRows, updatedRow]);
+      setSelectedRow((prevRows) => {
+        if (view === 'approvalUser' && prevRows.length >= 8) {
+          alert('결재자는 8명이상 불가합니다.');
+          return prevRows;
+        }
+        return [...prevRows, updatedRow];
+      });
     } else {
       alert('이미 들어가있는 값입니다.');
     }
@@ -85,8 +97,13 @@ export default function OrgChart({
         useId: 0,
         user: '',
         userId: 0,
+        approvalStatus: '',
       };
-      if (view === 'user' && row.userId && row.user) {
+      if (
+        (view === 'user' || view === 'approvalUser') &&
+        row.userId &&
+        row.user
+      ) {
         return {
           ...returnObj,
           category: 'U',
@@ -101,6 +118,7 @@ export default function OrgChart({
           establishment: row.establishment,
           compId: row.compId,
           company: row.company,
+          approvalStatus: row.approvalStatus,
         };
       } else if (row.deptId && row.department) {
         return {

@@ -10,12 +10,27 @@ const deptcolumns = [
 ];
 
 const usercolumns = [
-  { field: 'company', headerName: '회사', width: 150, sortable: false },
-  { field: 'establishment', headerName: '사업장', width: 150, sortable: false },
-  { field: 'department', headerName: '부서', width: 150, sortable: false },
-  { field: 'position', headerName: '직급', width: 150, sortable: false },
-  { field: 'grade', headerName: '직책', width: 150, sortable: false },
-  { field: 'user', headerName: '사용자', width: 150, sortable: false },
+  {
+    field: 'company',
+    headerName: '회사',
+    width: 150,
+    sortable: true,
+  },
+  {
+    field: 'establishment',
+    headerName: '사업장',
+    width: 150,
+    sortable: true,
+  },
+  {
+    field: 'department',
+    headerName: '부서',
+    width: 150,
+    sortable: true,
+  },
+  { field: 'position', headerName: '직급', width: 150, sortable: true },
+  { field: 'grade', headerName: '직책', width: 150, sortable: true },
+  { field: 'user', headerName: '사용자', width: 150, sortable: true },
 ];
 
 export default function OrgTopGrid({
@@ -45,7 +60,7 @@ export default function OrgTopGrid({
       deptId: item.deptId,
       estId: item.estId,
     };
-    if (view === 'user') {
+    if (view === 'user' || view === 'approvalUser') {
       return {
         ...baseData,
         position: item.positionName || '',
@@ -64,6 +79,7 @@ export default function OrgTopGrid({
       if (selectedNode) {
         getGridView(selectedNode, view, isChecked)
           .then((response) => {
+            console.log(response);
             const api = response.data;
 
             const mappedData = api.map((item, index) => {

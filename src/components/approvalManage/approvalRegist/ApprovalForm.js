@@ -13,9 +13,7 @@ import {
   DetailBox,
   AreaBox,
 } from '../../formManage/formDetail/components/DetailTableItem';
-import { useFormManage } from '../../../contexts/FormManageContext';
 import FileBox from './FileBox';
-import getDefaultApprovalLine from '../../../apis/approvalManageAPI/getDefaultApprovalLine';
 
 export default function ApprovalForm({
   form_code,
@@ -38,15 +36,18 @@ export default function ApprovalForm({
   setFileNames,
   isFocused,
   setIsFocused,
-  setDefaultApprovalLine,
   setFormName,
+  scopeConfirm,
+  condition,
+  setCondition,
+  detailData,
+  setDetailData,
 }) {
   const [sequence, setSequence] = useState([]);
   const [default_form, setDefaultForm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [condition, setCondition] = useState('rec_ref');
+
   const { showLoading, hideLoading } = useLoading();
-  const { detailData, setDetailData, resetDetailData } = useFormManage();
   const deptName = localStorage.getItem('deptName');
 
   const openModal = () => {
@@ -60,13 +61,6 @@ export default function ApprovalForm({
   const handleApprovalClick = () => {
     setCondition('approval');
     openModal();
-  };
-
-  const dataUpdateHandler = (id, data) => {
-    setDetailData({ ...detailData, [id]: data });
-  };
-  const scopeConfirm = (data) => {
-    dataUpdateHandler('scope', data);
   };
 
   const scopefilterHandler = (id, category, useId) => {
@@ -87,19 +81,30 @@ export default function ApprovalForm({
   };
 
   useEffect(() => {
-    //수신참조 내역 넣기
+    setOrgUseId(detailData.approvalLine);
+
+    detailData.scope.forEach((data) => {
+      if (
+        data.category === 'C' ||
+        data.category === 'D' ||
+        data.category === 'E'
+      ) {
+        data.userId = null;
+        data.user = null;
+      }
+    });
+
     setRecRef(detailData.scope);
   }, [detailData]);
 
   useEffect(() => {
     showLoading();
     setOrgUseId('');
-    resetDetailData();
+    //resetDetailData;
 
     //양식 상세조회
     getForm(form_code)
       .then((json) => {
-        //console.log(json);
         setDefaultForm(json.defaultForm);
         setMainForm(json.mainForm);
         setFormName(json.formName);
@@ -113,14 +118,10 @@ export default function ApprovalForm({
       setSequence(json);
     });
 
-    //기본결재라인 조회
-    getDefaultApprovalLine(form_code).then((res) => {
-      setOrgUseId(res);
-      setDefaultApprovalLine(res);
-    });
-
     deleteContentEditableError();
   }, []);
+
+  const renderApproval = (approval) => {};
 
   return (
     <>
@@ -151,30 +152,20 @@ export default function ApprovalForm({
                         <td>결재자8</td>
                       </tr>
                       <tr style={{ height: '70px' }}>
-                        <td>
-                          {org_use_list.length > 0 ? org_use_list[0].user : ''}
-                        </td>
-                        <td>
-                          {org_use_list.length > 1 ? org_use_list[1].user : ''}
-                        </td>
-                        <td>
-                          {org_use_list.length > 2 ? org_use_list[2].user : ''}
-                        </td>
-                        <td>
-                          {org_use_list.length > 3 ? org_use_list[3].user : ''}
-                        </td>
-                        <td>
-                          {org_use_list.length > 4 ? org_use_list[4].user : ''}
-                        </td>
-                        <td>
-                          {org_use_list.length > 5 ? org_use_list[5].user : ''}
-                        </td>
-                        <td>
-                          {org_use_list.length > 6 ? org_use_list[6].user : ''}
-                        </td>
-                        <td>
-                          {org_use_list.length > 7 ? org_use_list[7].user : ''}
-                        </td>
+                        {[...Array(8)].map((_, index) => (
+                          <td
+                            style={{
+                              textAlign: 'center',
+                              width: '12.5%',
+                              height: '70px',
+                            }}
+                            key={index}
+                          >
+                            {org_use_list.length > index
+                              ? org_use_list[index].user
+                              : ''}
+                          </td>
+                        ))}
                       </tr>
                     </table>
                   </>
@@ -265,6 +256,9 @@ export default function ApprovalForm({
                               openModal={openModal}
                               closeModal={closeModal}
                               confirmHandler={scopeConfirm}
+                              comp={
+                                detailData.compId > 1 ? detailData.compId : 0
+                              }
                             />
                           </>
                         }
@@ -300,12 +294,16 @@ export default function ApprovalForm({
       {/*모달*/}
       {condition === 'approval' ? (
         <OrgChart
-          initData={''}
-          view={'user'}
+          initData={detailData.approvalLine.map((ele, index) => {
+            ele.id = index;
+            return ele;
+          })}
+          view={'approvalUser'}
           isModalOpen={isModalOpen}
           openModal={openModal}
           closeModal={closeModal}
-          confirmHandler={setOrgUseId}
+          confirmHandler={scopeConfirm}
+          comp={detailData.compId > 1 ? detailData.compId : 0}
         />
       ) : null}
     </>

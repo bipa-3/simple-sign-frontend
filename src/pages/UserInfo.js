@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import InnerBox from '../components/common/InnerBox';
 import Button from '../components/common/Button';
 import { useNavigate } from 'react-router';
@@ -12,6 +12,9 @@ import { getSign } from '../apis/userInfoAPl/getSign';
 import { getUpdateSign } from '../apis/userInfoAPl/getSign';
 import styled from '../styles/pages/UserInfo.module.css';
 import DefaultSign from '../components/userinfo/DefaultSign';
+import { useLoading } from '../contexts/LoadingContext';
+import axiosErrorHandle from '../apis/error/axiosErrorHandle';
+import profileicon from '../assets/imgs/profile.png';
 
 function renderDeptString(deptString) {
   const depts = deptString.split(',');
@@ -19,6 +22,8 @@ function renderDeptString(deptString) {
 }
 
 export default function UserInfo() {
+  const { showLoading, hideLoading } = useLoading();
+
   const [pwdData, setPwdData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -46,8 +51,6 @@ export default function UserInfo() {
     employmentStatus: false,
     startDate: '',
   });
-
-  const canvasRef = useRef(null);
 
   // 팝업
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -77,8 +80,8 @@ export default function UserInfo() {
           closeModal();
         }
       })
-      .catch(() => {
-        alert('비밀번호 변경에 실패했습니다. 다시 입력해주세요.');
+      .catch((err) => {
+        axiosErrorHandle(err);
       });
   };
 
@@ -105,12 +108,16 @@ export default function UserInfo() {
 
   //api호출
   useEffect(() => {
+    showLoading();
     getUserInfo()
       .then((response) => {
         setUserData(response.data);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        hideLoading();
       });
   }, []);
 
@@ -151,7 +158,7 @@ export default function UserInfo() {
   }, []);
 
   return (
-    <div>
+    <div className={styled.container}>
       <InnerBox
         style={{ width: '10%', height: '10%' }}
         text={'개인정보'}
@@ -160,12 +167,18 @@ export default function UserInfo() {
             label={'수정'}
             btnStyle={'gray_btn'}
             onClick={() => {
-              navigate('/updateuser', {
+              navigate(`/updateuser?name=${'개인정보 수정'}`, {
                 state: { userData, profile, sign, dbSign },
               });
             }}
           />
         }
+        childStyle={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        }}
       >
         <table>
           <tbody>
@@ -174,7 +187,7 @@ export default function UserInfo() {
               <td>
                 <img
                   className={styled.userinfo_profile}
-                  src={profile}
+                  src={profile || profileicon}
                   alt="프로필"
                 />
               </td>
@@ -195,8 +208,8 @@ export default function UserInfo() {
                 <PopUp
                   label={'비밀번호 변경'}
                   title={'비밀번호 변경'}
-                  width={'300px'}
-                  height={'300px'}
+                  width={'400px'}
+                  height={'400px'}
                   isModalOpen={isModalOpen}
                   openModal={openModal}
                   closeModal={closeModal}
@@ -234,8 +247,16 @@ export default function UserInfo() {
           </tbody>
         </table>
       </InnerBox>
-      <div className={styled.usercompany}></div>
-      <InnerBox style={{ width: '10%', height: '10%' }} text={'회사정보'}>
+      <InnerBox
+        style={{ width: '10%', height: '10%' }}
+        text={'회사정보'}
+        childStyle={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        }}
+      >
         <table>
           <tbody>
             <tr>

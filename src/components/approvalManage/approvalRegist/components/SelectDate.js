@@ -39,7 +39,6 @@ export default function SelectDate({ value, setValue, baseDate }) {
   const [shouldStartInterval, setShouldStartInterval] = useState(true);
 
   const handleChange = (newValue) => {
-    console.log(newValue);
     setShouldStartInterval(false);
     setValue(newValue);
   };
@@ -51,7 +50,7 @@ export default function SelectDate({ value, setValue, baseDate }) {
     if (shouldStartInterval && baseDate === null) {
       intervalId = setInterval(() => {
         setValue(dayjs(moment()));
-      }, 10000);
+      }, 60000);
     }
 
     return () => {

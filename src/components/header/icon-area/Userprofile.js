@@ -1,19 +1,22 @@
 import styles from '../../../styles/components/header/userProfile.module.css';
 import React, { useState, useEffect } from 'react';
 import { getProfile } from '../../../apis/userInfoAPl/getProfile';
+import userProfile from '../../../assets/imgs/usericon.png';
 
 function Userprofile() {
   const [view, setView] = useState(false);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState();
 
   useEffect(() => {
-    getProfile()
-      .then((response) => {
+    const profile = async () => {
+      try {
+        const response = await getProfile();
         setProfile(response.data);
-      })
-      .catch((err) => {
+      } catch (err) {
         console.log(err);
-      });
+      }
+    };
+    profile();
   }, []);
 
   return (
@@ -26,7 +29,7 @@ function Userprofile() {
       >
         <div className={styles.list_user}>
           <img
-            src={profile}
+            src={profile || userProfile}
             className={styles.rounded_circle}
             alt="userphoto"
           />

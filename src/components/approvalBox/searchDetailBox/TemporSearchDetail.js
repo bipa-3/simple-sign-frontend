@@ -53,47 +53,55 @@ function TemporSearchDetail(props) {
   return (
     <div className={styled.SearchDetailBox}>
       <div className={styled.searchItems}>
-        <ItemBox
-          children={
-            <>
-              <TextComp text={dateName} />
-              <SearchDate onDateChange={handleDateChange} />
-            </>
-          }
-        ></ItemBox>
-        <ItemBox
-          children={
-            <>
-              <TextComp text={'제목'} />
-              <InputComp
-                width={'220px'}
-                dataHandler={handleDataChange('searchTitle')}
-              />
-            </>
-          }
-        ></ItemBox>
-        <ItemBox
-          children={
-            <>
-              <TextComp text={'내용'} />
-              <InputComp
-                width={'220px'}
-                dataHandler={handleDataChange('searchContent')}
-              />
-            </>
-          }
-        ></ItemBox>
-        <ItemBox
-          children={
-            <>
-              <TextComp text={'문서양식'} />
-              <InputComp
-                width={'208px'}
-                dataHandler={handleDataChange('searchDocForm')}
-              />
-            </>
-          }
-        ></ItemBox>
+        <div className={styled.searchItem}>
+          <ItemBox
+            children={
+              <>
+                <TextComp text={dateName} />
+                <SearchDate onDateChange={handleDateChange} />
+              </>
+            }
+          ></ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox
+            children={
+              <>
+                <TextComp text={'제목'} />
+                <InputComp
+                  width={'225px'}
+                  dataHandler={handleDataChange('searchTitle')}
+                />
+              </>
+            }
+          ></ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox
+            children={
+              <>
+                <TextComp text={'내용'} />
+                <InputComp
+                  width={'225px'}
+                  dataHandler={handleDataChange('searchContent')}
+                />
+              </>
+            }
+          ></ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox
+            children={
+              <>
+                <TextComp text={'문서양식'} />
+                <InputComp
+                  width={'225px'}
+                  dataHandler={handleDataChange('searchDocForm')}
+                />
+              </>
+            }
+          ></ItemBox>
+        </div>
       </div>
       <div className={styled.btnArea}>
         <Button

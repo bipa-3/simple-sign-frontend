@@ -7,7 +7,7 @@ import Userprofile from './Userprofile';
 import styles from '../../../styles/components/header/dropdown.module.css';
 import AppContext from '../../../contexts/AppContext';
 import { postLogout } from '../../../apis/loginAPI/postLogout';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import Radio from '@mui/material/Radio';
 import Button2 from '../../common/Button';
 import { getAuthorityCode } from '../../../apis/headerAPI/getAuthorityCode';
@@ -83,7 +83,7 @@ export default function Profile() {
                 className={styles.menubox}
                 onClick={() => {
                   popupState.close();
-                  navigate('/userinfo');
+                  navigate(`/userinfo?name=${'개인정보 조회'}`);
                 }}
               >
                 Profile
@@ -135,9 +135,13 @@ export default function Profile() {
                 width={'50px'}
                 height={'30px'}
                 fontSize={'12px'}
-                onClick={() => {
-                  authorityCodeAPI(selectedValue);
-                  popupState.close();
+                onClick={async () => {
+                  try {
+                    await authorityCodeAPI(selectedValue);
+                    window.location.reload();
+                  } catch (error) {
+                    console.error(error);
+                  }
                 }}
               />
             </div>

@@ -158,3 +158,16 @@
 .lightenText {
   color: #999; /* 이 값은 원하는 연한 색상으로 조절하세요 */
 }
+.noDocumentsContainer {
+  text-align: center;
+  padding: 20px;
+  font-size: 1rem;
+  color: #98a6ad;
+}
+
+.noDocumentsIcon {
+  font-weight: lighter;
+  text-align: center;
+  font-size: 45px;
+  color: #98a6ad;
+}

@@ -12,6 +12,7 @@ import { usePage } from '../../../contexts/PageContext';
 import insertDocView from '../../../apis/approvalBoxAPI/insertDocView';
 import { useLoading } from '../../../contexts/LoadingContext';
 import { checkDocSearchData } from '../../../validation/ApprovalBoxManage/ApprovalDocSearchSchema';
+import { CiFileOff } from 'react-icons/ci';
 
 function ViewDocBox() {
   const { state, setState, detailSearchState } = useApprovalBox();
@@ -191,52 +192,61 @@ function ViewDocBox() {
     <div className={styled.container}>
       <TableHeader />
       <div className={styled.docContainer}>
-        <div className={styled.docList}>
-          {docData
-            .filter(
-              (docItem) =>
-                !(state.selectSortDate === 4 && docItem.endDate === null)
-            )
-            .map((docItem) => (
-              <DocItem
-                key={docItem.approvalDocId}
-                docNumber={docItem.approvalDocId}
-                formName={docItem.formName}
-                date={
-                  state.selectSortDate === 1
-                    ? docItem.sendDate
-                    : state.selectSortDate === 2 &&
-                      viewItems.includes('reference')
-                    ? docItem.sendDate
-                    : state.selectSortDate === 2
-                    ? docItem.receiveDate
-                    : state.selectSortDate === 4
-                    ? docItem.endDate
-                    : state.selectSortDate === 3
-                    ? docItem.approvalDate
-                    : docItem.sendDate // 기본값을 기안일로 설정했습니다.
-                }
-                title={docItem.approvalDocTitle}
-                sendUser={docItem.userName}
-                docStatus={docItem.docStatus}
-                sendDepartDetail={docItem.deptName}
-                lastUser={
-                  docItem.docStatus === 'A' ||
-                  docItem.docStatus === 'R' ||
-                  docItem.docStatus === 'P'
-                    ? docItem.lastUser
-                    : docItem.docStatus === 'W'
-                    ? docItem.userName
-                    : ''
-                }
-                isRead={
-                  viewItems.includes('reference') &&
-                  state.docView.includes(docItem.approvalDocId)
-                }
-                onClick={() => handleItemClick(docItem.approvalDocId)}
-              />
-            ))}
-        </div>
+        {docData.length === 0 ? (
+          <div className={styled.noDocumentsContainer}>
+            <div className={styled.noDocumentsIcon}>
+              <CiFileOff />
+            </div>
+            <div className={styled.noDocuments}>No document found.</div>
+          </div>
+        ) : (
+          <div className={styled.docList}>
+            {docData
+              .filter(
+                (docItem) =>
+                  !(state.selectSortDate === 4 && docItem.endDate === null)
+              )
+              .map((docItem) => (
+                <DocItem
+                  key={docItem.approvalDocId}
+                  docNumber={docItem.approvalDocId}
+                  formName={docItem.formName}
+                  date={
+                    state.selectSortDate === 1
+                      ? docItem.sendDate
+                      : state.selectSortDate === 2 &&
+                        viewItems.includes('reference')
+                      ? docItem.sendDate
+                      : state.selectSortDate === 2
+                      ? docItem.receiveDate
+                      : state.selectSortDate === 4
+                      ? docItem.endDate
+                      : state.selectSortDate === 3
+                      ? docItem.approvalDate
+                      : docItem.sendDate // 기본값을 기안일로 설정했습니다.
+                  }
+                  title={docItem.approvalDocTitle}
+                  sendUser={docItem.userName}
+                  docStatus={docItem.docStatus}
+                  sendDepartDetail={docItem.deptName}
+                  lastUser={
+                    docItem.docStatus === 'A' ||
+                    docItem.docStatus === 'R' ||
+                    docItem.docStatus === 'P'
+                      ? docItem.lastUser
+                      : docItem.docStatus === 'W'
+                      ? docItem.userName
+                      : ''
+                  }
+                  isRead={
+                    viewItems.includes('reference') &&
+                    state.docView.includes(docItem.approvalDocId)
+                  }
+                  onClick={() => handleItemClick(docItem.approvalDocId)}
+                />
+              ))}
+          </div>
+        )}
       </div>
       <div className={styled.pagination}>
         <Pagination

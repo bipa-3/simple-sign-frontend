@@ -30,12 +30,17 @@ function DetailBox() {
   const [useStatus, setUseStatus] = useState(1);
   const [data, setData] = useState([]);
   const { showLoading, hideLoading } = useLoading();
+  const [selectedCompany, setSelectedCompany] = useState(null);
 
   const handleUseStatusChange = (event) => {
     setUseStatus(event.target.value);
   };
 
   const handleInputChange = (e) => {};
+
+  const handleCompanyChange = (company) => {
+    setSelectedCompany(company);
+  };
 
   useEffect(() => {
     if (isNaN(boxId)) {
@@ -96,6 +101,7 @@ function DetailBox() {
         <BoxCompany
           commonCellStyle={commonCellStyle}
           commonDataStyle={commonDataStyle}
+          onCompanyChange={handleCompanyChange}
         />
         <BoxName
           commonCellStyle={commonCellStyle}
@@ -116,6 +122,7 @@ function DetailBox() {
           commonDataStyle={commonDataStyle}
           menuOption={menuOption}
           setMenuOption={setMenuOption}
+          selectedCompany={selectedCompany}
         />
         <SortOrder
           commonCellStyle={commonCellStyle}
@@ -133,6 +140,7 @@ function DetailBox() {
             commonCellStyle={commonCellStyle}
             commonDataStyle={commonDataStyle}
             compId={boxDetail.compId}
+            onCompanyChange={handleCompanyChange}
           />
           <BoxName
             commonCellStyle={commonCellStyle}
@@ -157,6 +165,7 @@ function DetailBox() {
             menuOption={menuOption}
             setMenuOption={setMenuOption}
             boxId={boxId}
+            selectedCompany={selectedCompany}
           />
           <SortOrder
             commonCellStyle={commonCellStyle}

@@ -79,7 +79,6 @@ function AppContent() {
               view={pageState.isApprovalBox ? 'approval' : ''}
               componentProp={
                 <>
-                  {console.log(pageState.curPage)}
                   {pageState.curPage === '기안양식관리' ? (
                     <Button
                       label={'추가'}
@@ -109,7 +108,10 @@ function AppContent() {
                   path="/ABS"
                   element={checkUserAuthority(2, <ApprovalBoxSetPage />)}
                 />
-                <Route path="/ABV" element={<ApprovalBoxViewPage />} />
+                <Route
+                  path="/ABV"
+                  element={checkUserAuthority(3, <ApprovalBoxViewPage />)}
+                />
                 <Route
                   path="/SAM"
                   element={checkUserAuthority(2, <SeqManagePage />)}

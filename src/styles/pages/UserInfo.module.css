@@ -1,11 +1,18 @@
-.usercompany {
-  margin: 20px;
+.container {
+  padding: 15px;
+  display: flex;
+  grid-gap: 30px;
+  gap: 25px;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
 }
 
 .userinfo_table_th {
   background-color: rgb(241, 245, 247);
   padding: 13.6px 13.6px 13.6px 13.6px;
   text-align: right;
+  width: 150px;
 }
 
 .userinfo_profile {

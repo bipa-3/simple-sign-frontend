@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import styled from '../styles/pages/ApprovalRegistPage.module.css';
 import ApprovalForm from '../components/approvalManage/approvalRegist/ApprovalForm';
 import PopUp from '../components/common/PopUp';
@@ -16,6 +16,7 @@ import { yellow } from '@mui/material/colors';
 import insertFavorites from '../apis/approvalManageAPI/insertFavorites';
 import deleteFavorites from '../apis/approvalManageAPI/deleteFavorites';
 import { useFormManage } from '../contexts/FormManageContext';
+import getDefaultApprovalLine from '../apis/approvalManageAPI/getDefaultApprovalLine';
 
 export default function ApprovalRegist(props) {
   const { id } = useParams();
@@ -37,26 +38,51 @@ export default function ApprovalRegist(props) {
   //register 데이터
   const [main_form, setMainForm] = useState('');
   const [sequence_code, setSequenceCode] = useState('');
-  const [drafting_time, setDraftingTime] = useState(dayjs(moment()));
-  const [enforce_date, setEnforceDate] = useState(dayjs(moment()));
+  const initialDraftingTime = useMemo(() => dayjs(moment()), []);
+  const initialEnforceDate = useMemo(() => dayjs(moment()), []);
+  const [drafting_time, setDraftingTime] = useState(initialDraftingTime);
+  const [enforce_date, setEnforceDate] = useState(initialEnforceDate);
   const titleRef = useRef(null); //제목
   const [rec_ref, setRecRef] = useState([]); //수신참조
   const [org_use_list, setOrgUseId] = useState([]); //결재라인
-  const [defaultApprovalLine, setDefaultApprovalLine] = useState([]);
   const [files, setFiles] = useState([]);
   const [fileNames, setFileNames] = useState([]);
   const [clickStar, setClickStar] = useState(props.favorites);
   const [isFocused, setIsFocused] = useState(false);
-  const { resetDetailData } = useFormManage();
   const [formName, setFormName] = useState('');
+  const { detailData, setDetailData, resetDetailData } = useFormManage();
+  const [condition, setCondition] = useState('rec_ref');
 
-  useEffect(() => {
-    if (status) {
-      openModal();
+  const dataUpdateHandler = (id, data) => {
+    setDetailData((prevData) => ({
+      ...prevData,
+      [id]: data,
+    }));
+  };
+
+  const scopeConfirm = (data, type) => {
+    if (condition === 'approval' || type === 'approval') {
+      dataUpdateHandler('approvalLine', data);
+    } else {
+      dataUpdateHandler('scope', data);
     }
-  }, []);
+  };
 
   const openModal = () => {
+    getDefaultApprovalLine(props.form_code).then((res) => {
+      const updatedData = res.map((item) => {
+        const {
+          approvalDate,
+          approvalOrder,
+          approvalStatus,
+          signFileId,
+          signState,
+          ...rest
+        } = item;
+        return { ...rest };
+      });
+      scopeConfirm(updatedData, 'approval');
+    });
     setIsModalOpen(true);
   };
   const closeModal = () => {
@@ -64,7 +90,6 @@ export default function ApprovalRegist(props) {
     setFileNames([]);
     setIsModalOpen(false);
     setSequenceCode('');
-    setOrgUseId([...defaultApprovalLine]);
     setRecRef([]);
     titleRef.current.textContent = '';
     setIsFocused(false);
@@ -201,7 +226,6 @@ export default function ApprovalRegist(props) {
     insertApprovalDoc(data)
       .then((res) => {
         if (res.status === 200) {
-          console.log(res);
           if (docStatus === 'T') {
             alert('임시저장되었습니다.');
           } else if (docStatus === 'W') {
@@ -210,7 +234,6 @@ export default function ApprovalRegist(props) {
           setRecRef('');
           closeModal();
         } else {
-          //console.log(res);
           errorHandle(res);
         }
       })
@@ -285,8 +308,13 @@ export default function ApprovalRegist(props) {
               setFileNames={setFileNames}
               isFocused={isFocused}
               setIsFocused={setIsFocused}
-              setDefaultApprovalLine={setDefaultApprovalLine}
               setFormName={setFormName}
+              scopeConfirm={scopeConfirm}
+              condition={condition}
+              setCondition={setCondition}
+              detailData={detailData}
+              setDetailData={setDetailData}
+              resetDetailData={resetDetailData}
             />
 
             <PopUpFoot buttons={BlueAndGrayBtn} />

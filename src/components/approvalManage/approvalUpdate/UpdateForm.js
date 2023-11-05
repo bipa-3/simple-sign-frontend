@@ -198,30 +198,20 @@ export default function UpdateForm({
                       <td>결재자8</td>
                     </tr>
                     <tr style={{ height: '70px' }}>
-                      <td>
-                        {org_use_list.length > 0 ? org_use_list[0].user : ''}
-                      </td>
-                      <td>
-                        {org_use_list.length > 1 ? org_use_list[1].user : ''}
-                      </td>
-                      <td>
-                        {org_use_list.length > 2 ? org_use_list[2].user : ''}
-                      </td>
-                      <td>
-                        {org_use_list.length > 3 ? org_use_list[3].user : ''}
-                      </td>
-                      <td>
-                        {org_use_list.length > 4 ? org_use_list[4].user : ''}
-                      </td>
-                      <td>
-                        {org_use_list.length > 5 ? org_use_list[5].user : ''}
-                      </td>
-                      <td>
-                        {org_use_list.length > 6 ? org_use_list[6].user : ''}
-                      </td>
-                      <td>
-                        {org_use_list.length > 7 ? org_use_list[7].user : ''}
-                      </td>
+                      {[...Array(8)].map((_, index) => (
+                        <td
+                          style={{
+                            textAlign: 'center',
+                            width: '12.5%',
+                            height: '70px',
+                          }}
+                          key={index}
+                        >
+                          {org_use_list.length > index
+                            ? org_use_list[index].user
+                            : ''}
+                        </td>
+                      ))}
                     </tr>
                   </table>
                 </div>
@@ -323,7 +313,6 @@ export default function UpdateForm({
               );
             }
             if (domNode.attribs && domNode.attribs.id == 'content') {
-              console.log(contents);
               return (
                 <div id="content" className={styled.editor}>
                   <TinyEditor
@@ -352,11 +341,12 @@ export default function UpdateForm({
             ele.id = index;
             return ele;
           })}
-          view={'user'}
+          view={'approvalUser'}
           isModalOpen={isModalOpen}
           openModal={openModal}
           closeModal={closeModal}
           confirmHandler={scopeConfirm}
+          comp={detailData.compId > 1 ? detailData.compId : 0}
         />
       ) : null}
     </div>

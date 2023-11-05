@@ -47,6 +47,14 @@ export default function UserPWChange({ onPwdChange }) {
           onChange={handleNewPwdCheck}
         />
       </div>
+      <div>
+        <ul>
+          비밀번호 설정 규칙
+          <li>입력 자리 수 제한 : 최소 6 / 최대 15</li>
+          <li> 필수 입력 값 : 영문(대문자), 영문(소문자), 숫자, 특수문자</li>
+          <li>비밀번호 변경시 결재 비밀번호도 함께 변경됩니다.</li>
+        </ul>
+      </div>
     </div>
   );
 }

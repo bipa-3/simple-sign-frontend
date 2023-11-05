@@ -146,75 +146,85 @@ function RemainSearchDetail() {
   return (
     <div className={styled.SearchDetailBox}>
       <div className={styled.searchItems}>
-        <ItemBox>
-          {<span>{setDatename()}</span>}
-          <SearchDate onDateChange={handleDateChange} />
-        </ItemBox>
-
-        <ItemBox>
-          <TextComp text={'제목'} />
-          <InputComp
-            width={'225px'}
-            dataHandler={handleDataChange('searchTitle')}
-          />
-        </ItemBox>
-
-        <ItemBox>
-          <TextComp text={'내용'} />
-          <InputComp
-            width={'225px'}
-            dataHandler={handleDataChange('searchContent')}
-          />
-        </ItemBox>
-
-        <ItemBox>
-          <TextComp text={'기안부서'} />
-          <InputComp
-            width={'225px'}
-            dataHandler={handleDataChange('searchDept')}
-          />
-        </ItemBox>
-
-        <ItemBox>
-          <TextComp text={'기안자'} />
-          <InputComp
-            width={'225px'}
-            dataHandler={handleDataChange('searchWriter')}
-          />
-        </ItemBox>
-
-        <ItemBox>
-          <TextComp text={'결재자'} />
-          <InputComp
-            width={'225px'}
-            dataHandler={handleDataChange('searchApprovUser')}
-          />
-        </ItemBox>
-
-        <ItemBox>
-          <TextComp text={'결재상태'} />
-          <SelectComp
-            options={docStatus}
-            width={'225px'}
-            dataHandler={handleSelectedData}
-          />
-        </ItemBox>
-
-        <ItemBox>
-          <TextComp text={'문서양식'} />
-          <InputComp
-            width={'225px'}
-            dataHandler={handleDataChange('searchDocForm')}
-          />
-        </ItemBox>
-
-        <ItemBox>
-          <TextComp text={'문서번호'} />
-          <InputComp
-            width={'225px'}
-            dataHandler={handleDataChange('searchDocNumber')}
-          />
-        </ItemBox>
+        <div className={styled.searchItem}>
+          <ItemBox>
+            {<span>{setDatename()}</span>}
+            <SearchDate onDateChange={handleDateChange} />
+          </ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox>
+            <TextComp text={'제목'} />
+            <InputComp
+              width={'225px'}
+              dataHandler={handleDataChange('searchTitle')}
+            />
+          </ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox>
+            <TextComp text={'내용'} />
+            <InputComp
+              width={'225px'}
+              dataHandler={handleDataChange('searchContent')}
+            />
+          </ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox>
+            <TextComp text={'기안부서'} />
+            <InputComp
+              width={'225px'}
+              dataHandler={handleDataChange('searchDept')}
+            />
+          </ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox>
+            <TextComp text={'기안자'} />
+            <InputComp
+              width={'225px'}
+              dataHandler={handleDataChange('searchWriter')}
+            />
+          </ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox>
+            <TextComp text={'결재자'} />
+            <InputComp
+              width={'225px'}
+              dataHandler={handleDataChange('searchApprovUser')}
+            />
+          </ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox>
+            <TextComp text={'결재상태'} />
+            <SelectComp
+              options={docStatus}
+              width={'225px'}
+              dataHandler={handleSelectedData}
+            />
+          </ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox>
+            <TextComp text={'문서양식'} />
+            <InputComp
+              width={'225px'}
+              dataHandler={handleDataChange('searchDocForm')}
+            />
+          </ItemBox>
+        </div>
+        <div className={styled.searchItem}>
+          <ItemBox>
+            <TextComp text={'문서번호'} />
+            <InputComp
+              width={'225px'}
+              dataHandler={handleDataChange('searchDocNumber')}
+            />
+          </ItemBox>
+        </div>
       </div>
       <div className={styled.btnArea}>
         <Button

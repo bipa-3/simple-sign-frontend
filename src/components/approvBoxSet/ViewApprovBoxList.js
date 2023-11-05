@@ -10,6 +10,7 @@ import { useApprovalBoxManage } from '../../contexts/ApprovalBoxManageContext';
 
 function ViewApprovalBoxList() {
   const [selectedCompanyId, setSelectedCompanyId] = useState(0);
+  const [searchQuery, setSearchQuery] = useState(''); // 검색 쿼리 상태
 
   const {
     state,
@@ -75,18 +76,19 @@ function ViewApprovalBoxList() {
         </div>
 
         <div className={styled.inputSearch}>
-          <input type="text" placeholder="결재함명을 입력하세요" />
-          <Button
-            label={<SearchIcon style={{ fontSize: '15px' }} />}
-            btnStyle={'dark_btn'}
-            width="32px"
-            height="32px"
-            fontSize="12px"
+          <input
+            type="text"
+            placeholder="결재함명을 입력하세요"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
       </div>
       <div className={styled.boxlist}>
-        <ApprovalBoxList companyId={selectedCompanyId} />
+        <ApprovalBoxList
+          companyId={selectedCompanyId}
+          searchQuery={searchQuery}
+        />
       </div>
     </InnerBox>
   );

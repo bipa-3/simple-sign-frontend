@@ -23,6 +23,12 @@ export default function Login() {
     setPassword(e.target.value);
   };
 
+  const hadleKeyEnter = (e) => {
+    if (e.keyCode === 13) {
+      onLoginSubmit();
+    }
+  };
+
   //유효성 검사
   const loginValidate = () => {
     let isLoginVaalid = true;
@@ -115,6 +121,7 @@ export default function Login() {
                   id="login_id"
                   value={loginId}
                   onChange={onLoginIdChange}
+                  onKeyDown={hadleKeyEnter}
                 />
                 {err.loginId && (
                   <span className={styled.login_err_massage}>
@@ -130,6 +137,7 @@ export default function Login() {
                   id="password"
                   value={password}
                   onChange={onPasswordChange}
+                  onKeyDown={hadleKeyEnter}
                 />
                 {err.password && (
                   <span className={styled.login_err_massage}>
