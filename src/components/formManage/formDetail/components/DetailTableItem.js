@@ -223,6 +223,7 @@ const FileBox = ({ id, name, data, dataHandler }) => {
                   setFormItems={setFormItems}
                   requiredItems={id === 'defaultForm' ? required : []}
                   isModalOpen={isModalOpen}
+                  isDefaultButton={id === 'defaultForm'}
                 />
                 <PopUpFoot buttons={grayAndBlueBtn} />
               </>

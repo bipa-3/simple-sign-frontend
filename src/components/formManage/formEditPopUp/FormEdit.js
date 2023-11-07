@@ -14,8 +14,12 @@ export default function FormEdit({
   setFormItems,
   requiredItems,
   isModalOpen,
+  isDefaultButton,
 }) {
   const [editor, setEditor] = useState(null);
+  let contentStyled = isDefaultButton
+    ? styled.contentArea
+    : styled.contentMainArea;
 
   const formDataHandler = (data) => {
     dataHandler(data);
@@ -68,7 +72,7 @@ export default function FormEdit({
     </td><td style="height: 20px;"><div id="enforce_date" class="enforce_date box" contenteditable="false">시행일자</div></td></tr><tr style="height: 41.8555px;"><td colspan="2" style="height: 41.8555px; text-align: center;">
     <strong>내용</strong></td></tr><tr style="height: 96.9922px;"><td colspan="2" style="height: 96.9922px;"><div id="content" class="contents box" contenteditable="false">내용</div></td></tr></tbody></table>
     `;
-    dataHandler(template);
+    // dataHandler(template);
     editor.setContent(template);
   };
 
@@ -78,19 +82,21 @@ export default function FormEdit({
 
   return (
     <div className={styled.formEditContainer}>
-      <div className={styled.optionsArea}>
-        <div className={styled.optionTitleBox}>{'기본 템플릿'}</div>
-        <div className={styled.optionsBox}>
-          <Button
-            onClick={defualt_template}
-            width={'100px'}
-            fontSize={'12px'}
-            label={'기본 템플릿 적용'}
-            btnStyle={'gray_btn'}
-          />
+      {isDefaultButton ? (
+        <div className={styled.optionsArea}>
+          <div className={styled.optionTitleBox}>{'기본 템플릿'}</div>
+          <div className={styled.optionsBox}>
+            <Button
+              onClick={defualt_template}
+              width={'100px'}
+              fontSize={'12px'}
+              label={'기본 템플릿 적용'}
+              btnStyle={'gray_btn'}
+            />
+          </div>
         </div>
-      </div>
-      <div className={styled.contentArea}>
+      ) : null}
+      <div className={contentStyled}>
         <div className={styled.categoryArea}>
           <FormItemList
             formItems={formItems}

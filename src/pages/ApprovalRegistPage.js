@@ -19,6 +19,7 @@ import { useFormManage } from '../contexts/FormManageContext';
 import getDefaultApprovalLine from '../apis/approvalManageAPI/getDefaultApprovalLine';
 
 export default function ApprovalRegist(props) {
+  //추천 양식 클릭시 사용할 양식 정보와 상태값
   const { id } = useParams();
   let status = props.form_code === parseInt(id) ? true : false;
 
@@ -269,6 +270,11 @@ export default function ApprovalRegist(props) {
       btnStyle: 'dark_btn',
     },
   ];
+
+  //추천 양식 클릭시 모달창 여는 부분
+  useEffect(() => {
+    setIsModalOpen(status);
+  }, []);
 
   return (
     <div className={styled.container}>

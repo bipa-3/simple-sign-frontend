@@ -80,6 +80,7 @@ export default function DetailTableDAL() {
           openModal={openModal}
           closeModal={closeModal}
           confirmHandler={modalConfirm}
+          comp={detailData.compId > 1 ? detailData.compId : 0}
         />
       </div>
       <div className={styled.dalBox}>
