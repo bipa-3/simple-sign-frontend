@@ -55,12 +55,13 @@ export default function DataList({
   }, [detailData]);
 
   useEffect(() => {
-    console.log(disabledRows);
-    rows.forEach((row) => {
-      if (row.approvalStatus === 'A') {
-        setDisAbledRows((prevDisabledRows) => [...prevDisabledRows, row.id]);
-      }
-    });
+    if (Array.isArray(rows) && rows.length !== 0) {
+      rows.forEach((row) => {
+        if (row.approvalStatus && row.approvalStatus === 'A') {
+          setDisAbledRows((prevDisabledRows) => [...prevDisabledRows, row.id]);
+        }
+      });
+    }
   }, [rows]);
 
   return (

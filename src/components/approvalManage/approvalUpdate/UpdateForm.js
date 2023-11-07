@@ -19,6 +19,7 @@ import errorHandle from '../../../apis/errorHandle';
 import { useNavigate } from 'react-router-dom';
 import FileBox from '../approvalRegist/FileBox';
 import getFileNames from '../../../apis/approvalManageAPI/getFileNames';
+import { getCompId } from '../../../utils/getUser';
 
 export default function UpdateForm({
   approval_doc_id,
@@ -304,6 +305,7 @@ export default function UpdateForm({
                             openModal={openModal}
                             closeModal={closeModal}
                             confirmHandler={scopeConfirm}
+                            comp={getCompId()}
                           />
                         </>
                       }
@@ -346,7 +348,7 @@ export default function UpdateForm({
           openModal={openModal}
           closeModal={closeModal}
           confirmHandler={scopeConfirm}
-          comp={detailData.compId > 1 ? detailData.compId : 0}
+          comp={getCompId()}
         />
       ) : null}
     </div>

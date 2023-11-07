@@ -14,6 +14,7 @@ import {
   AreaBox,
 } from '../../formManage/formDetail/components/DetailTableItem';
 import FileBox from './FileBox';
+import { getCompId } from '../../../utils/getUser';
 
 export default function ApprovalForm({
   form_code,
@@ -256,9 +257,7 @@ export default function ApprovalForm({
                               openModal={openModal}
                               closeModal={closeModal}
                               confirmHandler={scopeConfirm}
-                              comp={
-                                detailData.compId > 1 ? detailData.compId : 0
-                              }
+                              comp={getCompId()}
                             />
                           </>
                         }
@@ -303,7 +302,7 @@ export default function ApprovalForm({
           openModal={openModal}
           closeModal={closeModal}
           confirmHandler={scopeConfirm}
-          comp={detailData.compId > 1 ? detailData.compId : 0}
+          comp={getCompId()}
         />
       ) : null}
     </>
