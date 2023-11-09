@@ -2,10 +2,17 @@ import styles from '../../styles/components/ApprovalBox/ApprovalRightHeader.modu
 import React, { useContext, useState } from 'react';
 import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
 import Search from '../common/SearchBox';
+import Button from '../common/Button';
+import { usePage } from '../../contexts/PageContext';
+import { useLoading } from '../../contexts/LoadingContext';
+import insertApprovalAll from '../../apis/approvalManageAPI/insertApprovalAll';
+import errorHandle from '../../apis/errorHandle';
 
 function ApprovalRightHeader() {
   const [isDropdownView, setDropdownView] = useState(false);
   const { state, setState } = useApprovalBox();
+  const { state: pageState, setState: setPageState } = usePage();
+  const { showLoading, hideLoading } = useLoading();
 
   const { detailSearchState, setDetailSearchState, detailSearchInitState } =
     useApprovalBox();
@@ -33,8 +40,34 @@ function ApprovalRightHeader() {
     }));
   };
 
+  const handleApproval = () => {
+    showLoading();
+
+    insertApprovalAll()
+      .then((res) => {
+        if (res.status === 200) {
+          alert('일괄결재 완료되었습니다.');
+        } else {
+          errorHandle(res);
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  };
+
   return (
     <div className={styles.list}>
+      {pageState.curPage === '미결문서' ? (
+        <Button
+          label={'일괄결재'}
+          btnStyle={'red_btn'}
+          onClick={handleApproval}
+        />
+      ) : null}
       <Search onSearch={handleSearch} fontSize="17px" />
       <div className={styles.container} onBlur={handleBlurContainer}>
         <label onClick={handleClickContainer}>

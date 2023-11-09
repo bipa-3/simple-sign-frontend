@@ -168,7 +168,7 @@ export default function UserInfo() {
             btnStyle={'gray_btn'}
             onClick={() => {
               navigate(`/updateuser?name=${'개인정보 수정'}`, {
-                state: { userData, profile, sign, dbSign },
+                state: { profile, sign, dbSign },
               });
             }}
           />
@@ -238,7 +238,7 @@ export default function UserInfo() {
               <th className={styled.userinfo_table_th}>생년월일</th>
               <td>{userData.birth}</td>
               <th className={styled.userinfo_table_th}>성별</th>
-              <td>{userData.gender}</td>
+              <td>{userData.gender === 'M' ? '남성' : '여성'}</td>
             </tr>
             <tr>
               <th className={styled.userinfo_table_th}>주소</th>

@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import InnerBox from '../components/common/InnerBox';
 import Button from '../components/common/Button';
-import { useNavigate, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 import { putUserInfo } from '../apis/userInfoAPl/putUserInfo';
 import PopUp from '../components/common/PopUp';
 import PopUpFoot from '../components/common/PopUpFoot';
@@ -16,10 +16,10 @@ import styled from '../styles/pages/UpdateUserInfo.module.css';
 import { useLoading } from '../contexts/LoadingContext';
 import axiosErrorHandle from '../apis/error/axiosErrorHandle';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import { getUserInfo } from '../apis/userInfoAPl/getUserInfo';
 
 export default function UpdateUserInfo() {
   const location = useLocation();
-  const navigate = useNavigate();
   const { showLoading, hideLoading } = useLoading();
 
   //input 스타일 변경
@@ -33,7 +33,7 @@ export default function UpdateUserInfo() {
     inputSign.current.click();
   };
 
-  const initialUserData = {
+  const [userData, setUserData] = useState({
     employeeNumber: '',
     userName: '',
     loginId: '',
@@ -49,12 +49,7 @@ export default function UpdateUserInfo() {
     gradeName: '',
     employmentStatus: false,
     startDate: '',
-  };
-
-  const userDataFromLocation =
-    location && location.state && location.state.userData
-      ? location.state.userData
-      : initialUserData;
+  });
 
   const initialprofile =
     location && location.state && location.state.profile
@@ -66,18 +61,20 @@ export default function UpdateUserInfo() {
       ? location.state.sign
       : null;
 
-  const [userData, setUserData] = useState(userDataFromLocation);
   const [profile, setProfile] = useState(initialprofile);
   const [sign, setSign] = useState(location.state.dbSign);
+
   // 이미지와 사인이 없을 때
   const defaultSign = () => {
     return <div className={styled.default_image}>50x50</div>;
   };
+
   const renderProfile = profile ? (
     <img className={styled.profile_img} src={profile} alt="프로필" />
   ) : (
     defaultSign()
   );
+
   const renderSign = sign ? (
     <img src={sign} alt="사인" className={styled.sign_img} />
   ) : (
@@ -265,6 +262,21 @@ export default function UpdateUserInfo() {
     }
   };
 
+  // 개인정보 api 호출
+  useEffect(() => {
+    showLoading();
+    getUserInfo()
+      .then((response) => {
+        setUserData(response.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        hideLoading();
+      });
+  }, []);
+
   const updateAPI = () => {
     const promises = [];
 
@@ -444,7 +456,11 @@ export default function UpdateUserInfo() {
               </td>
               <th className={styled.userinfo_table_th}>성별</th>
               <td>
-                <input type="text" value={userData.gender} disabled />
+                <input
+                  type="text"
+                  value={userData.gender === 'M' ? '남성' : '여성'}
+                  disabled
+                />
               </td>
             </tr>
           </tbody>

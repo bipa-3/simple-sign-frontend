@@ -86,7 +86,7 @@ export default function Profile() {
                   navigate(`/userinfo?name=${'개인정보 조회'}`);
                 }}
               >
-                Profile
+                개인정보 조회
               </MenuItem>
               <MenuItem
                 className={styles.menubox}
@@ -94,7 +94,7 @@ export default function Profile() {
                   logout();
                 }}
               >
-                Logout
+                로그아웃
               </MenuItem>
             </div>
             <div>

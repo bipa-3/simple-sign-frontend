@@ -303,7 +303,6 @@ export default function DetailForm(props) {
             if (domNode.attribs && domNode.attribs.id == 'content') {
               return (
                 <>
-                  <h4>신청내용</h4>
                   <div id="content" contentEditable="false">
                     {ReactHtmlParser(contents)}
                   </div>

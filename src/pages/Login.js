@@ -113,7 +113,7 @@ export default function Login() {
             <div className={styled.login_form}>
               <div>
                 <label className={styled.login_label} htmlFor="login_id">
-                  ID
+                  아이디
                 </label>
                 <input
                   className={styled.login_input}
@@ -129,7 +129,7 @@ export default function Login() {
                   </span>
                 )}
                 <label className={styled.login_label} htmlFor="password">
-                  Password
+                  비밀번호
                 </label>
                 <input
                   className={styled.login_input}
@@ -149,7 +149,7 @@ export default function Login() {
                 <div className={styled.login_err_massage}>{loginErr}</div>
               )}
               <button id={styled.login_button} onClick={onLoginSubmit}>
-                Login
+                로그인
               </button>
             </div>
           </div>

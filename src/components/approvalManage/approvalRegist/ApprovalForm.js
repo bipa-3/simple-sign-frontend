@@ -15,6 +15,7 @@ import {
 } from '../../formManage/formDetail/components/DetailTableItem';
 import FileBox from './FileBox';
 import { getCompId } from '../../../utils/getUser';
+import LinearProgressWithLabel from '../../common/LinearProgressWithLabel';
 
 export default function ApprovalForm({
   form_code,
@@ -121,8 +122,6 @@ export default function ApprovalForm({
 
     deleteContentEditableError();
   }, []);
-
-  const renderApproval = (approval) => {};
 
   return (
     <>
