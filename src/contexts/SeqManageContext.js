@@ -45,7 +45,7 @@ const SeqManageProvider = ({ children }) => {
   const [seqItems, setSeqItems] = useState(setInitSeqItems);
 
   const createDetailData = () => {
-    let compId = setData.compList[1].id;
+    let compId = setData?.compList[1]?.id || 2;
     let deptScope = [];
 
     console.log(compId, deptScope);

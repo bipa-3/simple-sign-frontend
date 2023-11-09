@@ -58,7 +58,7 @@ const FormManageProvider = ({ children }) => {
 
   const createDetailData = () => {
     console.log(setData);
-    let compId = setData?.compList[1]?.id || 1;
+    let compId = setData?.compList[1]?.id || 2;
     let scope = [];
 
     console.log(compId, scope);
