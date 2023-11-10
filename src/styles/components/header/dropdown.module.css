@@ -54,6 +54,8 @@
 
 .notice_menubox {
   left: -180px !important;
+  width: 400px;
+  height: 550px;
 }
 
 .notice_menuitem {
@@ -71,4 +73,18 @@
   align-items: center; /* 수직 정렬을 가운데로 설정합니다. */
 
   padding-left: 16px;
+}
+
+.menuItemSpacing:hover {
+  background-color: #ececec !important;
+}
+
+/* 알림 내용 부분*/
+.alarm_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.alarm_content {
+  font-weight: bold;
 }
