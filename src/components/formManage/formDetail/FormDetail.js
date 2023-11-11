@@ -14,7 +14,7 @@ import {
 import DetailTableDAL from './components/DetailTableDAL';
 
 export default function FormDetail({ searchHandler }) {
-  const { detailData, flagData, createDetailData } = useFormManage();
+  const { detailData, flagData } = useFormManage();
   const [activeButton, setActiveButton] = useState(1);
   const { showLoading, hideLoading } = useLoading();
 
@@ -92,11 +92,6 @@ export default function FormDetail({ searchHandler }) {
   const returnTitleComponent = () => {
     return (
       <>
-        {/* <Button
-          label={'추가'}
-          btnStyle={'gray_btn'}
-          onClick={createDetailData}
-        /> */}
         <Button
           label={flagData === 1 ? '저장' : '수정'}
           btnStyle={'green_btn'}

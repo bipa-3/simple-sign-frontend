@@ -113,13 +113,13 @@ export default function DetailTable() {
             {flagData === 1 ? (
               <SelectBox
                 id={'approvalKind'}
-                data={setData.approvalKindList || []}
+                data={setData.approvalKindList}
                 dataHandler={setDetailDataById}
               />
             ) : (
               <SelectBox
                 id={'approvalKind'}
-                data={setData.approvalKindList || []}
+                data={setData.approvalKindList}
                 init={detailData.approvalKind}
                 dataHandler={setDetailDataById}
               />

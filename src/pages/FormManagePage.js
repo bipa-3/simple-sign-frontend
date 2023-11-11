@@ -10,11 +10,11 @@ import { usePage } from '../contexts/PageContext';
 import { useLoading } from '../contexts/LoadingContext';
 import { checkSearchData } from '../validation/formManage/searchSchema';
 import { getAuthrity } from '../utils/getUser';
-import axiosErrorHandle from '../apis/error/axiosErrorHandle';
+import getApprovalKind from '../apis/commonAPI/getApprovalKind';
 
 export default function FormManagePage() {
   const [formListData, setFormListData] = useState([]);
-  const { searchData, setData, setSearchDataById, setSetDataById } =
+  const { searchData, setData, setSearchDataById, setSetData } =
     useFormManage();
   const { showLoading, hideLoading } = useLoading();
   const { state, setState } = usePage();
@@ -41,20 +41,31 @@ export default function FormManagePage() {
       });
   };
 
-  const setCompListData = () => {
-    getCompanyList()
-      .then((res) => {
-        return res.json();
+  const setDetaultData = () => {
+    showLoading();
+    Promise.all([getCompanyList(), getApprovalKind()])
+      .then(([compListRes, approvalKindRes]) => {
+        return Promise.all([compListRes.json(), approvalKindRes.json()]);
       })
-      .then((data) => {
+      .then(([compListData, approvalKindData]) => {
         if (getAuthrity() === '1') {
-          data = [{ id: 0, name: '전체' }, ...data];
+          compListData = [{ id: 0, name: '전체' }, ...compListData];
         }
-        setSearchDataById('compId', data[0].id);
-        setSetDataById('compList', data);
+
+        const approvalKindResult = approvalKindData.map((ele) => {
+          ele.id = ele.id.toString().padStart(2, '0');
+          return ele;
+        });
+
+        setSearchDataById('compId', compListData[0].id);
+        setSetData({
+          ...setData,
+          compList: compListData,
+          approvalKindList: approvalKindResult,
+        });
       })
       .catch((err) => {
-        axiosErrorHandle(err);
+        console.error(err);
       })
       .finally(() => {
         hideLoading();
@@ -77,8 +88,8 @@ export default function FormManagePage() {
     //페이지 데이터 셋팅
     setState({ ...state, curPage: '기안양식관리' });
 
-    //회사명, 기본 데이터 셋팅
-    setCompListData();
+    //기본 데이터 셋팅
+    setDetaultData();
 
     return () => {
       setSearchDataById('status', 1);

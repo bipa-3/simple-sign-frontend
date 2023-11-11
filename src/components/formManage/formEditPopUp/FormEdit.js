@@ -5,8 +5,10 @@ import React, { useState, useEffect } from 'react';
 import { TinyEditor } from '../../common/TinyEditor';
 import ReactHtmlParser from 'html-react-parser';
 import Button from '../../common/Button';
+import { useFormManage } from '../../../contexts/FormManageContext';
 
 export default function FormEdit({
+  id,
   data,
   dataHandler,
   curForm,
@@ -17,6 +19,7 @@ export default function FormEdit({
   isDefaultButton,
 }) {
   const [editor, setEditor] = useState(null);
+  const { detailData } = useFormManage();
   let contentStyled = isDefaultButton
     ? styled.contentArea
     : styled.contentMainArea;
@@ -58,6 +61,12 @@ export default function FormEdit({
         console.error(err);
       });
   }, []);
+
+  useEffect(() => {
+    if (!isModalOpen) {
+      editor?.setContent(detailData[id]);
+    }
+  }, [isModalOpen]);
 
   const defualt_template = () => {
     let template = `<h1 data-mce-style="text-align: center;" style="text-align: center;">결재 문서</h1>

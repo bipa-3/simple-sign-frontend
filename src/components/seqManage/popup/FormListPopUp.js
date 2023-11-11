@@ -29,44 +29,63 @@ export default function FormListPopUp({ setGridData }) {
   // };
 
   useEffect(() => {
-    let deptScopeIdList = detailData.deptScope
-      .filter((ele) => {
-        console.log('e:', ele);
-        if (ele.category === 'C') {
-          return true;
-        }
-        return false;
-      })
-      .map((ele) => ele.compId);
-    console.log('목록조회할1:', deptScopeIdList, deptScopeIdList.length < 1);
-
-    if (deptScopeIdList.length < 1) {
+    console.log('목록:', detailData.deptScope, detailData.compId);
+    if (detailData.compId === '') {
+      console.log('실패');
+      return;
+    }
+    if (detailData.compId === 1) {
+      console.log('전체');
       getFormListAll()
         .then((res) => {
           return res.json();
         })
         .then((data) => {
           setRows(data);
-          // setFiletedRows(data);
         })
         .catch((err) => {
           console.error(err);
         });
     } else {
-      console.log('목록조회할2:', deptScopeIdList);
-      getFormListByCompId({ idList: deptScopeIdList })
+      console.log('부분');
+      getFormListByCompId({ idList: [detailData.compId] })
         .then((res) => {
           return res.json();
         })
         .then((data) => {
           setRows(data);
-          // setFiletedRows(data);
         })
         .catch((err) => {
           console.error(err);
         });
     }
-  }, [detailData.deptScope]);
+    // if (deptScopeIdList.length < 1) {
+    //   getFormListAll()
+    //     .then((res) => {
+    //       return res.json();
+    //     })
+    //     .then((data) => {
+    //       setRows(data);
+    //       // setFiletedRows(data);
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    // } else {
+    //   console.log('목록조회할2:', deptScopeIdList);
+    //   getFormListByCompId({ idList: [detailData.compId] })
+    //     .then((res) => {
+    //       return res.json();
+    //     })
+    //     .then((data) => {
+    //       setRows(data);
+    //       // setFiletedRows(data);
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    // }
+  }, [detailData.compId]);
 
   return (
     <div className={styled.formListContainer}>

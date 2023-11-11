@@ -11,6 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
+import { useFormManage } from '../../../../contexts/FormManageContext';
 
 const customStyles = {
   control: (base) => ({
@@ -87,11 +88,10 @@ const SelectBox = ({ id, data, dataHandler, init = 0 }) => {
   }, [initIndex]);
 
   const [selectedOption, setSelectedOption] = useState(data[0]);
-
   return (
     <div className={styled.dataBox}>
       <Select
-        defaultValue={data[0]}
+        // defaultValue={data[0]}
         value={selectedOption}
         onChange={(selectedOption) => {
           console.log(selectedOption);
@@ -155,16 +155,6 @@ const FileBox = ({ id, name, data, dataHandler }) => {
   const [formItems, setFormItems] = useState([]);
   const required = [1, 6, 10];
 
-  // let previewWindow = null;
-  // const openPreviewWindow = (data) => {
-  //   previewWindow = window.open('', 'Preview', 'width=565,height=800');
-  //   previewWindow.document.write(
-  //     '<html><head><title>미리보기</title></head><body>'
-  //   );
-  //   previewWindow.document.write(data);
-  //   previewWindow.document.write('</body></html>');
-  // };
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -196,6 +186,13 @@ const FileBox = ({ id, name, data, dataHandler }) => {
       },
       btnStyle: 'popup_blue_btn',
     },
+    {
+      label: '취소',
+      onClick: () => {
+        closeModal();
+      },
+      btnStyle: 'popup_blue_btn',
+    },
   ];
 
   return (
@@ -216,6 +213,7 @@ const FileBox = ({ id, name, data, dataHandler }) => {
             children={
               <>
                 <FormEdit
+                  id={id}
                   data={data}
                   dataHandler={setFormData}
                   curForm={formData}

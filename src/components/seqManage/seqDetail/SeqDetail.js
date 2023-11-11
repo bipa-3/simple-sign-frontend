@@ -13,7 +13,7 @@ import {
 } from '../../../validation/seqManage/seqSchema';
 
 export default function SeqDetail({ searchHandler }) {
-  const { detailData, flagData, createDetailData } = useSeqManage();
+  const { detailData, flagData } = useSeqManage();
   const { showLoading, hideLoading } = useLoading();
 
   const createNewSeq = () => {
@@ -89,11 +89,6 @@ export default function SeqDetail({ searchHandler }) {
   const returnTitleComponent = () => {
     return (
       <>
-        {/* <Button
-          label={'추가'}
-          btnStyle={'gray_btn'}
-          onClick={createDetailData}
-        /> */}
         <Button
           label={flagData === 1 ? '저장' : '수정'}
           btnStyle={'green_btn'}

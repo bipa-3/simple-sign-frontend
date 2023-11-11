@@ -8,10 +8,9 @@ import Button from '../../common/Button';
 import delForm from '../../../apis/formManageAPI/delForm';
 import getDefaultApprovalLine from '../../../apis/formManageAPI/getDefaultApprovalLine';
 import { useLoading } from '../../../contexts/LoadingContext';
-import getApprovalKind from '../../../apis/commonAPI/getApprovalKind';
 
 export default function FormListArea({ rows, searchHandler }) {
-  const { detailData, setDetailData, updateDetailData, setData, setSetData } =
+  const { detailData, setDetailData, updateDetailData, detailDataInit } =
     useFormManage();
   const { showLoading, hideLoading } = useLoading();
 
@@ -38,27 +37,11 @@ export default function FormListArea({ rows, searchHandler }) {
   const dataHandler = (data) => {
     showLoading();
     updateDetailData();
-    Promise.all([
-      getFormDetail(data.id),
-      getDefaultApprovalLine(data.id),
-      getApprovalKind(),
-    ])
-      .then(([formDetailRes, approvalLineRes, approvalKindList]) => {
-        return Promise.all([
-          formDetailRes.json(),
-          approvalLineRes.json(),
-          approvalKindList.json(),
-        ]);
+    Promise.all([getFormDetail(data.id), getDefaultApprovalLine(data.id)])
+      .then(([formDetailRes, approvalLineRes]) => {
+        return Promise.all([formDetailRes.json(), approvalLineRes.json()]);
       })
-      .then(([formDetailData, approvalLineData, approvalKindList]) => {
-        setSetData({
-          ...setData,
-          approvalKindList: approvalKindList.map((ele) => {
-            ele.id = ele.id.toString().padStart(2, '0');
-            return ele;
-          }),
-        });
-
+      .then(([formDetailData, approvalLineData]) => {
         let approvalLineList = approvalLineData.map((ele, index) => {
           ele.approvalKind = '결재(기본결재라인)';
           ele.id = index + 1;
@@ -88,6 +71,7 @@ export default function FormListArea({ rows, searchHandler }) {
     if (rows.length > 0) {
       dataHandler(rows[0]);
     }
+    detailDataInit();
   }, [rows]);
 
   return (
