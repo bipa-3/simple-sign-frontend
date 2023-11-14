@@ -83,7 +83,7 @@ export default function Notice() {
     };
 
     fetchUnreadCount();
-  }, [setNotifications]);
+  }, []);
 
   // 알림을 읽음으로 표시하는 함수
   const markAsRead = async (alarmId) => {
