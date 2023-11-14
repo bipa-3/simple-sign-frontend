@@ -21,7 +21,11 @@ export default function Notice() {
 
   useEffect(() => {
     const socket = new SockJS(
-      `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/ws`
+      `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/ws`,
+      null,
+      {
+        withCredentials: true,
+      }
     );
     const client = new Client({
       webSocketFactory: () => socket,
