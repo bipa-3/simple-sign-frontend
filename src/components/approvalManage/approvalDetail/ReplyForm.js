@@ -103,7 +103,6 @@ export default function ReplyForm({ approval_doc_id }) {
   const getReply = () => {
     getReplyList(approval_doc_id)
       .then((res) => {
-        console.log(res);
         setReplyList(res);
         replyRefs.current.textContent = null;
       })

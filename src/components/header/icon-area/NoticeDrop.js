@@ -20,7 +20,9 @@ export default function Notice() {
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
-    const socket = new SockJS(`${alarm_base_url}ws`);
+    const socket = new SockJS(
+      `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/ws`
+    );
     const client = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,

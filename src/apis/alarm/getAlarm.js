@@ -6,9 +6,9 @@ const api = axios.create({
 });
 
 export const getAlarm = () => {
-  return api.get('/alarm');
+  return api.get('/');
 };
 
 export const getAlarmCount = () => {
-  return api.get('/alarm/count');
+  return api.get('/count');
 };
