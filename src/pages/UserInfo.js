@@ -178,6 +178,7 @@ export default function UserInfo() {
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
+          marginBottom: '20px',
         }}
       >
         <table>
@@ -255,6 +256,7 @@ export default function UserInfo() {
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
+          marginBottom: '20px',
         }}
       >
         <table>

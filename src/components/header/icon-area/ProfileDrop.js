@@ -119,16 +119,18 @@ export default function Profile() {
                               name="radio"
                             />
                           </td>
-                          <td>{item.compName}</td>
-                          <td>{item.deptName}</td>
-                          <td>{item.authorityName}</td>
+                          <td className={styles.table_td}>{item.compName}</td>
+                          <td className={styles.table_td}>{item.deptName}</td>
+                          <td className={styles.table_td}>
+                            {item.authorityName}
+                          </td>
                         </tr>
                       ))
                     : null}
                 </tbody>
               </table>
             </div>
-            <div>
+            <div className={styles.button_check_style}>
               <Button2
                 label={'확인'}
                 btnStyle={'blue_btn'}

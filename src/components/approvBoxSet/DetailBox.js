@@ -23,9 +23,9 @@ const commonDataStyle = {
 };
 
 function DetailBox() {
-  const { state, setApprovalBoxState, setApprovalBoxState2 } =
+  const { state, setState, setApprovalBoxState, setApprovalBoxState2 } =
     useApprovalBoxManage();
-  const boxId = state.boxId;
+  let boxId = state.boxId;
   const [menuOption, setMenuOption] = useState('T');
   const [useStatus, setUseStatus] = useState(1);
   const [data, setData] = useState([]);
@@ -41,6 +41,23 @@ function DetailBox() {
   const handleCompanyChange = (company) => {
     setSelectedCompany(company);
   };
+
+  useEffect(() => {
+    if (boxId) {
+      console.log('boxList : ', state.boxList);
+    }
+  }, [state.boxList]);
+
+  useEffect(() => {
+    // setState((prevState) => ({
+    //   ...prevState,
+    //   boxId: prevState.boxList[0],
+    // }));
+    if (boxId) {
+      console.log('boxList222222 : ', state.boxList);
+      boxId = state.boxList[0].approvalBoxId;
+    }
+  }, []);
 
   useEffect(() => {
     if (isNaN(boxId)) {

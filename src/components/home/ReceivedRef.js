@@ -23,7 +23,6 @@ export default function ReceivedRef() {
           '',
           sortStatus
         );
-        console.log('받아온 값 : ', response.data);
         const docList = response.data.docList || [];
 
         const recentPDocs = docList.slice(0, 2);
@@ -118,7 +117,7 @@ export default function ReceivedRef() {
                 <div className={styled.noDocumentsIcon}>
                   <CiFileOff />
                 </div>
-                <div>No document found.</div>
+                <div>조회된 데이터가 없습니다.</div>
               </div>
             )}
           </div>

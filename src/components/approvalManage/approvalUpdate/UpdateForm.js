@@ -38,6 +38,7 @@ export default function UpdateForm({
   fileNames,
   setFiles,
   setFileNames,
+  setVersion,
 }) {
   const navigate = useNavigate();
   const [default_form, setDefaultForm] = useState('');
@@ -114,6 +115,7 @@ export default function UpdateForm({
             setRecRef(data.receivedRefList);
             setDocStatus(data.docStatus);
             setInitSequence(data.seqCode);
+            setVersion(data.version);
           });
         } else {
           errorHandle(res);

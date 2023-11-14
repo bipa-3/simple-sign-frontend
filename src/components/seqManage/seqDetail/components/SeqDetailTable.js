@@ -69,11 +69,24 @@ export default function SeqDetailTable() {
       })
       .then((data) => {
         setSeqItems(
-          data.map((ele, index) => {
-            ele.code = ele.id.toString().padStart(2, '0');
-            ele.id = index;
-            return ele;
-          })
+          data
+            .map((ele, index) => {
+              ele.code = ele.id.toString().padStart(2, '0');
+              ele.id = index;
+              return ele;
+            })
+            .filter((ele) => {
+              if (ele.code > '12' && ele.code < '16') {
+                return false;
+              }
+              return true;
+            })
+            .map((ele) => {
+              if (ele.code === '12') {
+                ele.value = '자리수';
+              }
+              return ele;
+            })
         );
       })
       .catch((err) => {

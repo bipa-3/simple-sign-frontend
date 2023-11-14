@@ -176,7 +176,7 @@ export default function OrgTreeView({ onNodeSelect, comp }) {
     <TreeView
       defaultCollapseIcon={<ArrowDropDownIcon />}
       defaultExpandIcon={<ArrowRightIcon />}
-      sx={{ height: 400, flexGrow: 3, maxWidth: 500, overflowY: 'auto' }}
+      sx={{ maxHeight: 470, flexGrow: 3, width: 210, overflowY: 'auto' }}
       onNodeSelect={handleNode}
     >
       {renderTreeItems(transformDatas)}

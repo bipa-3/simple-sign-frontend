@@ -9,14 +9,15 @@ export default function getDocsList(
   itemsPerPage,
   offset,
   searchInput,
-  sortStatus
+  sortStatus,
+  radioSortValue
 ) {
   // viewItems 배열을 쉼표로 구분된 문자열로 변환
   const viewItemsString = viewItems.join(',');
 
   const url =
     base_url +
-    `approvbox/view?viewItems=${viewItemsString}&itemsPerPage=${itemsPerPage}&offset=${offset}&searchInput=${searchInput}&sortStatus=${sortStatus}`;
+    `approvbox/view?viewItems=${viewItemsString}&itemsPerPage=${itemsPerPage}&offset=${offset}&searchInput=${searchInput}&sortStatus=${sortStatus}&radioSortValue=${radioSortValue}`;
 
   return axios.get(url);
 }
@@ -26,7 +27,8 @@ export function detailSearchDocs(
   itemsPerPage,
   offset,
   detailSearchState,
-  sortStatus
+  sortStatus,
+  radioSortValue
 ) {
   const url = base_url + `approvbox/search`;
   const payload = {
@@ -35,6 +37,7 @@ export function detailSearchDocs(
     offset: offset,
     ...detailSearchState,
     sortStatus: sortStatus,
+    radioSortValue: radioSortValue,
   };
 
   return axios.post(url, payload);

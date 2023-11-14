@@ -109,7 +109,7 @@ export default function ProgressDoc() {
               <div className={styled.noDocumentsIcon}>
                 <CiFileOff />
               </div>
-              <div>No document found.</div>
+              <div>조회된 데이터가 없습니다.</div>
             </div>
           )}
         </div>

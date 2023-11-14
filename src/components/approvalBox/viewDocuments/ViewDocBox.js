@@ -28,24 +28,6 @@ function ViewDocBox() {
   const viewItems = viewItemsString ? viewItemsString.split(',') : [];
   const { state: pageState, setState: setPageState } = usePage();
 
-  useEffect(() => {
-    const handleStorageChange = (event) => {
-      if (event.key === 'approvalState') {
-        console.log('받아온 스토리지 값 : ', event.newValue);
-        setState((prevState) => ({
-          ...prevState,
-          approvalState: event.newValue,
-        }));
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
-  }, []);
-
   const navigate = useNavigate();
 
   const handleItemClick = async (docId) => {
@@ -89,7 +71,8 @@ function ViewDocBox() {
           10,
           offset,
           detailSearchState,
-          state.sortStatus
+          state.sortStatus,
+          state.radioSortValue
         );
       } else {
         response = await getDocsList(
@@ -97,67 +80,51 @@ function ViewDocBox() {
           10,
           offset,
           state.searchInput,
-          state.sortStatus
+          state.sortStatus,
+          state.radioSortValue
         );
       }
 
       hideLoading();
       const { docList, count } = response.data;
 
-      // 조회 필터링
-      let filteredDocList = docList;
-      let isFiltered = false;
-
-      if (state.radioSortValue === 'ongoingdoc') {
-        filteredDocList = docList.filter(
-          (docItem) => docItem.docStatus === 'P'
-        );
-        isFiltered = true;
-      } else if (state.radioSortValue === 'writtendoc') {
-        filteredDocList = docList.filter((docItem) =>
-          ['A', 'R'].includes(docItem.docStatus)
-        );
-        isFiltered = true;
-      } else if (
-        state.radioSortValue === 'readdoc' &&
-        viewItems.includes('reference')
-      ) {
-        filteredDocList = docList.filter((docItem) =>
-          state.docView.includes(docItem.approvalDocId)
-        );
-        isFiltered = true;
-      } else if (
-        state.radioSortValue === 'notreaddoc' &&
-        viewItems.includes('reference')
-      ) {
-        filteredDocList = docList.filter(
-          (docItem) => !state.docView.includes(docItem.approvalDocId)
-        );
-        isFiltered = true;
-      }
-
       setDocData(
-        filteredDocList.map((docItem) => ({
+        docList.map((docItem) => ({
           ...docItem,
           createdAt: new Date(docItem.createdAt),
         }))
       );
-
-      if (isFiltered) {
-        // 필터링된 데이터의 개수로 페이징 업데이트
-        const filteredCount = filteredDocList.length;
-        setTotalCount(filteredCount);
-        setTotalPages(Math.ceil(filteredCount / 10));
-      } else {
-        // 필터링이 적용되지 않았다면 서버에서 받은 총 문서 개수를 사용
-        setTotalCount(count);
-        setTotalPages(Math.ceil(count / 10));
-      }
+      setTotalCount(count);
+      setTotalPages(Math.ceil(count / 10));
     } catch (error) {
       hideLoading();
       console.error('Error fetching data:', error);
     }
   };
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === 'approvalState') {
+        fetchData();
+        setState((prevState) => ({
+          ...prevState,
+          approvalState: event.newValue,
+        }));
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(state.approvalState);
+    if (state.approvalState === 'allapproval') {
+      fetchData();
+    }
+  }, [state.approvalState]);
 
   useEffect(() => {
     fetchData();
@@ -168,7 +135,6 @@ function ViewDocBox() {
     state.radioSortValue,
     state.isReadDoc,
     state.sortStatus,
-    state.approvalState,
   ]);
 
   useEffect(() => {
@@ -197,7 +163,7 @@ function ViewDocBox() {
             <div className={styled.noDocumentsIcon}>
               <CiFileOff />
             </div>
-            <div className={styled.noDocuments}>No document found.</div>
+            <div className={styled.noDocuments}>조회된 데이터가 없습니다.</div>
           </div>
         ) : (
           <div className={styled.docList}>

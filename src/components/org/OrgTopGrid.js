@@ -13,7 +13,7 @@ const usercolumns = [
   {
     field: 'company',
     headerName: '회사',
-    width: 150,
+    width: 140,
     sortable: true,
   },
   {
@@ -28,9 +28,9 @@ const usercolumns = [
     width: 150,
     sortable: true,
   },
-  { field: 'position', headerName: '직급', width: 150, sortable: true },
-  { field: 'grade', headerName: '직책', width: 150, sortable: true },
-  { field: 'user', headerName: '사용자', width: 150, sortable: true },
+  { field: 'position', headerName: '직급', width: 140, sortable: true },
+  { field: 'grade', headerName: '직책', width: 140, sortable: true },
+  { field: 'user', headerName: '사용자', width: 140, sortable: true },
 ];
 
 export default function OrgTopGrid({

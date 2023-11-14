@@ -1,5 +1,5 @@
 import styles from '../../styles/components/ApprovalBox/ApprovalRightHeader.module.css';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
 import Search from '../common/SearchBox';
 import Button from '../common/Button';
@@ -47,6 +47,10 @@ function ApprovalRightHeader() {
       .then((res) => {
         if (res.status === 200) {
           alert('일괄결재 완료되었습니다.');
+          setState((prevState) => ({
+            ...prevState,
+            approvalState: 'allapproval',
+          }));
         } else {
           errorHandle(res);
         }

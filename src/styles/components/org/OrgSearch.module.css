@@ -6,31 +6,19 @@
   align-items: center;
   text-align: center;
   margin-left: 20%;
-  width: 600px;
-  height: 50px;
+  width: 920px;
+  height: 60px;
 }
 
 .org_search_selectbox {
-  margin-left: 50px;
+  margin-left: 170px;
   width: 100px;
   height: 30px;
 }
 
 .select_box_container {
-  margin-left: 10px;
+  margin-left: 40px;
+  margin-right: 50px;
   display: flex;
   align-items: center;
-}
-
-.select_box_input {
-  height: 30px;
-}
-
-.select_box_button {
-  width: 40px;
-  height: 30px;
-}
-
-.checkbox_label {
-  margin-left: 60px;
 }

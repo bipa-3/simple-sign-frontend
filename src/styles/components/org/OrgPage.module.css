@@ -8,8 +8,7 @@
 .search_container {
   display: flex;
   flex-direction: row;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 20px 0px 10px 11px;
 }
 
 .top_container {
@@ -21,19 +20,19 @@
 .tree_container {
   display: flex;
   flex-direction: column;
-  width: 300px;
 }
 
 .second_container {
   display: flex;
   flex-direction: column;
-  margin-left: 30px;
+  margin-left: 20px;
 }
 
 .top_grid_container {
   display: flex;
   flex-direction: row;
   margin: 20px;
+  height: 200px;
 }
 
 .bottom_grid_container {
@@ -45,4 +44,10 @@
 .bottom_grid_label_view {
   display: flex;
   flex-direction: column;
+}
+
+.label_style {
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 5px;
+  font-weight: bold;
 }

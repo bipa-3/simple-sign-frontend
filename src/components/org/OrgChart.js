@@ -201,7 +201,7 @@ export default function OrgChart({
             </div>
             <div className={styled.bottom_grid_container}>
               <div className={styled.bottom_grid_label_view}>
-                <label>선택항목</label>
+                <label className={styled.label_style}>선택항목</label>
                 <OrgBottomGrid
                   selectedRow={selectedRow}
                   view={view}

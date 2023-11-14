@@ -132,6 +132,10 @@ function Datalist({
         label: company.name,
       }));
       setSelectedOption(transformedData[0]);
+      setState((prevState) => ({
+        ...prevState,
+        compId: transformedData[0],
+      }));
     } else {
       return;
     }

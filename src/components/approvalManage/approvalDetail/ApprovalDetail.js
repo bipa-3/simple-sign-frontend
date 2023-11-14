@@ -42,6 +42,7 @@ export default function ApprovalDetail() {
   const [password, setPassword] = useState('');
   const [formName, setFormName] = useState('');
   const [reload, setReload] = useState(false);
+  const [version, setVersion] = useState(0);
 
   const queryParams = new URLSearchParams(location.search);
   const approvalDocId = queryParams.get('page');
@@ -110,12 +111,12 @@ export default function ApprovalDetail() {
             // 비밀번호가 일치하는 경우에만 결재 승인 수행
             localStorage.setItem('approvalState', '');
             localStorage.setItem('approvalState', 'send');
-            return insertApproval(approvalDocId);
+            return insertApproval(approvalDocId, version);
           } else if (mode === '반려') {
             localStorage.setItem('approvalState', '');
             localStorage.setItem('approvalState', 'reject');
 
-            return insertReturn(approvalDocId);
+            return insertReturn(approvalDocId, version);
           } else if (mode === '취소') {
             localStorage.setItem('approvalState', '');
             localStorage.setItem('approvalState', 'cancel');
@@ -246,6 +247,7 @@ export default function ApprovalDetail() {
                 setIsTemporal={setIsTemporal}
                 setFormName={setFormName}
                 reload={reload}
+                setVersion={setVersion}
               />
               <div className={styled.updateAndDeleteBtn}>
                 {hasUpdate ? (

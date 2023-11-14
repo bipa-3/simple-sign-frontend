@@ -27,7 +27,7 @@ export default function OrgBottomGrid({ selectedRow, view, remove }) {
   ];
 
   const usercolumns = [
-    { field: 'company', headerName: '회사', width: 150, sortable: false },
+    { field: 'company', headerName: '회사', width: 140, sortable: false },
     {
       field: 'establishment',
       headerName: '사업장',
@@ -35,13 +35,13 @@ export default function OrgBottomGrid({ selectedRow, view, remove }) {
       sortable: false,
     },
     { field: 'department', headerName: '부서', width: 150, sortable: false },
-    { field: 'position', headerName: '직급', width: 150, sortable: false },
-    { field: 'grade', headerName: '직책', width: 150, sortable: false },
-    { field: 'user', headerName: '사용자', width: 150, sortable: false },
+    { field: 'position', headerName: '직급', width: 140, sortable: false },
+    { field: 'grade', headerName: '직책', width: 140, sortable: false },
+    { field: 'user', headerName: '사용자', width: 140, sortable: false },
     {
       field: 'delete',
       headerName: '삭제',
-      width: 70,
+      width: 60,
       sortable: false,
       renderCell: (params) => (
         <IconButton onClick={() => remove(params.row.id)}>

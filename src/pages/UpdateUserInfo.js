@@ -332,6 +332,7 @@ export default function UpdateUserInfo() {
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
+          marginBottom: '20px',
         }}
       >
         <table>
@@ -497,6 +498,7 @@ export default function UpdateUserInfo() {
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
+          marginBottom: '20px',
         }}
       >
         <table>

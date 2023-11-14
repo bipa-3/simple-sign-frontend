@@ -50,7 +50,7 @@ export default function SeqListArea({ rows, searchHandler }) {
         });
       })
       .catch((err) => {
-        alert(`데이터 삭제를 실패했습니다. [${err}]`);
+        alert(`상세 데이터 호출에 실패했습니다. [${err}]`);
       })
       .finally(() => {
         hideLoading();

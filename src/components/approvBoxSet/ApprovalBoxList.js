@@ -47,8 +47,14 @@ function ApprovalBoxList({ companyId, searchQuery }) {
       const response = await getDocBoxList(company);
       const result = await response.json();
       setData(result);
+      setState((prevState) => ({
+        ...prevState,
+        boxList: [...result],
+      }));
+      return result;
     } catch (error) {
       console.error('Error fetching data:', error);
+      return [];
     }
   };
 
@@ -56,7 +62,29 @@ function ApprovalBoxList({ companyId, searchQuery }) {
     try {
       await deleteApprovalBox(boxId);
       closeModal();
-      fetchApprovalBoxList(); // 삭제 후 새로운 목록 가져오기
+      const updatedBoxList = await fetchApprovalBoxList(); // 삭제 후 새로운 목록 가져오기
+
+      // 현재 선택된 박스와 삭제된 박스가 같은 경우
+      if (state.boxId === boxId) {
+        // boxList가 비어있지 않으면 첫 번째 박스를 선택
+
+        if (updatedBoxList.length > 0 && updatedBoxList.length > 0) {
+          const newSelectedBoxId = state.boxList[0].approvalBoxId;
+          boxNameClickHandler(newSelectedBoxId);
+        } else {
+          setState((prevState) => ({
+            ...prevState,
+            boxId: null,
+          }));
+        }
+      } else {
+        if (state.boxList.length == 0 || state.boxList.length == undefined) {
+          setState((prevState) => ({
+            ...prevState,
+            boxId: null,
+          }));
+        }
+      }
     } catch (error) {
       console.error('Error deleting box:', error);
     }
@@ -65,6 +93,12 @@ function ApprovalBoxList({ companyId, searchQuery }) {
   useEffect(() => {
     fetchApprovalBoxList();
   }, [companyId, state.insertStatus, state.saveStatus]);
+  useEffect(() => {
+    // boxList가 업데이트되면 첫 번째 박스 선택
+    if (state.boxList && state.boxList.length > 0) {
+      boxNameClickHandler(state.boxList[0].approvalBoxId);
+    }
+  }, [state.boxList]);
 
   useEffect(() => {
     const newFilteredData = data.filter((item) =>
@@ -118,7 +152,7 @@ function ApprovalBoxList({ companyId, searchQuery }) {
                   <Button
                     btnStyle="blue_btn"
                     label="확인"
-                    onClick={() => deleteBtnHandler(item.approvalBoxId)}
+                    onClick={() => deleteBtnHandler(selectedBoxId)}
                   />
                 </div>
               </div>

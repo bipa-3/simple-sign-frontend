@@ -18,7 +18,7 @@ function Search(props) {
       <input
         id="searchInput"
         type="text"
-        placeholder=" Search..."
+        placeholder=" 검색"
         value={searchInput}
         onChange={handleSearchChange}
       />

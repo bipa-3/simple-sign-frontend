@@ -44,10 +44,8 @@ export default function OrgSearch({ view, onCheckBox, onSearch }) {
       <div className={styled.select_box_container}>
         <Search onSearch={handleSearch} />
       </div>
-      <label className={styled.checkbox_label}>
-        <input type="checkbox" onChange={handleCheckBox} />
-        하위부서 전체
-      </label>
+      <input type="checkbox" onChange={handleCheckBox} />
+      하위부서 전체
     </div>
   );
 }

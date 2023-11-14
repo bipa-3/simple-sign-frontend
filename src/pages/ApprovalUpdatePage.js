@@ -32,6 +32,7 @@ export default function ApprovalUpdatePage() {
   const [docStatus, setDocStatus] = useState(''); //임시저장여부
   const [files, setFiles] = useState([]);
   const [fileNames, setFileNames] = useState([]);
+  const [version, setVersion] = useState([]);
 
   const queryParams = new URLSearchParams(location.search);
   const approvalDocId = queryParams.get('page');
@@ -117,6 +118,7 @@ export default function ApprovalUpdatePage() {
       contents: editor,
       approverList: orgUserIdList,
       receiveRefList: recRefList,
+      version: version,
     };
 
     checkFormCreateData(data)
@@ -194,6 +196,7 @@ export default function ApprovalUpdatePage() {
                 fileNames={fileNames}
                 setFiles={setFiles}
                 setFileNames={setFileNames}
+                setVersion={setVersion}
               />
               <div className={styled.updateAndDeleteBtn}>
                 {docStatus === 'T' ? (

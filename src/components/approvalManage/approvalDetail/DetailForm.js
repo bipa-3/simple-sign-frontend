@@ -78,6 +78,7 @@ export default function DetailForm(props) {
             if (data.docStatus == 'T') {
               props.setIsTemporal(true);
             }
+            props.setVersion(data.version);
           });
         } else {
           errorHandle(res);

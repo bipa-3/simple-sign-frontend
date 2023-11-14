@@ -12,7 +12,6 @@ import AreaBox from './AreaBox';
 import { getAuthrity, getCompId } from '../../../utils/getUser';
 
 function MenuUseRange(props) {
-  console.log('회사아이디 : ', props.selectedCompany);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
     approvalBoxState,
@@ -22,6 +21,7 @@ function MenuUseRange(props) {
     setDetailData,
     state,
   } = useApprovalBoxManage();
+  const [selectedCompany, setSelectedCompany] = useState();
 
   const authority = getAuthrity();
   const compId = getCompId();
@@ -32,36 +32,38 @@ function MenuUseRange(props) {
         if (state.insertStatus === 1) {
           return;
         }
-        const response = await getBoxUseDept(props.boxId);
+        if (state.boxId != null) {
+          const response = await getBoxUseDept(props.boxId);
 
-        // 받아온 데이터를 detailData.scope에 할당하면서 id 부여
-        if (response && response.data) {
-          const dataWithIds = response.data.map((item, index) => ({
-            category: item.category || '',
-            compId: item.compId || '',
-            company: item.company || '',
-            department: item.department || '',
-            deptId: item.deptId || '',
-            estId: item.estId || '',
-            establishment: item.establishment || '',
-            grade: item.grade || '',
-            id: index + 1,
-            position: item.position || '',
-            useId: item.useId || '',
-            user: item.user || '',
-            userId: item.userId || '',
-          }));
+          // 받아온 데이터를 detailData.scope에 할당하면서 id 부여
+          if (response && response.data) {
+            const dataWithIds = response.data.map((item, index) => ({
+              category: item.category || '',
+              compId: item.compId || '',
+              company: item.company || '',
+              department: item.department || '',
+              deptId: item.deptId || '',
+              estId: item.estId || '',
+              establishment: item.establishment || '',
+              grade: item.grade || '',
+              id: index + 1,
+              position: item.position || '',
+              useId: item.useId || '',
+              user: item.user || '',
+              userId: item.userId || '',
+            }));
 
-          setApprovalBoxState2((prevState) => ({
-            ...prevState,
-            boxUseDept: dataWithIds,
-          }));
+            setApprovalBoxState2((prevState) => ({
+              ...prevState,
+              boxUseDept: dataWithIds,
+            }));
 
-          setDetailData((prevState) => ({
-            ...prevState,
-            scope: dataWithIds,
-            scope2: response.data, // 원본 데이터를 scope2에 저장
-          }));
+            setDetailData((prevState) => ({
+              ...prevState,
+              scope: dataWithIds,
+              scope2: response.data, // 원본 데이터를 scope2에 저장
+            }));
+          }
         }
       } catch (err) {
         console.error('Error fetching box details:', err);
@@ -83,6 +85,13 @@ function MenuUseRange(props) {
       menuUsingRange: props.menuOption,
     }));
   }, [props.menuOption]);
+
+  useEffect(() => {
+    setDetailData((prevState) => ({
+      ...prevState,
+      scope: [], // 초기화
+    }));
+  }, [props.selectedCompany]);
 
   const openModal = () => {
     setIsModalOpen(true);

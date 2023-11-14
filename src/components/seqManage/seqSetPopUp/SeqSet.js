@@ -8,9 +8,13 @@ import { columns, selectedColumns } from '../../../assets/datas/seq_popup_list';
 export default function SeqSet({ seqItems, seqList, setSeqList }) {
   const [previewData, setPreviewData] = useState('');
   const [leftSelectedRow, setLeftSelectedRow] = useState({});
-  const [rightSelectedRow, setRightSelectedRow] = useState({});
+  const [rightSelectedRow, setRightSelectedRow] = useState(seqList[0]);
   let selectedCount =
     seqList.length > 0 ? seqList[seqList.length - 1].id + 1 : 0;
+
+  useEffect(() => {
+    setLeftSelectedRow(seqItems[0]);
+  }, [seqItems]);
 
   const leftDataHandler = (data) => {
     setLeftSelectedRow(data);
@@ -38,6 +42,9 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
       return false;
     });
     setSeqList(filtedSeqList);
+    if (filtedSeqList.length > 0) {
+      setRightSelectedRow(filtedSeqList[0]);
+    }
   };
 
   const RenderCellFunc = (params) => {
@@ -50,7 +57,6 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
 
     const handleChange = (event) => {
       const newValue = event.target.value;
-      console.log('newValue:', newValue, seqList);
       let changedLength = seqList.map((ele) => {
         if (ele.value.includes('자리수')) {
           ele.code = newValue;
@@ -62,7 +68,7 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
     };
     return (
       <span>
-        {params.value.includes('자리수') ? (
+        {params?.value?.includes('자리수') ? (
           <select className={styled.selectBox} onChange={handleChange}>
             {data.map((ele) => {
               console.log(params.value, ele.value, params.value === ele.value);
@@ -101,23 +107,7 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
       <div className={styled.seqListArea}>
         <div>
           <DataList
-            rows={
-              seqItems.length > 0
-                ? seqItems
-                    .filter((ele) => {
-                      if (ele.code > '12' && ele.code < '16') {
-                        return false;
-                      }
-                      return true;
-                    })
-                    .map((ele) => {
-                      if (ele.code === '12') {
-                        ele.value = '자리수';
-                      }
-                      return ele;
-                    })
-                : seqItems
-            }
+            rows={seqItems}
             columns={columns}
             dataHandler={leftDataHandler}
           />

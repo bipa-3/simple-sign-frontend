@@ -1,8 +1,8 @@
 import axios from 'axios';
-import base_url from '../base_url';
+import alarm_base_url from '../alarm_base_url';
 
 const api = axios.create({
-  baseURL: base_url,
+  baseURL: alarm_base_url,
 });
 
 export const getAlarm = () => {

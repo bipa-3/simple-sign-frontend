@@ -88,3 +88,12 @@
 .alarm_content {
   font-weight: bold;
 }
+
+/* 권한 선택 창 */
+.table_td {
+  padding: 12px;
+}
+
+.button_check_style {
+  text-align: right;
+}
