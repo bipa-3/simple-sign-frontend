@@ -19,14 +19,13 @@ export default function Notice() {
   const { notifications, setNotifications } = useAlarm();
   const [unreadCount, setUnreadCount] = useState(0);
 
-  useEffect(() => {
-    const socket = new SockJS(
-      `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/ws`,
-      null,
-      {
-        withCredentials: true,
-      }
-    );
+  const socketUrl = `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/ws`;
+
+  const initializeWebSocket = () => {
+    const socket = new SockJS(socketUrl, null, {
+      withCredentials: true,
+    });
+
     const client = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
@@ -55,6 +54,15 @@ export default function Notice() {
 
     setStompClient(client);
 
+    return () => {
+      if (client) {
+        client.deactivate();
+      }
+    };
+  };
+
+  useEffect(() => {
+    //initializeWebSocket();
     (async () => {
       try {
         const response = await getAlarm();
@@ -75,13 +83,7 @@ export default function Notice() {
     };
 
     fetchUnreadCount();
-
-    return () => {
-      if (client) {
-        client.deactivate();
-      }
-    };
-  }, [setStompClient, setNotifications]);
+  }, [setNotifications]);
 
   // 알림을 읽음으로 표시하는 함수
   const markAsRead = async (alarmId) => {
