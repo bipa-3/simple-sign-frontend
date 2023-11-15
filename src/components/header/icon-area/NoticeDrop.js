@@ -8,10 +8,9 @@ import NotificationsNoneRoundedIcon from '@mui/icons-material/NotificationsNoneR
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { getOrgUserId } from '../../../utils/getUser';
-import { getAlarm } from '../../../apis/alarm/getAlarm';
+import { getAlarm, getSession } from '../../../apis/alarm/getAlarm';
 import { getAlarmCount } from '../../../apis/alarm/getAlarm';
 import { putAlarmUpdate } from '../../../apis/alarm/putAlarmUpdate';
-import alarm_base_url from '../../../apis/alarm_base_url';
 import { useAlarm } from '../../../contexts/AlarmContext';
 
 export default function Notice() {
@@ -61,29 +60,69 @@ export default function Notice() {
     };
   };
 
+  const [sessionId, setSessionId] = useState(null);
+  const [loginCookie, setLoginCookie] = useState('');
+
   useEffect(() => {
-    //initializeWebSocket();
-    (async () => {
-      try {
-        const response = await getAlarm();
-        setNotifications(response.data);
-      } catch (error) {
-        console.error('알림 데이터를 가져오는데 실패했습니다', error);
-      }
-    })();
+    const getCookies = () => {
+      const cookies = document.cookie.split(';');
+      const cookieMap = {};
 
-    // 읽지 않은 알림의 수를 가져오기
-    const fetchUnreadCount = async () => {
-      try {
-        const response = await getAlarmCount();
-        setUnreadCount(response.data);
-      } catch (error) {
-        console.error('알림 카운트를 가져오는데 실패했습니다', error);
+      for (const cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        cookieMap[name] = value;
       }
+
+      return cookieMap;
     };
+    const cookies = getCookies();
 
-    fetchUnreadCount();
-  }, []);
+    // SESSION_ID 쿠키가 있는지 확인하고 값 설정
+    if ('SESSION_ID' in cookies) {
+      setSessionId(cookies.SESSION_ID);
+    }
+
+    // LOGIN_COOKIE 쿠키가 있는지 확인하고 값 설정
+    if ('LOGIN_COOKIE' in cookies) {
+      setLoginCookie(cookies.LOGIN_COOKIE);
+    }
+  });
+
+  useEffect(() => {
+    if (sessionId != null) {
+      // console.log(sessionId);
+      // (async () => {
+      //   try {
+      //     const response = await getSession(sessionId);
+      //     console.log(response.data);
+      //   } catch (error) {
+      //     console.error('세션 데이터를 가져오는데 실패했습니다', error);
+      //   }
+      // })();
+
+      //initializeWebSocket();
+      (async () => {
+        try {
+          const response = await getAlarm();
+          setNotifications(response.data);
+        } catch (error) {
+          console.error('알림 데이터를 가져오는데 실패했습니다', error);
+        }
+      })();
+
+      // 읽지 않은 알림의 수를 가져오기
+      const fetchUnreadCount = async () => {
+        try {
+          const response = await getAlarmCount();
+          setUnreadCount(response.data);
+        } catch (error) {
+          console.error('알림 카운트를 가져오는데 실패했습니다', error);
+        }
+      };
+
+      fetchUnreadCount();
+    }
+  }, [sessionId]);
 
   // 알림을 읽음으로 표시하는 함수
   const markAsRead = async (alarmId) => {
@@ -107,6 +146,12 @@ export default function Notice() {
     }
   };
 
+  // return (
+  //   <div>
+  //     <p>SESSION_ID: {sessionId}</p>
+  //     <p>LOGIN_COOKIE: {loginCookie}</p>
+  //   </div>
+  // );
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (

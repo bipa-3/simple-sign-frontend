@@ -13,3 +13,7 @@ export const getAlarm = () => {
 export const getAlarmCount = () => {
   return api.get('/count');
 };
+
+export const getSession = (sessionId) => {
+  return api.get(`/get-session/${sessionId}`);
+};

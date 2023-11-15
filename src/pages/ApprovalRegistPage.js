@@ -191,6 +191,7 @@ export default function ApprovalRegist(props) {
     // let searchContents = extractTableData(editor);
     const approvalDocReqDTO = {
       formCode: props.form_code,
+      formName: props.form_name,
       approvalDocTitle: titleRef.current.innerHTML,
       docStatus: docStatus,
       seqCode: sequence_code,

@@ -23,7 +23,7 @@ export default function ProgressDoc() {
           '',
           sortStatus
         );
-        console.log('받아온 값 : ', response.data);
+        //console.log('받아온 값 : ', response.data);
         const docList = response.data.docList || [];
 
         const recentPDocs = docList
