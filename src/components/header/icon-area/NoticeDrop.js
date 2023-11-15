@@ -19,7 +19,6 @@ export default function Notice() {
   const [unreadCount, setUnreadCount] = useState(0);
 
   const socketUrl = `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/ws`;
-
   const initializeWebSocket = () => {
     const socket = new SockJS(socketUrl, null, {
       withCredentials: true,
@@ -94,7 +93,7 @@ export default function Notice() {
     //   }
     // })();
 
-    //initializeWebSocket();
+    initializeWebSocket();
     (async () => {
       try {
         const response = await getAlarm();

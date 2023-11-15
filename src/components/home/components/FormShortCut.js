@@ -35,7 +35,6 @@ export default function FormShortCut() {
     <div className={styled.container}>
       {shorCutBtns.length > 0
         ? shorCutBtns.map((ele, index) => {
-            console.log(ele, index);
             return (
               <Link
                 key={index}
