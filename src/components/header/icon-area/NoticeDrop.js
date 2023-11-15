@@ -60,63 +60,62 @@ export default function Notice() {
     };
   };
 
-  const [sessionId, setSessionId] = useState(null);
+  // const [sessionId, setSessionId] = useState(null);
+
+  // useEffect(() => {
+  //   const getCookies = () => {
+  //     const cookies = document.cookie.split(';');
+  //     const cookieMap = {};
+
+  //     for (const cookie of cookies) {
+  //       const [name, value] = cookie.trim().split('=');
+  //       cookieMap[name] = value;
+  //     }
+
+  //     return cookieMap;
+  //   };
+  //   const cookies = getCookies();
+
+  //   // SESSION_ID 쿠키가 있는지 확인하고 값 설정
+  //   if ('JSESSIONID' in cookies) {
+  //     setSessionId(cookies.SESSION_ID);
+  //   }
+  // });
 
   useEffect(() => {
-    const getCookies = () => {
-      const cookies = document.cookie.split(';');
-      const cookieMap = {};
+    // if (sessionId != null) {
+    // console.log(sessionId);
+    // (async () => {
+    //   try {
+    //     const response = await getSession(sessionId);
+    //     console.log(response.data);
+    //   } catch (error) {
+    //     console.error('세션 데이터를 가져오는데 실패했습니다', error);
+    //   }
+    // })();
 
-      for (const cookie of cookies) {
-        const [name, value] = cookie.trim().split('=');
-        cookieMap[name] = value;
+    //initializeWebSocket();
+    (async () => {
+      try {
+        const response = await getAlarm();
+        setNotifications(response.data);
+      } catch (error) {
+        console.error('알림 데이터를 가져오는데 실패했습니다', error);
       }
+    })();
 
-      return cookieMap;
+    // 읽지 않은 알림의 수를 가져오기
+    const fetchUnreadCount = async () => {
+      try {
+        const response = await getAlarmCount();
+        setUnreadCount(response.data);
+      } catch (error) {
+        console.error('알림 카운트를 가져오는데 실패했습니다', error);
+      }
     };
-    const cookies = getCookies();
 
-    // SESSION_ID 쿠키가 있는지 확인하고 값 설정
-    if ('JSESSIONID' in cookies) {
-      setSessionId(cookies.SESSION_ID);
-    }
-  });
-
-  useEffect(() => {
-    if (sessionId != null) {
-      // console.log(sessionId);
-      // (async () => {
-      //   try {
-      //     const response = await getSession(sessionId);
-      //     console.log(response.data);
-      //   } catch (error) {
-      //     console.error('세션 데이터를 가져오는데 실패했습니다', error);
-      //   }
-      // })();
-
-      //initializeWebSocket();
-      (async () => {
-        try {
-          const response = await getAlarm();
-          setNotifications(response.data);
-        } catch (error) {
-          console.error('알림 데이터를 가져오는데 실패했습니다', error);
-        }
-      })();
-
-      // 읽지 않은 알림의 수를 가져오기
-      const fetchUnreadCount = async () => {
-        try {
-          const response = await getAlarmCount();
-          setUnreadCount(response.data);
-        } catch (error) {
-          console.error('알림 카운트를 가져오는데 실패했습니다', error);
-        }
-      };
-
-      fetchUnreadCount();
-    }
-  }, [sessionId]);
+    fetchUnreadCount();
+  }, []);
 
   // 알림을 읽음으로 표시하는 함수
   const markAsRead = async (alarmId) => {
