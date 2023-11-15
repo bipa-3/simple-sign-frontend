@@ -61,7 +61,6 @@ export default function Notice() {
   };
 
   const [sessionId, setSessionId] = useState(null);
-  const [loginCookie, setLoginCookie] = useState('');
 
   useEffect(() => {
     const getCookies = () => {
@@ -78,13 +77,8 @@ export default function Notice() {
     const cookies = getCookies();
 
     // SESSION_ID 쿠키가 있는지 확인하고 값 설정
-    if ('SESSION_ID' in cookies) {
+    if ('JSESSIONID' in cookies) {
       setSessionId(cookies.SESSION_ID);
-    }
-
-    // LOGIN_COOKIE 쿠키가 있는지 확인하고 값 설정
-    if ('LOGIN_COOKIE' in cookies) {
-      setLoginCookie(cookies.LOGIN_COOKIE);
     }
   });
 
