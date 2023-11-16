@@ -18,7 +18,7 @@ export default function Notice() {
   const { notifications, setNotifications } = useAlarm();
   const [unreadCount, setUnreadCount] = useState(0);
 
-  const socketUrl = `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/ws`;
+  const socketUrl = `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/alarm/ws`;
   const initializeWebSocket = () => {
     const socket = new SockJS(socketUrl, null, {
       withCredentials: true,
