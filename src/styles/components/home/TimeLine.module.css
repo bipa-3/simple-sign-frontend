@@ -1,6 +1,6 @@
 .contanier {
   overflow-y: auto;
-  height: 85%;
+  height: 80%;
 }
 
 .timeline_date {
@@ -40,9 +40,10 @@
 }
 
 .timeline_time {
+  text-align: right;
   font-size: 12px;
   color: #98a6ad;
-  margin-left: 20px;
+  margin-right: 10px;
 }
 
 .timeline_line {

@@ -160,8 +160,10 @@ export default function UserInfo() {
   return (
     <div className={styled.container}>
       <InnerBox
-        style={{ width: '10%', height: '10%' }}
+        width="55%"
+        height="100%"
         text={'개인정보'}
+        font_size="15px"
         titleChildren={
           <Button
             label={'수정'}
@@ -181,11 +183,11 @@ export default function UserInfo() {
           marginBottom: '20px',
         }}
       >
-        <table>
+        <table className={styled.userinfo_table}>
           <tbody>
             <tr>
               <th className={styled.userinfo_table_th}>프로필</th>
-              <td>
+              <td className={styled.userinfo_table_td}>
                 <img
                   className={styled.userinfo_profile}
                   src={profile || profileicon}
@@ -193,7 +195,7 @@ export default function UserInfo() {
                 />
               </td>
               <th className={styled.userinfo_table_th}>서명</th>
-              <td>
+              <td className={styled.userinfo_table_td}>
                 {sign === 'default' ? (
                   <DefaultSign name={userData.userName} />
                 ) : (
@@ -203,14 +205,17 @@ export default function UserInfo() {
             </tr>
             <tr>
               <th className={styled.userinfo_table_th}>사번</th>
-              <td>{userData.employeeNumber}</td>
+              <td className={styled.userinfo_table_td}>
+                {userData.employeeNumber}
+              </td>
               <th className={styled.userinfo_table_th}>비밀번호</th>
-              <td>
+              <td className={styled.userinfo_table_td}>
                 <PopUp
                   label={'비밀번호 변경'}
                   title={'비밀번호 변경'}
                   width={'400px'}
                   height={'400px'}
+                  btnStyle={'dark_btn'}
                   isModalOpen={isModalOpen}
                   openModal={openModal}
                   closeModal={closeModal}
@@ -225,32 +230,38 @@ export default function UserInfo() {
             </tr>
             <tr>
               <th className={styled.userinfo_table_th}>이름</th>
-              <td>{userData.userName}</td>
-              <th className={styled.userinfo_table_th}>로그인아이디</th>
-              <td>{userData.loginId}</td>
+              <td className={styled.userinfo_table_td}>{userData.userName}</td>
+              <th className={styled.userinfo_table_th}>로그인 아이디</th>
+              <td className={styled.userinfo_table_td}>{userData.loginId}</td>
             </tr>
             <tr>
               <th className={styled.userinfo_table_th}>이메일</th>
-              <td>{userData.email}</td>
+              <td className={styled.userinfo_table_td}>{userData.email}</td>
               <th className={styled.userinfo_table_th}>전화번호</th>
-              <td>{userData.phone}</td>
+              <td className={styled.userinfo_table_td}>{userData.phone}</td>
             </tr>
             <tr>
               <th className={styled.userinfo_table_th}>생년월일</th>
-              <td>{userData.birth}</td>
+              <td className={styled.userinfo_table_td}>{userData.birth}</td>
               <th className={styled.userinfo_table_th}>성별</th>
-              <td>{userData.gender === 'M' ? '남성' : '여성'}</td>
+              <td className={styled.userinfo_table_td}>
+                {userData.gender === 'M' ? '남성' : '여성'}
+              </td>
             </tr>
             <tr>
               <th className={styled.userinfo_table_th}>주소</th>
-              <td colSpan={3}>{userData.address}</td>
+              <td className={styled.userinfo_table_td} colSpan={3}>
+                {userData.address}
+              </td>
             </tr>
           </tbody>
         </table>
       </InnerBox>
       <InnerBox
-        style={{ width: '10%', height: '10%' }}
-        text={'회사정보'}
+        width="45%"
+        height="100%"
+        text="회사정보"
+        font_size="15px"
         childStyle={{
           flex: 1,
           display: 'flex',
@@ -259,11 +270,11 @@ export default function UserInfo() {
           marginBottom: '20px',
         }}
       >
-        <table>
+        <table className={styled.userinfo_compay_table}>
           <tbody>
             <tr>
               <th className={styled.userinfo_table_th}>회사/부서</th>
-              <td colSpan={3}>
+              <td className={styled.userinfo_table_td} colSpan={3}>
                 {userData.compName}
                 {' > '}
                 {userData.estName}
@@ -271,25 +282,27 @@ export default function UserInfo() {
                 {renderDeptString(userData.deptString)}
               </td>
             </tr>
-          </tbody>
-          <tbody>
+
             <tr>
               <th className={styled.userinfo_table_th}>직책</th>
-              <td>{userData.positionName}</td>
-              <th className={styled.userinfo_table_th}>직급</th>
-              <td>{userData.gradeName}</td>
+              <td className={styled.userinfo_table_td}>
+                {userData.positionName}
+              </td>
             </tr>
-          </tbody>
-          <tbody>
+            <tr>
+              <th className={styled.userinfo_table_th}>직급</th>
+              <td className={styled.userinfo_table_td}>{userData.gradeName}</td>
+            </tr>
             <tr>
               <th className={styled.userinfo_table_th}>재직구분</th>
-              <td>{userData.employmentStatus === true ? '재직' : '퇴사'}</td>
+              <td className={styled.userinfo_table_td}>
+                {userData.employmentStatus === true ? '재직' : '퇴사'}
+              </td>
             </tr>
-          </tbody>
-          <tbody>
+
             <tr>
               <th className={styled.userinfo_table_th}>입사일</th>
-              <td>{userData.startDate}</td>
+              <td className={styled.userinfo_table_td}>{userData.startDate}</td>
             </tr>
           </tbody>
         </table>

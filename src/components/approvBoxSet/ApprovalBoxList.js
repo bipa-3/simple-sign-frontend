@@ -95,8 +95,10 @@ function ApprovalBoxList({ companyId, searchQuery }) {
   }, [companyId, state.insertStatus, state.saveStatus]);
   useEffect(() => {
     // boxList가 업데이트되면 첫 번째 박스 선택
-    if (state.boxList && state.boxList.length > 0) {
-      boxNameClickHandler(state.boxList[0].approvalBoxId);
+    if (!state.insertStatus) {
+      if (state.boxList && state.boxList.length > 0) {
+        boxNameClickHandler(state.boxList[0].approvalBoxId);
+      }
     }
   }, [state.boxList]);
 

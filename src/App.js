@@ -74,29 +74,31 @@ function AppContent() {
           {!isPopup && localStorage.getItem('orgUserId') && <Header />}
           {!isPopup && <Sidebar />}
           <div className="contentContainer">
-            <Titlebox
-              title={getname}
-              view={pageState.isApprovalBox ? 'approval' : ''}
-              componentProp={
-                <>
-                  {pageState.curPage === '기안양식관리' ? (
-                    <Button
-                      label={'추가'}
-                      btnStyle={'gray_btn'}
-                      onClick={createFormState}
-                    />
-                  ) : null}
-                  {pageState.curPage === '문서채번관리' ? (
-                    <Button
-                      label={'추가'}
-                      btnStyle={'gray_btn'}
-                      onClick={createSeqState}
-                    />
-                  ) : null}
-                  {pageState.isApprovalBox ? <ApprovalRightHeader /> : ''}
-                </>
-              }
-            ></Titlebox>
+            {location.pathname !== '/' ? (
+              <Titlebox
+                title={getname}
+                view={pageState.isApprovalBox ? 'approval' : ''}
+                componentProp={
+                  <>
+                    {pageState.curPage === '기안양식관리' ? (
+                      <Button
+                        label={'추가'}
+                        btnStyle={'gray_btn'}
+                        onClick={createFormState}
+                      />
+                    ) : null}
+                    {pageState.curPage === '문서채번관리' ? (
+                      <Button
+                        label={'추가'}
+                        btnStyle={'gray_btn'}
+                        onClick={createSeqState}
+                      />
+                    ) : null}
+                    {pageState.isApprovalBox ? <ApprovalRightHeader /> : ''}
+                  </>
+                }
+              ></Titlebox>
+            ) : null}
             <div className="contentsArea">
               <Routes>
                 <Route path="/" element={<HomePage />} />

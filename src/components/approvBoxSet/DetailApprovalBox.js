@@ -47,12 +47,18 @@ function DetailApprovalBox() {
         hideLoading();
       }
     } catch (error) {
-      // 유효성 검증 오류나 API 호출 오류 모두 이곳에서 처리됩니다.
-      console.error('Error saving data:', error);
-      alert(
-        error.message ||
+      hideLoading();
+      if (error) {
+        // 유효성 검사 오류 메시지를 모두 표시
+        const errorMessage = error.errors.join('\n');
+        alert(errorMessage);
+      } else {
+        // 기타 오류의 경우
+        console.error('Error saving data:', error);
+        alert(
           '데이터를 저장하는 도중 에러가 발생했습니다. 다시 시도해 주세요.'
-      );
+        );
+      }
     }
   };
 

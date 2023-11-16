@@ -72,9 +72,11 @@ export default function TimeLineList() {
                 >
                   {notification.alarmContent}
                 </div>
-                <div className={styled.timeline_time}>
-                  {formatDate(notification.alarmDate).split(' ')[2]}
-                </div>
+              </div>
+              <div className={styled.timeline_time}>
+                [문서명] {notification.approvalDocTitle}
+                {'  |  '}
+                {formatDate(notification.alarmDate).split(' ')[2]}
               </div>
               <div className={styled.timeline_line}> | </div>
               {index < notificationGroups[date].length - 1}

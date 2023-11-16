@@ -322,7 +322,9 @@ export default function UpdateUserInfo() {
   return (
     <div className={styled.container}>
       <InnerBox
-        style={{ width: '10%', height: '10%' }}
+        width="55%"
+        height="100%"
+        font_size="15px"
         text={'개인정보'}
         titleChildren={
           <Button label={'저장'} btnStyle={'gray_btn'} onClick={updateAPI} />
@@ -335,7 +337,7 @@ export default function UpdateUserInfo() {
           marginBottom: '20px',
         }}
       >
-        <table>
+        <table className={styled.update_userinfo_table}>
           <tbody>
             <tr>
               <th className={styled.userinfo_table_th}>프로필</th>
@@ -367,7 +369,9 @@ export default function UpdateUserInfo() {
                       name="radio-buttons"
                       inputProps={{ 'aria-label': 'D' }}
                     />
-                    <DefaultSign name={userData.userName} />
+                    <div className={styled.radio_button_container}>
+                      <DefaultSign name={userData.userName} />
+                    </div>
                   </div>
                   <div className={styled.sign_custom_container}>
                     <Radio
@@ -377,19 +381,21 @@ export default function UpdateUserInfo() {
                       name="radio-buttons"
                       inputProps={{ 'aria-label': 'C' }}
                     />
-                    <>{renderSign}</>
-                    <input
-                      type="file"
-                      ref={inputSign}
-                      onChange={handleSignChange}
-                      className={styled.sign_input}
-                    />
-                    <button
-                      onClick={handleInputSignStyle}
-                      className={styled.customInput}
-                    >
-                      <AttachFileIcon />
-                    </button>
+                    <div className={styled.image_container}>
+                      {renderSign}
+                      <input
+                        type="file"
+                        ref={inputSign}
+                        onChange={handleSignChange}
+                        className={styled.sign_input}
+                      />
+                      <button
+                        onClick={handleInputSignStyle}
+                        className={styled.customInput}
+                      >
+                        <AttachFileIcon />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -491,7 +497,9 @@ export default function UpdateUserInfo() {
         </table>
       </InnerBox>
       <InnerBox
-        style={{ width: '10%', height: '10%' }}
+        width="45%"
+        height="100%"
+        font_size="15px"
         text={'회사정보'}
         childStyle={{
           flex: 1,

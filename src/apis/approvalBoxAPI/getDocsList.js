@@ -22,6 +22,17 @@ export default function getDocsList(
   return axios.get(url);
 }
 
+export function getDocsListCount(viewItems, searchInput, radioSortValue) {
+  // viewItems 배열을 쉼표로 구분된 문자열로 변환
+  const viewItemsString = viewItems.join(',');
+
+  const url =
+    base_url +
+    `approvbox/count?viewItems=${viewItemsString}&searchInput=${searchInput}&radioSortValue=${radioSortValue}`;
+
+  return axios.get(url);
+}
+
 export function detailSearchDocs(
   viewItems,
   itemsPerPage,
@@ -37,6 +48,21 @@ export function detailSearchDocs(
     offset: offset,
     ...detailSearchState,
     sortStatus: sortStatus,
+    radioSortValue: radioSortValue,
+  };
+
+  return axios.post(url, payload);
+}
+
+export function detailSearchDocsCount(
+  viewItems,
+  detailSearchState,
+  radioSortValue
+) {
+  const url = base_url + `approvbox/search`;
+  const payload = {
+    viewItems: viewItems,
+    ...detailSearchState,
     radioSortValue: radioSortValue,
   };
 

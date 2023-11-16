@@ -5,7 +5,6 @@
   gap: 25px;
   height: 100%;
   width: 100%;
-  flex-direction: column;
 }
 
 .profile_container {
@@ -30,15 +29,22 @@
 .sign_radio_container {
   display: flex;
   flex-direction: column;
-  margin: 20px 30px;
 }
 
 .sign_custom_container {
   display: flex;
   flex-direction: column;
-  width: 150px;
+  margin-top: -10px;
+}
+
+.radio_button_container {
+  margin-right: 10px;
+}
+
+.image_container {
+  display: flex;
   align-items: center;
-  margin-left: 50px;
+  margin-top: 10px;
 }
 
 .sign_img {
@@ -47,7 +53,6 @@
 }
 
 .sign_input {
-  margin-left: 80px;
   display: none;
 }
 
@@ -60,10 +65,11 @@
 }
 
 .userinfo_table_th {
-  background-color: rgb(241, 245, 247);
-  padding: 13.6px 13.6px 13.6px 13.6px;
-  text-align: right;
-  width: 150px;
+  padding: 25px 20px 20px 20px;
+  width: 20%;
+  text-align: left;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .customInput {
@@ -73,4 +79,9 @@
   cursor: pointer;
   padding: 0;
   margin: 0;
+}
+
+.update_userinfo_table td {
+  padding-left: 15px;
+  font-size: 13px;
 }

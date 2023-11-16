@@ -5,14 +5,19 @@
   gap: 25px;
   height: 100%;
   width: 100%;
-  flex-direction: column;
 }
 
 .userinfo_table_th {
-  background-color: rgb(241, 245, 247);
-  padding: 13.6px 13.6px 13.6px 13.6px;
-  text-align: right;
-  width: 150px;
+  padding: 25px 20px 20px 20px;
+  width: 20%;
+  text-align: left;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.userinfo_table_td {
+  padding-left: 15px;
+  font-size: 13px;
 }
 
 .userinfo_profile {

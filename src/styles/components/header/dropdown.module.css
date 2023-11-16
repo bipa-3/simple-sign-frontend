@@ -100,3 +100,21 @@
 .button_check_style {
   text-align: right;
 }
+
+.menuItemSpacing:hover .notice_button {
+  display: block;
+}
+
+.notice_button {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.notice_box {
+  width: 300px;
+  height: 400px;
+}

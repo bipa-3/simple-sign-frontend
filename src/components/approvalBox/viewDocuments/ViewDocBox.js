@@ -4,6 +4,8 @@ import DocItem from './DocItem';
 import { useApprovalBox } from '../../../contexts/ApprovalBoxContext';
 import getDocsList, {
   detailSearchDocs,
+  detailSearchDocsCount,
+  getDocsListCount,
 } from '../../../apis/approvalBoxAPI/getDocsList';
 import styled from '../../../styles/components/ApprovalBox/ViewDocBox.module.css';
 import TableHeader from './TableHeader';
@@ -26,6 +28,9 @@ function ViewDocBox() {
   const queryParams = new URLSearchParams(location.search);
   const viewItemsString = queryParams.get('viewItems');
   const viewItems = viewItemsString ? viewItemsString.split(',') : [];
+
+  const nameString = queryParams.get('name');
+  const boxname = nameString ? nameString : '';
   const { state: pageState, setState: setPageState } = usePage();
 
   const navigate = useNavigate();
@@ -56,51 +61,62 @@ function ViewDocBox() {
     showLoading();
     try {
       const offset = (page - 1) * 10;
-      let response;
+      const docListPromise = state.shouldFetchDocs
+        ? detailSearchDocs(
+            viewItems,
+            10,
+            offset,
+            detailSearchState,
+            state.sortStatus,
+            state.radioSortValue
+          )
+        : getDocsList(
+            viewItems,
+            10,
+            offset,
+            state.searchInput,
+            state.sortStatus,
+            state.radioSortValue
+          );
 
-      if (state.shouldFetchDocs) {
-        try {
-          await checkDocSearchData(detailSearchState);
-        } catch (validationError) {
-          alert(validationError.message);
-          hideLoading();
-          return;
-        }
-        response = await detailSearchDocs(
-          viewItems,
-          10,
-          offset,
-          detailSearchState,
-          state.sortStatus,
-          state.radioSortValue
-        );
-      } else {
-        response = await getDocsList(
-          viewItems,
-          10,
-          offset,
-          state.searchInput,
-          state.sortStatus,
-          state.radioSortValue
-        );
-      }
+      const docCountPromise = state.shouldFetchDocs
+        ? detailSearchDocsCount(
+            viewItems,
+            detailSearchState,
+            state.radioSortValue
+          )
+        : getDocsListCount(viewItems, state.searchInput, state.radioSortValue);
 
-      hideLoading();
-      const { docList, count } = response.data;
+      const [docListResponse, docCountResponse] = await Promise.all([
+        docListPromise,
+        docCountPromise,
+      ]);
 
       setDocData(
-        docList.map((docItem) => ({
+        docListResponse.data.map((docItem) => ({
           ...docItem,
           createdAt: new Date(docItem.createdAt),
         }))
       );
-      setTotalCount(count);
-      setTotalPages(Math.ceil(count / 10));
+      setTotalCount(docCountResponse.data);
+      setTotalPages(Math.ceil(docCountResponse.data / 10));
     } catch (error) {
-      hideLoading();
       console.error('Error fetching data:', error);
     }
+    hideLoading();
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [
+    page,
+    state.searchInput,
+    state.sortStatus,
+    state.radioSortValue,
+    state.shouldFetchDocs,
+    boxname,
+  ]);
+
   useEffect(() => {
     const handleStorageChange = (event) => {
       if (event.key === 'approvalState') {
@@ -127,19 +143,8 @@ function ViewDocBox() {
   }, [state.approvalState]);
 
   useEffect(() => {
-    fetchData();
-  }, [
-    pageState.curPage,
-    state.searchInput,
-    page,
-    state.radioSortValue,
-    state.isReadDoc,
-    state.sortStatus,
-  ]);
-
-  useEffect(() => {
     if (state.shouldFetchDocs) {
-      fetchData(true);
+      fetchData();
     }
   }, [state.shouldFetchDocs]);
 
