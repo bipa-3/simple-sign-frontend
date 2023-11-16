@@ -1,14 +1,19 @@
 .icon_box {
-  background-color: #3bafda;
-  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+  /* background-color: #3bafda; */
+  background-color: white;
   padding: 0 10px 0 0;
-  position: fixed;
-  left: 240px;
-  right: 0;
-  top: 0;
-  height: 70px;
+  /* position: fixed; */
+  /* left: 240px; */
+  /* right: 0; */
+  /* top: 0; */
+  height: 90px;
   transition: all 0.1s ease-out;
   z-index: 1001;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
 }
 
 .iconlist {

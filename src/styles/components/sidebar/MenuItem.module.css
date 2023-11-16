@@ -5,17 +5,24 @@
 .menutext span {
   font-size: 0.95rem;
   font-weight: 560;
-  color: #6e768e;
+  /* color: #6e768e; */
+  color: white;
   margin-left: 15px;
 }
 .menutext span:hover {
-  color: #3bafda;
+  /* color: #3bafda; */
+  color: #d7d71f;
   background-color: transparent !important;
 }
 
+.menutext ul {
+  margin: 0px;
+}
+
 .mainmenu:hover {
-  color: #3bafda;
-  background-color: transparent !important;
+  /* color: #3bafda; */
+  color: #d7d71f;
+  background-color: #2f3c3b !important;
 }
 
 .submenu {
@@ -24,26 +31,36 @@
 }
 
 .subitem:hover {
-  color: #3bafda;
-  background-color: white !important;
+  /* color: #3bafda; */
+  /* background-color: white !important; */
+  color: #d7d71f;
+  background-color: #2f3c3b !important;
+  /* color: #d7d71f; */
+  /* background-color: transparent !important; */
 }
 
 .sub_menutext span {
   font-size: 0.9rem;
-  color: #6e768e;
+  /* color: #6e768e; */
+  color: white !important;
 }
+
 .sub_menutext span:hover {
-  color: #3bafda;
+  /* color: #3bafda; */
+  color: #d7d71f !important;
   background-color: transparent !important;
 }
 
 .color {
-  color: #3bafda !important;
-  background-color: white !important;
+  /* color: #3bafda !important; */
+  /* background-color: white !important; */
+
+  color: white !important;
+  background-color: rgb(43, 39, 39) !important;
 }
 
 .selectedText {
-  color: '#3bafda' !important;
+  color: #3bafda !important;
 }
 
 .subItemContainer {

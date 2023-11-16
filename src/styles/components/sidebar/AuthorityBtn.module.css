@@ -5,8 +5,11 @@
 
   position: fixed;
   bottom: 10px;
+
+  background-color: #cfdfdb !important;
 }
 
 .toggle {
   width: 110px;
+  color: #1f1f16;
 }

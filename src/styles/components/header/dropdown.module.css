@@ -1,11 +1,13 @@
 .test {
-  background-color: #3bafda !important;
+  /* background-color: #3bafda !important; */
+  background-color: white !important;
   box-shadow: none !important;
   height: 70px;
 }
 
 .test:hover {
-  background-color: #3bafda !important;
+  /* background-color: #3bafda !important; */
+  background-color: white !important;
   box-shadow: none !important;
   height: 70px;
 }
@@ -26,13 +28,14 @@
 }
 
 .noticeIcon {
-  width: 32px !important;
-  height: 32px !important;
+  width: 36px !important;
+  height: 36px !important;
   /* position: absolute; 포지션을 절대적(absolute)으로 설정합니다. */
   top: -40; /* 위에서 0px 떨어진 위치에 배치합니다. */
   left: -40; /* 왼쪽에서 0px 떨어진 위치에 배치합니다. */
   z-index: 1;
   align-items: center !important;
+  color: black !important;
 }
 
 .circle {

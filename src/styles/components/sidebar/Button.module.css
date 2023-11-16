@@ -1,17 +1,23 @@
 .button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 20px;
 }
 .name {
   width: 200px;
   height: 50px;
-  background-color: #3bafda !important;
+  /* background-color: #3bafda !important; */
+  background-color: #cfdfdb !important;
 }
 
 .font {
   font-size: 17.4px;
   font-weight: 550;
+  color: black;
 }
 
 .name:hover {
-  background-color: #35a1c9 !important;
+  /* background-color: #35a1c9 !important; */
+  background-color: #b7d1cb !important;
 }

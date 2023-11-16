@@ -1,10 +1,14 @@
 .sidebar {
   position: fixed;
-  margin-top: 70px;
+  margin-top: 90px;
   width: 240px;
-  height: 860px;
+  /* height: 860px; */
   background-color: transparent;
-  /* border-right: 1px solid; */
   overflow: auto;
   box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+
+  border-top-right-radius: 5rem;
+  background-color: #465b59;
+  height: 100vh;
+  padding-top: 30px;
 }

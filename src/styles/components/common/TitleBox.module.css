@@ -1,12 +1,13 @@
 .titleBoxContainer {
-  height: 50px;
+  height: 120px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 0 20px;
+  padding: 10px 20px 0px 20px;
+
   box-sizing: border-box;
   background-color: white;
-  box-shadow: 0 1px 1px rgba(50, 58, 70, 0.1);
+  /* box-shadow: 0 1px 1px rgba(50, 58, 70, 0.1); */
 }
 
 .titleSearchBox {
@@ -22,20 +23,22 @@
 .boxtitle {
   line-height: 49px;
   letter-spacing: -0.8px;
-  font-size: 1.1rem;
+  font-size: 24px;
   margin: 0;
-  color: #323a46;
+  /* color: #323a46; */
+  color: #465b59;
   font-weight: bold;
 }
 
 .docCount {
   align-items: center;
   max-width: 420px;
-  line-height: 49px;
+  /* line-height: 49px; */
   margin: 0 0 0 10px;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.8px;
+  color: #b59f52;
 }
 
 .left {
@@ -70,7 +73,8 @@
   align-items: center;
 }
 .count {
-  font-size: 12px;
-  color: #3bafda;
+  font-size: 16px;
+  /* color: #3bafda; */
+  color: #b59f52;
   padding-left: 5px;
 }

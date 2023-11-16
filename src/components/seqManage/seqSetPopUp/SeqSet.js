@@ -71,7 +71,6 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
         {params?.value?.includes('자리수') ? (
           <select className={styled.selectBox} onChange={handleChange}>
             {data.map((ele) => {
-              console.log(params.value, ele.value, params.value === ele.value);
               return (
                 <option
                   key={ele.value}
@@ -91,10 +90,23 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
   };
 
   useEffect(() => {
+    let data = [
+      { value: '12', label: '자리수 2자리' },
+      { value: '13', label: '자리수 3자리' },
+      { value: '14', label: '자리수 4자리' },
+      { value: '15', label: '자리수 5자리' },
+    ];
+
     setPreviewData(
       seqList
         .map((ele) => {
-          console.log('changedList:', ele);
+          if (ele.code >= '12' && ele.code <= '15') {
+            for (let i of data) {
+              if (ele.code === i.value) {
+                return i.label;
+              }
+            }
+          }
           return ele.value;
         })
         .join(' ')

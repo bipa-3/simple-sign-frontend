@@ -17,7 +17,8 @@ function LogoArea() {
   return (
     <div className={styles.logo_box} onClick={goHome}>
       <div className={styles.logo_icon}>
-        <img src={logo} alt="logo" />
+        {/* <img src={logo} alt="logo" /> */}
+        SimpleSign
       </div>
     </div>
   );

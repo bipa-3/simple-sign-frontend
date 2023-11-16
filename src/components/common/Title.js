@@ -1,7 +1,7 @@
 // import '../../../styles/components/common/Title.module.css';
 import React from 'react';
 
-export default function Title({ text, font_size, marginLeft }) {
+export default function Title({ text, font_size = '20px', marginLeft }) {
   return (
     <div
       style={{

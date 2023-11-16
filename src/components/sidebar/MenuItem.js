@@ -167,13 +167,20 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
           toggleSubMenu(item.id);
         }}
       >
-        <ListItemText primary={item.name} className={styled.menutext} />
+        <ListItemText
+          primary={item.name}
+          className={styled.menutext}
+          style={{ margin: 0 }}
+        />
         {isSubMenuVisible[item.id - 1] ? (
-          <KeyboardArrowDownIcon htmlColor="#3bafda;" />
+          <KeyboardArrowDownIcon htmlColor="#fff;" />
         ) : (
-          <KeyboardArrowRightIcon htmlColor="#6e768e" />
+          // <KeyboardArrowDownIcon htmlColor="#3bafda;" />
+          // <KeyboardArrowRightIcon htmlColor="#6e768e" />
+          <KeyboardArrowRightIcon htmlColor="#fff" />
         )}
       </ListItemButton>
+
       {item.submenu && isSubMenuVisible[item.id - 1] && (
         <div className={styled.submenu}>
           {item.submenu.map((subitem, index) => (

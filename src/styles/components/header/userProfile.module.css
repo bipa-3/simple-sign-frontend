@@ -3,8 +3,8 @@
 }
 
 .profile .rounded_circle {
-  height: 29px;
-  width: 29px;
+  height: 32px;
+  width: 32px;
 }
 
 .list_user {
@@ -36,8 +36,9 @@
   padding-right: 18px;
   margin: 0 0 0 10px;
   line-height: 14px;
-  font-size: 10px;
-  color: #fff;
+  font-size: 11px;
+  /* color: #fff; */
+  color: black;
   letter-spacing: -0.5px;
   min-width: 52px;
   box-sizing: border-box;
@@ -45,4 +46,7 @@
 
 .rounded_circle {
   border-radius: 50% !important;
+  color: black !important;
+  background-color: black !important;
+  border: 1.5px solid black !important;
 }

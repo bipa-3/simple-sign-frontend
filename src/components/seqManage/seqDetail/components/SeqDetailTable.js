@@ -31,6 +31,7 @@ export default function SeqDetailTable() {
   const [isDeptModalOpen, setIDeptModalOpen] = useState(false);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [gridData, setGridData] = useState([]);
+
   const openModal = () => {
     setIsModalOpen(true);
   };
