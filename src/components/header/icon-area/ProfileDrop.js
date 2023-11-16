@@ -38,6 +38,7 @@ export default function Profile() {
         document.cookie =
           'LOGIN_COOKIE=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         setState({ ...state, isLoggedIn: false });
+        navigate('/login');
       })
       .catch((err) => {
         console.log(err);
