@@ -21,7 +21,7 @@
 } */
 
 .titleBox {
-  width: 40%;
+  width: 30%;
   background-color: #f1f5f7;
   padding: 13.6px 0 13.6px 13.6px;
 }
@@ -71,7 +71,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 90%;
+  width: 100%;
   height: 80px;
   margin: 5px 0px;
   gap: 5px;
@@ -81,6 +81,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  justify-content: space-around;
 }
 
 .dataBox {

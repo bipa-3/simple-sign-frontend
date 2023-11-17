@@ -65,7 +65,7 @@ export default function DetailTableDAL() {
       ></DetailBox>
       <div className={styled.subBox}>
         <OrgChart
-          view={'user'}
+          view={'approvalUser'}
           initData={detailData.approvalLine.map((ele, index) => {
             ele.id = index;
             ele.company = ele.compName;

@@ -152,12 +152,10 @@ const DragDrop = ({ id, name, data, dataHandler }) => {
     }
   };
 
-  const downloadFile = () => {
-    console.log('files:', files[0].object);
-
-    const blob = new Blob([detailData[id]], { type: files[0].object.type });
-    saveAs(blob, files[0].object.name);
-  };
+  // const downloadFile = () => {
+  //   const blob = new Blob([detailData[id]], { type: files[0].object.type });
+  //   saveAs(blob, files[0].object.name);
+  // };
 
   useEffect(() => {
     getFileContent();
@@ -188,7 +186,7 @@ const DragDrop = ({ id, name, data, dataHandler }) => {
         </label>
       </div>
 
-      <div className={styled.fileListContainer}>
+      {/* <div className={styled.fileListContainer}>
         {files.length > 0 &&
           files.map((file) => {
             const {
@@ -210,7 +208,7 @@ const DragDrop = ({ id, name, data, dataHandler }) => {
               </div>
             );
           })}
-      </div>
+      </div> */}
     </div>
   );
 };

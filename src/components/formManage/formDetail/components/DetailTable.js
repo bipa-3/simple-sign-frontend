@@ -28,7 +28,7 @@ export default function DetailTable() {
     setDetailData({
       ...detailData,
       scope:
-        label !== 'Group'
+        label !== '그룹'
           ? [{ category: 'C', compId: data, company: label, useId: data }]
           : [],
       [id]: data,

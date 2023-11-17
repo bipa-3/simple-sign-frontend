@@ -16,7 +16,7 @@
 .contentsArea {
   width: 100%;
   flex-grow: 1;
-  padding: 17px;
+  padding: 0px 17px 17px 17px;
   flex-grow: 1;
   overflow-y: scroll;
   background-color: #fff;

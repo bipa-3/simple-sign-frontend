@@ -12,6 +12,9 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import { useFormManage } from '../../../../contexts/FormManageContext';
+import Button from '../../../common/Button';
+import { MdOutlineFileDownload } from 'react-icons/md';
+import { saveAs } from 'file-saver';
 
 const customStyles = {
   control: (base) => ({
@@ -157,8 +160,10 @@ const AreaBox = ({ id, data, dataHandler, children }) => {
 };
 
 const FileBox = ({ id, name, data, dataHandler }) => {
+  const { detailData } = useFormManage();
   const [formData, setFormData] = useState(data);
   const [formItems, setFormItems] = useState([]);
+  const [fileData, setFileData] = useState('');
   const required = [1, 6, 10];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -169,6 +174,18 @@ const FileBox = ({ id, name, data, dataHandler }) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const downloadEventHandler = () => {
+    let subText = '';
+
+    if (id === 'defaultForm') {
+      subText = '_기본파일';
+    } else if (id === 'mainForm') {
+      subText = '_본문파일';
+    }
+    const blob = new Blob([detailData[id]]);
+    saveAs(blob, `${detailData.formName}${subText}.html`);
   };
 
   const grayAndBlueBtn = [
@@ -232,6 +249,11 @@ const FileBox = ({ id, name, data, dataHandler }) => {
                 <PopUpFoot buttons={grayAndBlueBtn} />
               </>
             }
+          />
+          <Button
+            label={<MdOutlineFileDownload />}
+            width={'30px'}
+            onClick={downloadEventHandler}
           />
         </div>
       </div>

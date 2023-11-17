@@ -154,7 +154,7 @@ export default function SeqDetailTable() {
     setDetailData({
       ...detailData,
       deptScope:
-        data !== 'Group'
+        data !== '그룹'
           ? [{ category: 'C', compId: data, company: label, useId: data }]
           : [],
       [id]: data,

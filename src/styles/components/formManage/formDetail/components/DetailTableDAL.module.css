@@ -1,5 +1,9 @@
 .dalBox {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0px 0px 1px 0px;
+  flex: 1;
 }
 
 .subBox {
