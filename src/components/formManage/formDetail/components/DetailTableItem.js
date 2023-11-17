@@ -72,8 +72,10 @@ const TitleBox = ({ title }) => {
   );
 };
 
-const SelectBox = ({ id, data, dataHandler, init = 0 }) => {
-  let initIndex = 0;
+const SelectBox = ({ id, data, dataHandler, init }) => {
+  const [selectedOption, setSelectedOption] = useState({});
+  let initIndex = -1;
+
   data = data.map((ele, index) => {
     if (ele.id === init) {
       initIndex = index;
@@ -87,14 +89,18 @@ const SelectBox = ({ id, data, dataHandler, init = 0 }) => {
     setSelectedOption(data[initIndex]);
   }, [initIndex]);
 
-  const [selectedOption, setSelectedOption] = useState(data[0]);
+  useEffect(() => {
+    if (initIndex < 0) {
+      initIndex = 0;
+    }
+  }, [data]);
+
   return (
     <div className={styled.dataBox}>
       <Select
-        // defaultValue={data[0]}
+        defaultValue={data[initIndex]}
         value={selectedOption}
         onChange={(selectedOption) => {
-          console.log(selectedOption);
           setSelectedOption(selectedOption);
           dataHandler(id, selectedOption.value, selectedOption.label);
         }}

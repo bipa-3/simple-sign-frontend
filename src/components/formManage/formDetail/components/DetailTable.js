@@ -110,20 +110,22 @@ export default function DetailTable() {
         children={
           <>
             <TitleBox title={'결재종류'} />
-            {flagData === 1 ? (
-              <SelectBox
-                id={'approvalKind'}
-                data={setData.approvalKindList}
-                dataHandler={setDetailDataById}
-              />
-            ) : (
+            {
+              // flagData === 1 ? (
+              //   <SelectBox
+              //     id={'approvalKind'}
+              //     data={setData.approvalKindList}
+              //     dataHandler={setDetailDataById}
+              //   />
+              // ) : (
               <SelectBox
                 id={'approvalKind'}
                 data={setData.approvalKindList}
                 init={detailData.approvalKind}
                 dataHandler={setDetailDataById}
               />
-            )}
+              // )
+            }
           </>
         }
       ></DetailBox>
