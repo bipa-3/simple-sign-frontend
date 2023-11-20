@@ -33,6 +33,7 @@ export default function SeqDetailTable() {
   const [gridData, setGridData] = useState([]);
 
   const openModal = () => {
+    setSetListFunc();
     setIsModalOpen(true);
   };
 
@@ -49,6 +50,13 @@ export default function SeqDetailTable() {
   };
 
   const openFormModal = () => {
+    setGridData(
+      detailData.formScope.map((ele) => {
+        ele.id = ele.useId;
+        ele.formName = ele.name;
+        return ele;
+      })
+    );
     setIsFormModalOpen(true);
   };
 
@@ -96,25 +104,31 @@ export default function SeqDetailTable() {
   }, []);
 
   useEffect(() => {
+    setSetListFunc();
+  }, [detailData.seqString]);
+
+  const setSetListFunc = () => {
     const itemIdList = detailData.seqString.split(',');
     if (detailData.seqString !== '') {
       let result = itemIdList
         .map((ele, index) => {
-          const foundItem = seqItems.find((item) => item.code === ele);
+          let foundItem = null;
+          if (ele >= 12 && ele <= 15) {
+            foundItem = { value: `자리수 ${ele - 8}자리`, code: ele };
+          } else {
+            foundItem = seqItems.find((item) => item.code === ele);
+          }
           if (foundItem) {
             return { id: index, value: foundItem.value, code: foundItem.code };
           }
         })
         .filter((ele) => ele !== undefined);
+
       setSeqList([...result]);
     } else {
       setSeqList([]);
     }
-  }, [detailData.seqString]);
-
-  useEffect(() => {
-    console.log('formListData: ', gridData);
-  }, [gridData]);
+  };
 
   const formConfirm = () => {
     const result = gridData.map((ele) => {

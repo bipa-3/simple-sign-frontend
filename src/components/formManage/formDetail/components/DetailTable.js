@@ -36,7 +36,6 @@ export default function DetailTable() {
   };
 
   const scopeConfirm = (data) => {
-    console.log('scope:', data);
     setDetailDataById('scope', data);
   };
 
@@ -57,10 +56,6 @@ export default function DetailTable() {
     },
     { name: '미사용', value: false },
   ];
-
-  useEffect(() => {
-    console.log('detail:', detailData);
-  }, [detailData]);
 
   return (
     <div className={styled.detailContainer}>

@@ -9,7 +9,6 @@ const searchSchema = object().shape({
 });
 
 const checkSearchData = (data) => {
-  console.log(data);
   return searchSchema.validate(data);
 };
 

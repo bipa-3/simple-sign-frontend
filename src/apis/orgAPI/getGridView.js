@@ -3,6 +3,7 @@ import base_url from '../base_url';
 
 const api = axios.create({
   baseURL: base_url,
+  withCredentials: true,
 });
 
 export const getGridView = (selectedNode, view, isChecked) => {

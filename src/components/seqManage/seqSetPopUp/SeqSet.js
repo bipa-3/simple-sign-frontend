@@ -6,6 +6,12 @@ import DataList from '../../common/DataList';
 import { columns, selectedColumns } from '../../../assets/datas/seq_popup_list';
 
 export default function SeqSet({ seqItems, seqList, setSeqList }) {
+  let data = [
+    { value: '12', label: '자리수 2자리' },
+    { value: '13', label: '자리수 3자리' },
+    { value: '14', label: '자리수 4자리' },
+    { value: '15', label: '자리수 5자리' },
+  ];
   const [previewData, setPreviewData] = useState('');
   const [leftSelectedRow, setLeftSelectedRow] = useState({});
   const [rightSelectedRow, setRightSelectedRow] = useState(seqList[0]);
@@ -48,13 +54,6 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
   };
 
   const RenderCellFunc = (params) => {
-    let data = [
-      { value: '12', label: '자리수 2자리' },
-      { value: '13', label: '자리수 3자리' },
-      { value: '14', label: '자리수 4자리' },
-      { value: '15', label: '자리수 5자리' },
-    ];
-
     const handleChange = (event) => {
       const newValue = event.target.value;
       let changedLength = seqList.map((ele) => {
@@ -66,6 +65,7 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
       });
       setSeqList([...changedLength]);
     };
+
     return (
       <span>
         {params?.value?.includes('자리수') ? (
@@ -90,13 +90,6 @@ export default function SeqSet({ seqItems, seqList, setSeqList }) {
   };
 
   useEffect(() => {
-    let data = [
-      { value: '12', label: '자리수 2자리' },
-      { value: '13', label: '자리수 3자리' },
-      { value: '14', label: '자리수 4자리' },
-      { value: '15', label: '자리수 5자리' },
-    ];
-
     setPreviewData(
       seqList
         .map((ele) => {

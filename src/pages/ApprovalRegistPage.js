@@ -113,29 +113,18 @@ export default function ApprovalRegist(props) {
     setSequenceCode(newValue);
   };
 
-  // const extractTableData = () => {
-  //   const table = document.querySelector('table');
-  //   const rows = table.querySelectorAll('tr');
-  //   const data = {};
-
-  //   rows.forEach((row) => {
-  //     const cells = row.querySelectorAll('td');
-  //     if (cells.length === 2) {
-  //       const key = cells[0].textContent.trim();
-  //       const value = cells[1].textContent.trim();
-  //       data[key] = value;
-  //     }
-  //   });
-  //   return data;
-  // };
-
   const handleClickStar = () => {
     setClickStar(!clickStar);
 
     if (clickStar) {
       deleteFavorites(props.form_code);
     } else if (clickStar === false) {
-      insertFavorites(props.form_code);
+      insertFavorites(props.form_code).then((res) => {
+        if (res.status === 400) {
+          alert('즐겨찾기는 4개이상 설정 불가합니다.');
+          setClickStar(false);
+        }
+      });
     }
   };
 
@@ -188,7 +177,6 @@ export default function ApprovalRegist(props) {
       docStatus = 'W';
     }
 
-    // let searchContents = extractTableData(editor);
     const approvalDocReqDTO = {
       formCode: props.form_code,
       formName: props.form_name,

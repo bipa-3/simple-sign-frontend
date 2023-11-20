@@ -15,7 +15,6 @@ import {
 } from '../../formManage/formDetail/components/DetailTableItem';
 import FileBox from './FileBox';
 import { getCompId } from '../../../utils/getUser';
-import LinearProgressWithLabel from '../../common/LinearProgressWithLabel';
 
 export default function ApprovalForm({
   form_code,
@@ -44,6 +43,7 @@ export default function ApprovalForm({
   setCondition,
   detailData,
   setDetailData,
+  resetDetailData,
 }) {
   const [sequence, setSequence] = useState([]);
   const [default_form, setDefaultForm] = useState('');
@@ -51,6 +51,7 @@ export default function ApprovalForm({
 
   const { showLoading, hideLoading } = useLoading();
   const deptName = localStorage.getItem('deptName');
+  const [selectedValue, setSelectedValue] = useState(0);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -102,7 +103,7 @@ export default function ApprovalForm({
   useEffect(() => {
     showLoading();
     setOrgUseId('');
-    //resetDetailData;
+    resetDetailData();
 
     //양식 상세조회
     getForm(form_code)
@@ -118,6 +119,7 @@ export default function ApprovalForm({
     //채번리스트 조회
     getSequenceList(form_code).then((json) => {
       setSequence(json);
+      setSelectedValue(json[0].seqCode);
     });
 
     deleteContentEditableError();
@@ -177,7 +179,10 @@ export default function ApprovalForm({
                     selectList={sequence}
                     width={'300'}
                     height={'30'}
+                    selectedValue={selectedValue}
+                    setSelectedValue={setSelectedValue}
                     onChange={handleSelectBoxChange}
+                    init={null}
                   />
                 );
               }

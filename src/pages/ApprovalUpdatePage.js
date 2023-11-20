@@ -108,7 +108,7 @@ export default function ApprovalUpdatePage() {
       updateDocStatus = docStatus[0];
     }
 
-    const data = {
+    const approvalDocReqDTO = {
       approvalDocTitle: titleRef.current.innerHTML,
       seqCode: sequence_code,
       receiveRefList: recRefList,
@@ -121,7 +121,20 @@ export default function ApprovalUpdatePage() {
       version: version,
     };
 
-    checkFormCreateData(data)
+    const data = new FormData();
+
+    data.append(
+      'approvalDocReqDTO',
+      new Blob([JSON.stringify(approvalDocReqDTO)], {
+        type: 'application/json',
+      })
+    );
+    console.log(files);
+    files.forEach((file, index) => {
+      data.append('files', file.object);
+    });
+
+    checkFormCreateData(approvalDocReqDTO)
       .then(() => {
         updateApprovalDocByType(data, type);
       })

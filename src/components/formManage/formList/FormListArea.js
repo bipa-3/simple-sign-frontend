@@ -27,7 +27,11 @@ export default function FormListArea({ rows, searchHandler }) {
         searchHandler();
       })
       .catch((err) => {
-        alert(`데이터 삭제를 실패했습니다. [${err}]`);
+        let errorMessage = `데이터 삭제를 실패했습니다. [${err}]`;
+        if (err.message === '409') {
+          errorMessage = `사용중인 양식은 삭제가 불가합니다. [${err}]`;
+        }
+        alert(errorMessage);
       })
       .finally(() => {
         hideLoading();

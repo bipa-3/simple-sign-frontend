@@ -7,15 +7,13 @@ import { useState, useEffect } from 'react';
 
 export default function SelectBox({
   selectList,
+  selectedValue,
+  setSelectedValue,
   width,
   height,
   onChange,
   init,
 }) {
-  const [selectedValue, setSelectedValue] = useState(
-    selectList.length > 0 ? selectList[0].seqCode : init
-  );
-
   useEffect(() => {
     if (typeof onChange === 'function') {
       onChange(selectedValue);
@@ -29,8 +27,8 @@ export default function SelectBox({
           id="demo-simple-select-helper"
           className={styled.selectBox}
           style={{ width: `${width}px`, height: `${height}px` }}
-          value={init || selectedValue}
-          onChange={(event) => setSelectedValue(event.target.value)} // 값 변경 시 호출될 콜백 함수
+          value={selectedValue}
+          onChange={(event) => setSelectedValue(event.target.value)}
         >
           {!selectList.isEmpty
             ? selectList.map((ele, index) => {

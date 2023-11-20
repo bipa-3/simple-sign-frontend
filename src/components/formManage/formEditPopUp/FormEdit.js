@@ -54,7 +54,6 @@ export default function FormEdit({
       })
       .then((data) => {
         let result = checkUsedItem(data);
-        console.log(result);
         setFormItems(result);
       })
       .catch((err) => {

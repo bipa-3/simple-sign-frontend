@@ -54,6 +54,7 @@ export default function UpdateForm({
   const [condition, setCondition] = useState('rec_ref');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [initSequence, setInitSequence] = useState(0);
+  const [selectedValue, setSelectedValue] = useState(0);
 
   const { showLoading, hideLoading } = useLoading();
   const { detailData, setDetailData } = useFormManage();
@@ -116,6 +117,7 @@ export default function UpdateForm({
             setDocStatus(data.docStatus);
             setInitSequence(data.seqCode);
             setVersion(data.version);
+            setSelectedValue(data.seqCode);
           });
         } else {
           errorHandle(res);
@@ -133,10 +135,9 @@ export default function UpdateForm({
     //파일 조회
     getFileNames(approval_doc_id)
       .then((res) => {
-        res.map((ele) => {
-          const filesWithObjects = ele.map((fileName) => ({ name: fileName }));
-          setFileNames(filesWithObjects);
-        });
+        //console.log(res);
+        const filesWithObjects = res.map((ele) => ({ name: ele.fileName }));
+        setFileNames(filesWithObjects);
       })
       .catch((e) => {
         console.error(e);
@@ -176,6 +177,10 @@ export default function UpdateForm({
 
     setRecRef(detailData.scope);
   }, [detailData]);
+
+  useEffect(() => {
+    console.log(fileNames);
+  }, [fileNames]);
 
   return (
     <div className={styled.container}>
@@ -228,6 +233,8 @@ export default function UpdateForm({
                       selectList={sequence}
                       width={'300'}
                       height={'30'}
+                      selectedValue={selectedValue}
+                      setSelectedValue={setSelectedValue}
                       onChange={handleSelectBoxChange}
                       init={initSequence}
                     />
