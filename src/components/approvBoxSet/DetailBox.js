@@ -43,18 +43,11 @@ function DetailBox() {
   };
 
   useEffect(() => {
-    if (boxId) {
-      console.log('boxList : ', state.boxList);
-    }
-  }, [state.boxList]);
-
-  useEffect(() => {
     // setState((prevState) => ({
     //   ...prevState,
     //   boxId: prevState.boxList[0],
     // }));
     if (boxId) {
-      console.log('boxList222222 : ', state.boxList);
       boxId = state.boxList[0].approvalBoxId;
     }
   }, []);

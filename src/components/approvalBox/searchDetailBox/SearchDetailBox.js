@@ -37,10 +37,6 @@ function SearchDetailBox() {
     searchDetailComponent = <RemainSearchDetail dateName={setDatename()} />;
   }
 
-  useEffect(() => {
-    setState((prevState) => ({ ...prevState, shouldFetchDocs: false }));
-  }, [detailSearchState]);
-
   return <div className={styled.searchDetail}>{searchDetailComponent}</div>;
 }
 export default SearchDetailBox;

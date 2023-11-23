@@ -86,13 +86,6 @@ function MenuUseRange(props) {
     }));
   }, [props.menuOption]);
 
-  useEffect(() => {
-    setDetailData((prevState) => ({
-      ...prevState,
-      scope: [], // 초기화
-    }));
-  }, [props.selectedCompany]);
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -195,6 +188,8 @@ function MenuUseRange(props) {
                       ? props.selectedCompany === 1
                         ? 0
                         : props.selectedCompany
+                        ? props.selectedCompany
+                        : 0
                       : compId
                   }
                 />

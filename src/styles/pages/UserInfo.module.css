@@ -7,17 +7,27 @@
   width: 100%;
 }
 
+.userinfo_table {
+  border-collapse: collapse;
+}
+
 .userinfo_table_th {
   padding: 25px 20px 20px 20px;
   width: 20%;
   text-align: left;
   font-size: 13px;
   font-weight: bold;
+  background-color: #f5f5f5;
+  /* background-color: #f1f5f7; */
+  border-top: 1px solid #edeff1;
+  border-bottom: 1px solid #edeff1;
 }
 
 .userinfo_table_td {
   padding-left: 15px;
   font-size: 13px;
+  border-top: 1px solid #edeff1;
+  border-bottom: 1px solid #edeff1;
 }
 
 .userinfo_profile {
@@ -28,4 +38,8 @@
 .custom_sign {
   width: 50px;
   height: 50px;
+}
+
+.userinfo_compay_table {
+  border-collapse: collapse;
 }

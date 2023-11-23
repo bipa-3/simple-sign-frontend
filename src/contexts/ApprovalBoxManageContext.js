@@ -7,6 +7,7 @@ const initialState = {
   count: 0,
   saveStatus: false,
   boxList: [],
+  boxUpdate: false,
 };
 
 const approvalBoxInit = {

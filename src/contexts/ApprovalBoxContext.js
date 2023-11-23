@@ -15,6 +15,7 @@ const initialState = {
   isReadDoc: '',
   docView: [],
   approvalState: '',
+  checkNextPage: true,
 };
 
 const detailSearchInitState = {

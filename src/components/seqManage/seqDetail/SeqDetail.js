@@ -11,10 +11,12 @@ import {
   checkSeqCreateData,
   checkSeqUpdateData,
 } from '../../../validation/seqManage/seqSchema';
+import { useAlert } from '../../../contexts/AlertContext';
 
 export default function SeqDetail({ searchHandler }) {
   const { detailData, flagData } = useSeqManage();
   const { showLoading, hideLoading } = useLoading();
+  const { showAlert } = useAlert();
 
   const createNewSeq = () => {
     insertSeq(detailData)
@@ -22,16 +24,19 @@ export default function SeqDetail({ searchHandler }) {
         if (!res.ok) {
           throw new Error(res.status);
         }
-        alert('새 채번이 생성되었습니다.');
+        showAlert({
+          severity: 'success',
+          message: `새 채번이 생성되었습니다.`,
+        });
       })
       .then(() => {
         searchHandler();
       })
       .catch((err) => {
-        console.error(err);
-        if (err.message === '404') {
-          alert('검색된 데이터가 없습니다.');
-        }
+        showAlert({
+          severity: 'error',
+          message: `채번 생성에 실패했습니다. [${err}]`,
+        });
       })
       .finally(() => {
         hideLoading();
@@ -44,16 +49,19 @@ export default function SeqDetail({ searchHandler }) {
         if (!res.ok) {
           throw new Error(res.status);
         }
-        alert('양식이 수정되었습니다.');
+        showAlert({
+          severity: 'success',
+          message: `채번이 수정되었습니다.`,
+        });
       })
       .then(() => {
         searchHandler();
       })
       .catch((err) => {
-        console.error(err);
-        if (err.message === '404') {
-          alert('검색된 데이터가 없습니다.');
-        }
+        showAlert({
+          severity: 'error',
+          message: `채번 수정에 실패했습니다. [${err}]`,
+        });
       })
       .finally(() => {
         hideLoading();
@@ -68,7 +76,10 @@ export default function SeqDetail({ searchHandler }) {
           updateExistSeq();
         })
         .catch((errors) => {
-          alert(errors.message);
+          showAlert({
+            severity: 'info',
+            message: errors.message,
+          });
         });
     }
   };
@@ -81,7 +92,10 @@ export default function SeqDetail({ searchHandler }) {
           createNewSeq();
         })
         .catch((errors) => {
-          alert(errors.message);
+          showAlert({
+            severity: 'info',
+            message: errors.message,
+          });
         });
     }
   };

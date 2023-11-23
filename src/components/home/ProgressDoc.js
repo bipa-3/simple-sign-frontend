@@ -14,18 +14,17 @@ export default function ProgressDoc() {
     const fetchDocs = async () => {
       try {
         const viewItems = ['send']; // 상신문서에 해당하는 viewItems
-        const offset = 0; // 페이지네이션을 사용하지 않는다면 offset은 0으로 설정
         const sortStatus = 'desc';
         const response = await getDocsList(
           viewItems,
           10,
-          offset,
           '',
-          sortStatus
+          sortStatus,
+          'ongoingdoc',
+          null,
+          null
         );
-        //console.log('받아온 값 : ', response.data);
-        const docList = response.data.docList || [];
-
+        const docList = response.data || [];
         const recentPDocs = docList
           .filter((doc) => doc.docStatus === 'P')
           .slice(0, 2);

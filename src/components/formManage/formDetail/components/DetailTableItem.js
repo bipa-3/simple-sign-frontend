@@ -283,7 +283,6 @@ const RadioBox = ({ id, data, dataHandler }) => {
           name="used"
           value={selectedOption}
           onChange={(e) => {
-            console.log('value:', e.target.value);
             setSelectedOption(e.target.value);
             dataHandler(id, e.target.value === '사용' ? 1 : 0);
           }}

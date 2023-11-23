@@ -78,8 +78,9 @@ export default function TimeLineList() {
                 {'  |  '}
                 {formatDate(notification.alarmDate).split(' ')[2]}
               </div>
-              <div className={styled.timeline_line}> | </div>
-              {index < notificationGroups[date].length - 1}
+              {index < notificationGroups[date].length - 1 && (
+                <div className={styled.timeline_line}> | </div>
+              )}
             </div>
           ))}
         </React.Fragment>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import Pagination from '@mui/material/Pagination';
 import DocItem from './DocItem';
 import { useApprovalBox } from '../../../contexts/ApprovalBoxContext';
 import getDocsList, {
@@ -20,9 +19,8 @@ function ViewDocBox() {
   const { state, setState, detailSearchState } = useApprovalBox();
   const { showLoading, hideLoading } = useLoading();
   const [docData, setDocData] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const [lastApprovalDate, setLastApprovalDate] = useState(null);
+  const [lastDocId, setLastDocId] = useState(null);
 
   const location = useLocation(); // URL의 위치 정보를 얻음
   const queryParams = new URLSearchParams(location.search);
@@ -31,9 +29,11 @@ function ViewDocBox() {
 
   const nameString = queryParams.get('name');
   const boxname = nameString ? nameString : '';
-  const { state: pageState, setState: setPageState } = usePage();
+  const [noMoreData, setNoMoreData] = useState(false); //다음 데이터 여부 측정
 
-  const navigate = useNavigate();
+  function formatDate(dateString) {
+    return dateString.replace('T', ' ');
+  }
 
   const handleItemClick = async (docId) => {
     if (viewItems.includes('reference')) {
@@ -57,49 +57,106 @@ function ViewDocBox() {
     window.open(`/AD?page=${docId}&popup=true`, '_blank', popupOptions);
   };
 
-  const fetchData = async () => {
-    showLoading();
+  const checkForMoreData = async () => {
     try {
-      const offset = (page - 1) * 10;
       const docListPromise = state.shouldFetchDocs
         ? detailSearchDocs(
             viewItems,
             10,
-            offset,
             detailSearchState,
             state.sortStatus,
-            state.radioSortValue
+            state.radioSortValue,
+            lastApprovalDate, // 조건부 상태 사용
+            lastDocId // 조건부 상태 사용
           )
         : getDocsList(
             viewItems,
             10,
-            offset,
-            state.searchInput,
+            state.searchInput ? state.searchInput : '',
             state.sortStatus,
-            state.radioSortValue
+            state.radioSortValue,
+            lastApprovalDate, // 조건부 상태 사용
+            lastDocId // 조건부 상태 사용
           );
 
-      const docCountPromise = state.shouldFetchDocs
-        ? detailSearchDocsCount(
-            viewItems,
-            detailSearchState,
-            state.radioSortValue
-          )
-        : getDocsListCount(viewItems, state.searchInput, state.radioSortValue);
+      const nextDataResponse = await docListPromise;
+      // console.log('다음페이지 데이터 길이 :', nextDataResponse.data.length);
 
-      const [docListResponse, docCountResponse] = await Promise.all([
-        docListPromise,
-        docCountPromise,
-      ]);
+      if (nextDataResponse.data.length === 0) {
+        setNoMoreData(true);
+      } else {
+        setNoMoreData(false);
+      }
+    } catch (error) {
+      console.error('Error checking for more data:', error);
+    }
+  };
 
-      setDocData(
-        docListResponse.data.map((docItem) => ({
-          ...docItem,
-          createdAt: new Date(docItem.createdAt),
-        }))
-      );
-      setTotalCount(docCountResponse.data);
-      setTotalPages(Math.ceil(docCountResponse.data / 10));
+  const fetchData = async (isInitialLoad = false) => {
+    showLoading();
+    try {
+      let docListResponse;
+
+      if (state.shouldFetchDocs) {
+        const response = await detailSearchDocs(
+          viewItems,
+          10,
+          detailSearchState,
+          state.sortStatus,
+          state.radioSortValue,
+          isInitialLoad ? null : lastApprovalDate,
+          isInitialLoad ? null : lastDocId
+        );
+
+        docListResponse = response;
+      } else {
+        docListResponse = await getDocsList(
+          viewItems,
+          10,
+          state.searchInput ? state.searchInput : '',
+          state.sortStatus,
+          state.radioSortValue,
+          isInitialLoad ? null : lastApprovalDate,
+          isInitialLoad ? null : lastDocId
+        );
+      
+      }
+
+      // 데이터 업데이트 (첫 페이지 또는 추가 페이지)
+      if (isInitialLoad) {
+        setDocData(docListResponse.data); // 첫 페이지 데이터로 초기화
+      } else {
+        setDocData((prevDocs) => [...prevDocs, ...docListResponse.data]); // 기존 데이터에 추가
+      }
+
+      if (docListResponse.data.length === 0) {
+        setNoMoreData(true);
+      } else {
+        setNoMoreData(false);
+      }
+
+      if (docListResponse.data.length > 0) {
+        const formattedData = docListResponse.data.map((doc) => ({
+          ...doc,
+          sendDate: doc.sendDate ? formatDate(doc.sendDate) : '',
+          endDate: doc.endDate ? formatDate(doc.endDate) : '',
+          receiveDate: doc.receiveDate ? formatDate(doc.receiveDate) : '',
+          approvalDate: doc.approvalDate ? formatDate(doc.approvalDate) : '',
+        }));
+        setDocData(
+          isInitialLoad ? formattedData : [...docData, ...formattedData]
+        );
+
+        const lastDoc = formattedData[formattedData.length - 1];
+        if (lastDoc) {
+          setLastApprovalDate(lastDoc.sendDate);
+          setLastDocId(lastDoc.approvalDocId);
+        }
+      }
+      setState((prevState) => ({
+        ...prevState,
+        checkNextPage: true,
+      }));
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -107,20 +164,46 @@ function ViewDocBox() {
   };
 
   useEffect(() => {
-    fetchData();
+    // 첫 페이지 데이터 불러오기
+    setDocData([]);
+
+    fetchData(true); // 초기 데이터 로드 표시
   }, [
-    page,
-    state.searchInput,
+    // 의존성 배열
+    boxname,
+    state.searchBtnStatus,
     state.sortStatus,
     state.radioSortValue,
-    state.shouldFetchDocs,
-    boxname,
   ]);
+
+  useEffect(() => {
+    if (state.shouldFetchDocs) {
+      setDocData([]);
+
+      fetchData(true);
+      setState((prevState) => ({ ...prevState, shouldFetchDocs: false }));
+    }
+  }, [
+    // 의존성 배열
+    state.shouldFetchDocs,
+  ]);
+
+  useEffect(() => {
+    if (state.checkNextPage) {
+      checkForMoreData();
+      setState((prevState) => ({
+        ...prevState,
+        checkNextPage: false,
+      }));
+    }
+  }, [state.checkNextPage]);
 
   useEffect(() => {
     const handleStorageChange = (event) => {
       if (event.key === 'approvalState') {
-        fetchData();
+        setDocData([]);
+
+        fetchData(true); // 초기 데이터 로드 표시
         setState((prevState) => ({
           ...prevState,
           approvalState: event.newValue,
@@ -136,28 +219,25 @@ function ViewDocBox() {
   }, []);
 
   useEffect(() => {
-    console.log(state.approvalState);
     if (state.approvalState === 'allapproval') {
-      fetchData();
+      setDocData([]);
+
+      fetchData(true); // 초기 데이터 로드 표시
     }
   }, [state.approvalState]);
 
   useEffect(() => {
-    if (state.shouldFetchDocs) {
-      fetchData();
-    }
-  }, [state.shouldFetchDocs]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [pageState.curPage, state.searchInput, state.radioSortValue]);
-
-  useEffect(() => {
     if (state.rerender) {
-      fetchData();
+      setDocData([]);
+
+      fetchData(true); // 초기 데이터 로드 표시
       setState((prevState) => ({ ...prevState, rerender: false }));
     }
   }, [state.rerender]);
+
+  const handleLoadMore = () => {
+    fetchData(); // 추가 데이터 로드 (기본값 false 사용)
+  };
 
   return (
     <div className={styled.container}>
@@ -216,15 +296,11 @@ function ViewDocBox() {
                   onClick={() => handleItemClick(docItem.approvalDocId)}
                 />
               ))}
+            {!noMoreData && ( // 조건부 렌더링
+              <button onClick={handleLoadMore}>+ 더 보기</button>
+            )}
           </div>
         )}
-      </div>
-      <div className={styled.pagination}>
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={(event, newPage) => setPage(newPage)}
-        />
       </div>
     </div>
   );

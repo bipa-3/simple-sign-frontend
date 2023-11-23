@@ -8,11 +8,13 @@ import Button from '../../common/Button';
 import delForm from '../../../apis/formManageAPI/delForm';
 import getDefaultApprovalLine from '../../../apis/formManageAPI/getDefaultApprovalLine';
 import { useLoading } from '../../../contexts/LoadingContext';
+import { useAlert } from '../../../contexts/AlertContext';
 
 export default function FormListArea({ rows, searchHandler }) {
   const { detailData, setDetailData, updateDetailData, detailDataInit } =
     useFormManage();
   const { showLoading, hideLoading } = useLoading();
+  const { showAlert } = useAlert();
 
   const delHandler = () => {
     showLoading();
@@ -21,7 +23,10 @@ export default function FormListArea({ rows, searchHandler }) {
         if (!res.ok) {
           throw new Error(res.status);
         }
-        alert('데이터가 삭제되었습니다.');
+        showAlert({
+          severity: 'success',
+          message: '데이터가 삭제되었습니다.',
+        });
       })
       .then(() => {
         searchHandler();
@@ -31,7 +36,10 @@ export default function FormListArea({ rows, searchHandler }) {
         if (err.message === '409') {
           errorMessage = `사용중인 양식은 삭제가 불가합니다. [${err}]`;
         }
-        alert(errorMessage);
+        showAlert({
+          severity: 'error',
+          message: errorMessage,
+        });
       })
       .finally(() => {
         hideLoading();
@@ -63,7 +71,10 @@ export default function FormListArea({ rows, searchHandler }) {
         });
       })
       .catch((err) => {
-        console.error(err);
+        showAlert({
+          severity: 'error',
+          message: `양식 상세조회에 실패했습니다. [${err}]`,
+        });
       })
       .finally(() => {
         hideLoading();

@@ -12,11 +12,13 @@ import {
   checkFormUpdateData,
 } from '../../../validation/formManage/formSchema';
 import DetailTableDAL from './components/DetailTableDAL';
+import { useAlert } from '../../../contexts/AlertContext';
 
 export default function FormDetail({ searchHandler }) {
   const { detailData, flagData } = useFormManage();
   const [activeButton, setActiveButton] = useState(1);
   const { showLoading, hideLoading } = useLoading();
+  const { showAlert } = useAlert();
 
   // 상세 항목 선택
   const handleButtonClick = (buttonId) => {
@@ -29,13 +31,19 @@ export default function FormDetail({ searchHandler }) {
         if (!res.ok) {
           throw new Error(res.status);
         }
-        alert('새 양식이 생성되었습니다.');
+        showAlert({
+          severity: 'success',
+          message: `새 양식이 생성되었습니다.`,
+        });
       })
       .then(() => {
         searchHandler();
       })
       .catch((err) => {
-        alert('에러가 발생했습니다.');
+        showAlert({
+          severity: 'error',
+          message: `양식생성에 실패했습니다. [${err}]`,
+        });
       })
       .finally(() => {
         hideLoading();
@@ -48,13 +56,19 @@ export default function FormDetail({ searchHandler }) {
         if (!res.ok) {
           throw new Error(res.status);
         }
-        alert('양식이 수정되었습니다.');
+        showAlert({
+          severity: 'success',
+          message: `양식이 수정되었습니다.`,
+        });
       })
       .then(() => {
         searchHandler();
       })
       .catch((err) => {
-        alert('에러가 발생했습니다.');
+        showAlert({
+          severity: 'error',
+          message: `양식수정에 실패했습니다. [${err}]`,
+        });
       })
       .finally(() => {
         hideLoading();
@@ -70,7 +84,10 @@ export default function FormDetail({ searchHandler }) {
           updateExistForm();
         })
         .catch((errors) => {
-          alert(errors.message);
+          showAlert({
+            severity: 'info',
+            message: errors.message,
+          });
         });
     }
   };
@@ -84,7 +101,10 @@ export default function FormDetail({ searchHandler }) {
           createNewForm();
         })
         .catch((errors) => {
-          alert(errors.message);
+          showAlert({
+            severity: 'info',
+            message: errors.message,
+          });
         });
     }
   };

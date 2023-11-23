@@ -79,26 +79,7 @@ export default function Profile() {
             <Userprofile />
           </Button>
           <Menu {...bindMenu(popupState)}>
-            <div className={styles.menuitem}>
-              <MenuItem
-                className={styles.menubox}
-                onClick={() => {
-                  popupState.close();
-                  navigate(`/userinfo?name=${'개인정보 조회'}`);
-                }}
-              >
-                개인정보 조회
-              </MenuItem>
-              <MenuItem
-                className={styles.menubox}
-                onClick={() => {
-                  logout();
-                }}
-              >
-                로그아웃
-              </MenuItem>
-            </div>
-            <div>
+            <div className={styles.profile_drop_table}>
               <table>
                 <thead>
                   <tr>
@@ -118,12 +99,17 @@ export default function Profile() {
                               onChange={hadleChange}
                               value={item.orgUserId}
                               name="radio"
+                              style={{ marginLeft: '20%' }}
                             />
                           </td>
                           <td className={styles.table_td}>{item.compName}</td>
                           <td className={styles.table_td}>{item.deptName}</td>
                           <td className={styles.table_td}>
-                            {item.authorityName}
+                            {item.authorityName === 'USER'
+                              ? '사용자'
+                              : item.authorityName === 'DEPT_ADMIN'
+                              ? '부서 관리자'
+                              : '관리자'}
                           </td>
                         </tr>
                       ))
@@ -135,7 +121,7 @@ export default function Profile() {
               <Button2
                 label={'확인'}
                 btnStyle={'blue_btn'}
-                width={'50px'}
+                width={'70px'}
                 height={'30px'}
                 fontSize={'12px'}
                 onClick={async () => {
@@ -147,6 +133,26 @@ export default function Profile() {
                   }
                 }}
               />
+            </div>
+            <hr className={styles.profile_hr} />
+            <div className={styles.menuitem}>
+              <MenuItem
+                className={styles.menubox}
+                onClick={() => {
+                  popupState.close();
+                  navigate(`/userinfo?name=${'개인정보 조회'}`);
+                }}
+              >
+                개인정보 조회
+              </MenuItem>
+              <MenuItem
+                className={styles.menubox}
+                onClick={() => {
+                  logout();
+                }}
+              >
+                로그아웃
+              </MenuItem>
             </div>
           </Menu>
         </React.Fragment>

@@ -1,7 +1,25 @@
 .pwcontainer {
   text-align: center;
+  margin-top: 20px;
 }
 
 .inputpw {
   padding: 10px;
+}
+
+.inputpw input {
+  height: 32px;
+  width: 65%;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  padding: 5px;
+}
+
+.pw_text {
+  font-size: 12px;
+  text-align: left;
+  margin-left: 14px;
+  margin-top: 20px;
+  width: 93%;
+  border: 1px solid #ced4da;
 }

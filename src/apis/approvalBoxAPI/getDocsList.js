@@ -7,17 +7,27 @@ axios.defaults.withCredentials = true;
 export default function getDocsList(
   viewItems,
   itemsPerPage,
-  offset,
   searchInput,
   sortStatus,
-  radioSortValue
+  radioSortValue,
+  lastApprovalDate,
+  lastDocId
 ) {
   // viewItems 배열을 쉼표로 구분된 문자열로 변환
   const viewItemsString = viewItems.join(',');
 
-  const url =
+  // URL 생성
+  let url =
     base_url +
-    `approvbox/view?viewItems=${viewItemsString}&itemsPerPage=${itemsPerPage}&offset=${offset}&searchInput=${searchInput}&sortStatus=${sortStatus}&radioSortValue=${radioSortValue}`;
+    `approvbox/view?viewItems=${viewItemsString}&itemsPerPage=${itemsPerPage}&searchInput=${searchInput}&sortStatus=${sortStatus}&radioSortValue=${radioSortValue}`;
+
+  // lastApprovalDate 및 lastDocId가 null이 아닌 경우에만 URL에 추가
+  if (lastApprovalDate) {
+    url += `&lastApprovalDate=${lastApprovalDate}`;
+  }
+  if (lastDocId) {
+    url += `&lastDocId=${lastDocId}`;
+  }
 
   return axios.get(url);
 }
@@ -36,19 +46,21 @@ export function getDocsListCount(viewItems, searchInput, radioSortValue) {
 export function detailSearchDocs(
   viewItems,
   itemsPerPage,
-  offset,
   detailSearchState,
   sortStatus,
-  radioSortValue
+  radioSortValue,
+  lastApprovalDate,
+  lastDocId
 ) {
   const url = base_url + `approvbox/search`;
   const payload = {
     viewItems: viewItems,
     itemsPerPage: itemsPerPage,
-    offset: offset,
     ...detailSearchState,
     sortStatus: sortStatus,
     radioSortValue: radioSortValue,
+    lastApprovalDate: lastApprovalDate,
+    lastDocId: lastDocId,
   };
 
   return axios.post(url, payload);

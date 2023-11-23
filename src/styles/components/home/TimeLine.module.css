@@ -5,13 +5,13 @@
 
 .timeline_date {
   font-weight: bold;
-  margin-bottom: 10px;
   font-size: 15px;
 }
 
 .content {
   display: flex;
   flex-direction: row;
+  margin-top: 10px;
 }
 
 .timeline_img {
@@ -48,7 +48,7 @@
 
 .timeline_line {
   color: #dee2e6;
-  margin: 5px;
+  margin-left: 5px;
   height: 30px;
   font-weight: bold;
 }

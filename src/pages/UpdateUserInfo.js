@@ -337,164 +337,160 @@ export default function UpdateUserInfo() {
           marginBottom: '20px',
         }}
       >
-        <table className={styled.update_userinfo_table}>
-          <tbody>
-            <tr>
-              <th className={styled.userinfo_table_th}>프로필</th>
-              <td>
-                <div className={styled.profile_container}>
-                  <>{renderProfile}</>
-                  <input
-                    type="file"
-                    ref={input}
-                    onChange={handleProfileChange}
-                    className={styled.profile_input}
-                  />
-                  <button
-                    onClick={handleInputStyle}
-                    className={styled.customInput}
-                  >
-                    <AttachFileIcon />
-                  </button>
-                </div>
-              </td>
-              <th className={styled.userinfo_table_th}>서명</th>
-              <td>
-                <div className={styled.sign_img_container}>
-                  <div className={styled.sign_radio_container}>
-                    <Radio
-                      checked={selectedValue === 'D'}
-                      onChange={handleChange}
-                      value="D"
-                      name="radio-buttons"
-                      inputProps={{ 'aria-label': 'D' }}
+        <div className={styled.update_user}>
+          <table className={styled.update_userinfo_table}>
+            <tbody>
+              <tr>
+                <th className={styled.userinfo_table_th}>프로필</th>
+                <td>
+                  <div className={styled.profile_container}>
+                    <>{renderProfile}</>
+                    <input
+                      type="file"
+                      ref={input}
+                      onChange={handleProfileChange}
+                      className={styled.profile_input}
                     />
-                    <div className={styled.radio_button_container}>
-                      <DefaultSign name={userData.userName} />
-                    </div>
+                    <button
+                      onClick={handleInputStyle}
+                      className={styled.customInput}
+                    >
+                      <AttachFileIcon />
+                    </button>
                   </div>
-                  <div className={styled.sign_custom_container}>
-                    <Radio
-                      checked={selectedValue === 'C'}
-                      onChange={handleChange}
-                      value="C"
-                      name="radio-buttons"
-                      inputProps={{ 'aria-label': 'C' }}
-                    />
-                    <div className={styled.image_container}>
-                      {renderSign}
-                      <input
-                        type="file"
-                        ref={inputSign}
-                        onChange={handleSignChange}
-                        className={styled.sign_input}
+                </td>
+                <th className={styled.userinfo_table_th}>서명</th>
+                <td>
+                  <div className={styled.sign_img_container}>
+                    <div className={styled.sign_radio_container}>
+                      <Radio
+                        checked={selectedValue === 'D'}
+                        onChange={handleChange}
+                        value="D"
+                        name="radio-buttons"
+                        inputProps={{ 'aria-label': 'D' }}
+                        style={{ color: 'rgb(108, 117, 125)' }}
                       />
-                      <button
-                        onClick={handleInputSignStyle}
-                        className={styled.customInput}
-                      >
-                        <AttachFileIcon />
-                      </button>
+                      <div className={styled.radio_button_container}>
+                        <DefaultSign name={userData.userName} />
+                      </div>
+                    </div>
+                    <div className={styled.sign_custom_container}>
+                      <Radio
+                        checked={selectedValue === 'C'}
+                        onChange={handleChange}
+                        value="C"
+                        name="radio-buttons"
+                        inputProps={{ 'aria-label': 'C' }}
+                        style={{ color: 'rgb(108, 117, 125)' }}
+                      />
+                      <div className={styled.image_container}>
+                        {renderSign}
+                        <input
+                          type="file"
+                          ref={inputSign}
+                          onChange={handleSignChange}
+                          className={styled.sign_input}
+                        />
+                        <button
+                          onClick={handleInputSignStyle}
+                          className={styled.customInput}
+                        >
+                          <AttachFileIcon />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <th className={styled.userinfo_table_th}>사번</th>
-              <td>
-                <input type="text" value={userData.employeeNumber} disabled />
-              </td>
-              <th className={styled.userinfo_table_th}>비밀번호</th>
-              <td>
-                <PopUp
-                  label={'비밀번호 변경'}
-                  title={'비밀번호 변경'}
-                  width={'400px'}
-                  height={'400px'}
-                  isModalOpen={isModalOpen}
-                  openModal={openModal}
-                  closeModal={closeModal}
-                  children={
-                    <>
-                      <UserPWChange onPwdChange={handlePwd} />
-                      <PopUpFoot buttons={popup_button} />
-                    </>
-                  }
-                />
-              </td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <th className={styled.userinfo_table_th}>이름</th>
-              <td>
-                <input type="text" value={userData.userName} disabled />
-              </td>
-              <th className={styled.userinfo_table_th}>로그인아이디</th>
-              <td>
-                <input type="text" value={userData.loginId} disabled />
-              </td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <th className={styled.userinfo_table_th}>이메일</th>
-              <td>
-                <input type="text" value={userData.email} disabled />
-              </td>
-              <th className={styled.userinfo_table_th}>전화번호</th>
-              <td>
-                <input
-                  type="text"
-                  value={userData.phone}
-                  onChange={(e) => handleInputChange(e, 'phone')}
-                />
-              </td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <th className={styled.userinfo_table_th}>생년월일</th>
-              <td>
-                <input type="text" value={userData.birth} disabled />
-              </td>
-              <th className={styled.userinfo_table_th}>성별</th>
-              <td>
-                <input
-                  type="text"
-                  value={userData.gender === 'M' ? '남성' : '여성'}
-                  disabled
-                />
-              </td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr>
-              <th className={styled.userinfo_table_th}>주소</th>
-              <td colSpan={3}>
-                <input type="text" value={userData.address} readOnly />
-                <PopUp
-                  label={'주소검색'}
-                  width={'500px'}
-                  height={'500px'}
-                  title={'주소검색'}
-                  isModalOpen={isAddressOpen}
-                  openModal={addressOpen}
-                  closeModal={addressClose}
-                  children={
-                    <>
-                      <DaumPostcode onComplete={handleComplete} />
-                      <PopUpFoot buttons={address_popup_button} />
-                    </>
-                  }
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </td>
+              </tr>
+              <tr>
+                <th className={styled.userinfo_table_th}>사번</th>
+                <td>
+                  <input type="text" value={userData.employeeNumber} disabled />
+                </td>
+                <th className={styled.userinfo_table_th}>비밀번호</th>
+                <td>
+                  <PopUp
+                    label={'비밀번호 변경'}
+                    title={'비밀번호 변경'}
+                    width={'400px'}
+                    height={'400px'}
+                    btnStyle={'dark_btn'}
+                    isModalOpen={isModalOpen}
+                    openModal={openModal}
+                    closeModal={closeModal}
+                    children={
+                      <>
+                        <UserPWChange onPwdChange={handlePwd} />
+                        <PopUpFoot buttons={popup_button} />
+                      </>
+                    }
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th className={styled.userinfo_table_th}>이름</th>
+                <td>
+                  <input type="text" value={userData.userName} disabled />
+                </td>
+                <th className={styled.userinfo_table_th}>로그인 아이디</th>
+                <td>
+                  <input type="text" value={userData.loginId} disabled />
+                </td>
+              </tr>
+              <tr>
+                <th className={styled.userinfo_table_th}>이메일</th>
+                <td>
+                  <input type="text" value={userData.email} disabled />
+                </td>
+                <th className={styled.userinfo_table_th}>전화번호</th>
+                <td>
+                  <input
+                    type="text"
+                    value={userData.phone}
+                    onChange={(e) => handleInputChange(e, 'phone')}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th className={styled.userinfo_table_th}>생년월일</th>
+                <td>
+                  <input type="text" value={userData.birth} disabled />
+                </td>
+                <th className={styled.userinfo_table_th}>성별</th>
+                <td>
+                  <input
+                    type="text"
+                    value={userData.gender === 'M' ? '남성' : '여성'}
+                    disabled
+                  />
+                </td>
+              </tr>
+              <tr>
+                <th className={styled.userinfo_table_th}>주소</th>
+                <td colSpan={3} className={styled.update_user_address}>
+                  <input type="text" value={userData.address} readOnly />
+                  <PopUp
+                    label={'주소검색'}
+                    width={'500px'}
+                    height={'500px'}
+                    btnStyle={'grey_btn'}
+                    title={'주소검색'}
+                    isModalOpen={isAddressOpen}
+                    openModal={addressOpen}
+                    closeModal={addressClose}
+                    children={
+                      <>
+                        <DaumPostcode onComplete={handleComplete} />
+                        <PopUpFoot buttons={address_popup_button} />
+                      </>
+                    }
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </InnerBox>
       <InnerBox
         width="45%"
@@ -509,7 +505,7 @@ export default function UpdateUserInfo() {
           marginBottom: '20px',
         }}
       >
-        <table>
+        <table className={styled.update_userinfo_compay_table}>
           <tbody>
             <tr>
               <th className={styled.userinfo_table_th}>회사/부서</th>
@@ -517,20 +513,18 @@ export default function UpdateUserInfo() {
                 <input type="text" value={compData} disabled />
               </td>
             </tr>
-          </tbody>
-          <tbody>
             <tr>
               <th className={styled.userinfo_table_th}>직책</th>
               <td>
                 <input type="text" value={userData.positionName} disabled />
               </td>
+            </tr>
+            <tr>
               <th className={styled.userinfo_table_th}>직급</th>
               <td>
                 <input type="text" value={userData.gradeName} disabled />
               </td>
             </tr>
-          </tbody>
-          <tbody>
             <tr>
               <th className={styled.userinfo_table_th}>재직구분</th>
               <td>
@@ -541,8 +535,6 @@ export default function UpdateUserInfo() {
                 />
               </td>
             </tr>
-          </tbody>
-          <tbody>
             <tr>
               <th className={styled.userinfo_table_th}>입사일</th>
               <td>

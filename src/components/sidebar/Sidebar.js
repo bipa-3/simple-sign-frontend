@@ -10,6 +10,7 @@ import { useApprovalBox } from '../../contexts/ApprovalBoxContext';
 import getDocumentsCount from '../../apis/approvalBoxAPI/getDocumentCount';
 import { getAuthrity } from '../../utils/getUser';
 import { usePage } from '../../contexts/PageContext';
+import { useApprovalBoxManage } from '../../contexts/ApprovalBoxManageContext';
 
 //추후 backend data변경예정
 const userData = [
@@ -58,6 +59,8 @@ function Sidebar() {
   const [isSubMenuVisible, setSubMenuVisible] = useState([false, false, false]);
   const { customBoxViewItemState, setCustomBoxViewItemState, setCount, state } =
     useApprovalBox();
+  const { state: manageState, setState: setManageState } =
+    useApprovalBoxManage();
   const { state: pageState, setState: setPageState } = usePage();
 
   //결재분류함(커스텀) 데이터 받아오기
@@ -88,7 +91,7 @@ function Sidebar() {
       .catch((error) =>
         console.error('Error fetching approval box list:', error)
       );
-  }, []);
+  }, [manageState.boxList, manageState.boxUpdate]);
 
   useEffect(() => {
     // 결재분류함 데이터를 가져오는 로직 ...
@@ -146,6 +149,13 @@ function Sidebar() {
     }));
     navigate(`/FL?name=${'결재하기'}`);
   };
+
+  useEffect(() => {
+    setManageState((prevState) => ({
+      ...prevState,
+      boxUpdate: false,
+    }));
+  }, [manageState.boxList, manageState.boxUpdate]);
 
   return (
     <div className={styled.sidebar}>

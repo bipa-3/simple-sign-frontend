@@ -11,6 +11,7 @@ import { useLoading } from '../contexts/LoadingContext';
 import { checkSearchData } from '../validation/formManage/searchSchema';
 import { getAuthrity } from '../utils/getUser';
 import getApprovalKind from '../apis/commonAPI/getApprovalKind';
+import { useAlert } from '../contexts/AlertContext';
 
 export default function FormManagePage() {
   const [formListData, setFormListData] = useState([]);
@@ -18,6 +19,7 @@ export default function FormManagePage() {
     useFormManage();
   const { showLoading, hideLoading } = useLoading();
   const { state, setState } = usePage();
+  const { showAlert } = useAlert();
 
   const searchFormData = () => {
     getFormAndCompList(searchData)
@@ -25,15 +27,25 @@ export default function FormManagePage() {
         if (!(res.status >= 200 && res.status < 300)) {
           throw new Error(res.status);
         }
+        if (res.status === 204) {
+          return [];
+        }
         return res.json();
       })
       .then((data) => {
-        if (data.length < 0) {
-          alert('검색된 데이터가 없습니다.');
+        if (data.length < 1) {
+          showAlert({
+            severity: 'info',
+            message: '검색된 목록이 없습니다.',
+          });
         }
         setFormListData(data);
       })
       .catch((err) => {
+        showAlert({
+          severity: 'error',
+          message: `양식목록 조회에 실패했습니다.`,
+        });
         setFormListData([]);
       })
       .finally(() => {
@@ -65,7 +77,10 @@ export default function FormManagePage() {
         });
       })
       .catch((err) => {
-        console.error(err);
+        showAlert({
+          severity: 'error',
+          message: `기본 데이터 조회를 실패했습니다. [${err}]`,
+        });
       })
       .finally(() => {
         hideLoading();
@@ -74,14 +89,10 @@ export default function FormManagePage() {
 
   // 검색 및 테이블 데이터 셋팅
   const searchHandler = () => {
-    checkSearchData(searchData)
-      .then(() => {
-        showLoading();
-        searchFormData();
-      })
-      .catch((errors) => {
-        alert(errors.message);
-      });
+    checkSearchData(searchData).then(() => {
+      showLoading();
+      searchFormData();
+    });
   };
 
   useEffect(() => {

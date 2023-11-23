@@ -6,6 +6,7 @@ import { SeqManageProvider } from './SeqManageContext';
 import { ApprovalBoxManageProvider } from './ApprovalBoxManageContext';
 import { LoadingProvider } from './LoadingContext';
 import { AlarmProvider } from './AlarmContext';
+import { AlertProvider } from './AlertContext';
 import React from 'react';
 
 export default function ContextProvider({ children }) {
@@ -17,7 +18,9 @@ export default function ContextProvider({ children }) {
             <ApprovalBoxProvider>
               <ApprovalBoxManageProvider>
                 <SeqManageProvider>
-                  <AlarmProvider>{children}</AlarmProvider>
+                  <AlarmProvider>
+                    <AlertProvider>{children}</AlertProvider>
+                  </AlarmProvider>
                 </SeqManageProvider>
               </ApprovalBoxManageProvider>
             </ApprovalBoxProvider>

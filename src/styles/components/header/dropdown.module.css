@@ -12,15 +12,18 @@
   height: 70px;
 }
 
-.menuitem {
-  display: flex;
-  flex-direction: row;
+.profile_drop_table {
+  font-size: 14.4px;
+  margin-top: 10px;
+  margin-right: 10px;
 }
 
 .menubox {
-  width: 175px !important;
-  height: 40px !important;
+  display: flex;
+  width: 95%;
+  height: 40px;
   font-size: 14.4px !important;
+  margin-left: 5px;
 }
 
 .iconcontainer {
@@ -86,19 +89,66 @@
 .alarm_container {
   display: flex;
   flex-direction: column;
+  width: 270px;
 }
 
 .alarm_content {
+  text-align: center;
   font-weight: bold;
+}
+
+.alarm_content_read {
+  font-weight: bold;
+  color: lightgray;
+  text-align: center;
+}
+
+.approval_doc_title {
+  text-align: center;
+  font-size: 15px;
+}
+
+.approval_doc_title_read {
+  text-align: center;
+  color: lightgray;
+  font-size: 15px;
+}
+
+.alarm_date {
+  font-size: 12px;
+  text-align: right;
+}
+
+.alarm_date_read {
+  color: lightgray;
+  text-align: right;
+  font-size: 12px;
+}
+
+.alarm_user_name {
+  text-align: center;
+  font-size: 15px;
+}
+
+.alarm_user_name_read {
+  text-align: center;
+  color: lightgray;
+  font-size: 15px;
 }
 
 /* 권한 선택 창 */
 .table_td {
-  padding: 12px;
+  padding: 0 15px;
+  font-size: 14px;
 }
 
 .button_check_style {
-  text-align: right;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.profile_hr {
+  width: 100%;
 }
 
 .menuItemSpacing:hover .notice_button {
@@ -110,8 +160,15 @@
   position: absolute;
   top: 0;
   right: 0;
-  margin-right: 10px;
-  margin-top: 10px;
+  margin-right: 5px;
+  margin-top: 5px;
+  border: none;
+  background: none;
+}
+
+.notice_button_icon {
+  width: 20px;
+  height: 20px;
 }
 
 .notice_box {

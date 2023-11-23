@@ -204,6 +204,7 @@ export default function ApprovalDetail() {
           alert('문서가 삭제되었습니다.');
           localStorage.setItem('approvalState', '');
           localStorage.setItem('approvalState', 'delete');
+          window.close();
         } else {
           errorHandle(res);
         }

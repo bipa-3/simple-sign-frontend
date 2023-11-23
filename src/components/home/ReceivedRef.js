@@ -14,16 +14,17 @@ export default function ReceivedRef() {
     const fetchDocs = async () => {
       try {
         const viewItems = ['reference']; // 상신문서에 해당하는 viewItems
-        const offset = 0; // 페이지네이션을 사용하지 않는다면 offset은 0으로 설정
         const sortStatus = 'desc';
         const response = await getDocsList(
           viewItems,
           10,
-          offset,
           '',
-          sortStatus
+          sortStatus,
+          'alldoc',
+          null,
+          null
         );
-        const docList = response.data.docList || [];
+        const docList = response.data || [];
 
         const recentPDocs = docList.slice(0, 2);
         setRecentPDocuments(recentPDocs);

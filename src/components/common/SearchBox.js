@@ -9,12 +9,14 @@ function Search(props) {
   const handleSearchChange = (e) => {
     setSearchInput(e.target.value);
   };
-  const searchbtnhandle = () => {
-    props.onSearch(searchInput); //부모 컴포넌트로 searchItem 전달
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault(); // 폼의 기본 제출 동작 방지
+    props.onSearch(searchInput); // 부모 컴포넌트로 searchInput 전달
   };
 
   return (
-    <div className={styled.searchbox}>
+    <form onSubmit={handleSearchSubmit} className={styled.searchbox}>
       <input
         id="searchInput"
         type="text"
@@ -23,16 +25,16 @@ function Search(props) {
         onChange={handleSearchChange}
       />
       <Button
+        type="submit" // 버튼을 submit 타입으로 설정
         label={
           <SearchIcon
             className={styled.searchIcon}
             style={{ fontSize: props.fontSize }}
           />
         }
-        onClick={searchbtnhandle}
         btnStyle={'non_btn'}
       />
-    </div>
+    </form>
   );
 }
 

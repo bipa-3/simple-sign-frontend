@@ -47,7 +47,7 @@ export default function UserPWChange({ onPwdChange }) {
           onChange={handleNewPwdCheck}
         />
       </div>
-      <div>
+      <div className={styled.pw_text}>
         <ul>
           비밀번호 설정 규칙
           <li>입력 자리 수 제한 : 최소 6 / 최대 15</li>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { columns } from '../../../../assets/datas/form_approval_line';
 import { useFormManage } from '../../../../contexts/FormManageContext';
 import DataList from '../../../common/DataList';
@@ -17,6 +17,10 @@ export default function DetailTableDAL() {
     setIsModalOpen(false);
   };
 
+  const dataHandler = (data) => {
+    //console.log(data);
+  };
+
   const modalConfirm = (data) => {
     data = data.map((ele, index) => {
       ele.lineOrder = index + 1;
@@ -30,13 +34,7 @@ export default function DetailTableDAL() {
     dataUpdateHandler('approvalLine', data);
   };
 
-  //결재라인 핸들러
-  const dataHandler = (data) => {
-    console.log(data);
-  };
-
   const dataUpdateHandler = (id, data) => {
-    console.log('changed:', data);
     setDetailData({ ...detailData, [id]: data });
   };
 
