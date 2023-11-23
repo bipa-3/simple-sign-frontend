@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState } from 'react';
 
 const searchInitState = {
   id: 0,
-  compId: '',
+  compId: 0,
   compName: '',
   formName: '',
   status: 1,
@@ -19,7 +19,7 @@ const setInitState = {
 
 const detailInitState = {
   code: '',
-  compId: '',
+  compId: 0,
   compName: '',
   formName: '',
   scope: [],
@@ -57,11 +57,9 @@ const FormManageProvider = ({ children }) => {
   };
 
   const createDetailData = () => {
-    console.log('se:', setData);
     let compId = setData?.compList[1]?.id || setData?.compList[0]?.id;
     let scope = [];
 
-    console.log(compId, scope);
     setFlagData(1);
     setDetailData({
       ...detailInitState,

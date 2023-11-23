@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 // 검색박스 데이터
 const searchInitState = {
   id: 0,
-  compId: '',
+  compId: 0,
   compName: '',
   seqName: '',
   code: '',
@@ -48,7 +48,6 @@ const SeqManageProvider = ({ children }) => {
     let compId = setData?.compList[1]?.id || setData?.compList[0]?.id;
     let deptScope = [];
 
-    console.log(compId, deptScope);
     setFlagData(1);
     setDetailData({
       ...detailInitState,
@@ -62,6 +61,10 @@ const SeqManageProvider = ({ children }) => {
   };
   const defaultDetailData = () => {
     setFlagData(0);
+  };
+
+  const initSearchData = () => {
+    setDetailData(searchInitState);
   };
 
   return (
@@ -79,6 +82,7 @@ const SeqManageProvider = ({ children }) => {
         defaultDetailData,
         seqItems,
         setSeqItems,
+        initSearchData,
       }}
     >
       {children}

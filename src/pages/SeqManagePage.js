@@ -15,7 +15,8 @@ import { useAlert } from '../contexts/AlertContext';
 export default function SeqManagePage() {
   const { state, setState } = usePage();
   const [formListData, setFormListData] = useState([]);
-  const { searchData, setSearchData, setData, setSetData } = useSeqManage();
+  const { searchData, setSearchData, setData, setSetData, initSearchData } =
+    useSeqManage();
   const { showLoading, hideLoading } = useLoading();
   const { showAlert } = useAlert();
 
@@ -32,10 +33,10 @@ export default function SeqManagePage() {
         setSetData({ ...setData, compList: data });
       })
       .catch((err) => {
-        showAlert({
-          severity: 'error',
-          message: `기본 데이터 조회에 실패했습니다. [${err}]`,
-        });
+        // showAlert({
+        //   severity: 'error',
+        //   message: `기본 데이터 조회에 실패했습니다. [${err}]`,
+        // });
       });
   };
 
@@ -60,10 +61,10 @@ export default function SeqManagePage() {
         setFormListData(data);
       })
       .catch((err) => {
-        showAlert({
-          severity: 'error',
-          message: `채번 조회에 실패했습니다. [${err}]`,
-        });
+        // showAlert({
+        //   severity: 'error',
+        //   message: `채번 조회에 실패했습니다. [${err}]`,
+        // });
       })
       .finally(() => {
         hideLoading();
@@ -86,17 +87,10 @@ export default function SeqManagePage() {
 
   // 검색 및 테이블 데이터 셋팅
   const searchHandler = () => {
-    checkSearchData(searchData)
-      .then(() => {
-        showLoading();
-        searchSeqListData();
-      })
-      .catch((err) => {
-        showAlert({
-          severity: 'info',
-          message: `채번목록 조회에 실패했습니다. [${err}]`,
-        });
-      });
+    checkSearchData(searchData).then(() => {
+      showLoading();
+      searchSeqListData();
+    });
   };
 
   return (

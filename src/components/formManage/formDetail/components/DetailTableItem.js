@@ -15,6 +15,7 @@ import { useFormManage } from '../../../../contexts/FormManageContext';
 import Button from '../../../common/Button';
 import { MdOutlineFileDownload } from 'react-icons/md';
 import { saveAs } from 'file-saver';
+import { useSeqManage } from '../../../../contexts/FormManageContext';
 
 const customStyles = {
   control: (base) => ({
@@ -76,8 +77,10 @@ const TitleBox = ({ title }) => {
 };
 
 const SelectBox = ({ id, data, dataHandler, init }) => {
+  const { flagData } = useFormManage;
+  const { flagData: seqFlagData } = useFormManage;
   const [selectedOption, setSelectedOption] = useState({});
-  let initIndex = -1;
+  let initIndex = 0;
 
   data = data.map((ele, index) => {
     if (ele.id === init) {
@@ -90,7 +93,7 @@ const SelectBox = ({ id, data, dataHandler, init }) => {
 
   useEffect(() => {
     setSelectedOption(data[initIndex]);
-  }, [initIndex]);
+  }, [initIndex, flagData, seqFlagData]);
 
   useEffect(() => {
     if (initIndex < 0) {
@@ -101,7 +104,7 @@ const SelectBox = ({ id, data, dataHandler, init }) => {
   return (
     <div className={styled.dataBox}>
       <Select
-        defaultValue={data[initIndex]}
+        // defaultValue={data[initIndex]}
         value={selectedOption}
         onChange={(selectedOption) => {
           setSelectedOption(selectedOption);
