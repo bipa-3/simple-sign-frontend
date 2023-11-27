@@ -4,7 +4,7 @@
   justify-content: center;
   height: 90px;
   /* background-color: #3bafda; */
-  background-color: white;
+  background-color: #f5f5f5;
   width: 240px;
   position: fixed;
   top: 0;
@@ -22,7 +22,7 @@
   /* 텍스트용 */
   font-weight: bold;
   font-size: 35px;
-  color: #465b59;
+  color: #4d5f63;
 }
 
 .logo_icon img {

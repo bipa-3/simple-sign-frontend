@@ -93,14 +93,14 @@ export default function UserInfo() {
         handlePwdChange();
         closeModal();
       },
-      btnStyle: 'popup_blue_btn',
+      btnStyle: 'blue_btn',
     },
     {
       label: '취소',
       onClick: () => {
         closeModal();
       },
-      btnStyle: 'popup_gray_btn',
+      btnStyle: 'light_btn',
     },
   ];
 
@@ -163,11 +163,11 @@ export default function UserInfo() {
         width="55%"
         height="100%"
         text={'개인정보'}
-        font_size="15px"
+        font_size="16px"
         titleChildren={
           <Button
             label={'수정'}
-            btnStyle={'gray_btn'}
+            btnStyle={'light_btn'}
             onClick={() => {
               navigate(`/updateuser?name=${'개인정보 수정'}`, {
                 state: { profile, sign, dbSign },
@@ -216,6 +216,7 @@ export default function UserInfo() {
                   width={'400px'}
                   height={'400px'}
                   btnStyle={'dark_btn'}
+                  btnWidth={'100px'}
                   isModalOpen={isModalOpen}
                   openModal={openModal}
                   closeModal={closeModal}
@@ -261,7 +262,7 @@ export default function UserInfo() {
         width="45%"
         height="100%"
         text="회사정보"
-        font_size="15px"
+        font_size="16px"
         childStyle={{
           flex: 1,
           display: 'flex',

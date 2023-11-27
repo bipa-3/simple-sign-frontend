@@ -23,17 +23,20 @@ function Search(props) {
         placeholder=" 검색"
         value={searchInput}
         onChange={handleSearchChange}
+        style={{ width: props.width }}
       />
-      <Button
-        type="submit" // 버튼을 submit 타입으로 설정
-        label={
-          <SearchIcon
-            className={styled.searchIcon}
-            style={{ fontSize: props.fontSize }}
-          />
-        }
-        btnStyle={'non_btn'}
-      />
+      <div className={styled.searchBtn}>
+        <Button
+          label={
+            <SearchIcon
+              className={styled.searchIcon}
+              style={{ fontSize: props.fontSize }}
+            />
+          }
+          btnStyle={'non_btn'}
+          width="20px"
+        />
+      </div>
     </form>
   );
 }

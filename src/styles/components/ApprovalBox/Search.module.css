@@ -1,6 +1,6 @@
 .searchbox {
-  background-color: #f1f5f7;
-  border: 1px solid #f1f5f7;
+  background-color: #fff;
+  border: 1px solid #bdbcbc;
   border-radius: 50px;
   display: flex;
   padding: 5px 15px 5px 10px;
@@ -10,7 +10,7 @@
   border-top-left-radius: 50px;
   border-bottom-left-radius: 50px;
   border-style: none;
-  background-color: #f1f5f7;
+  background-color: #fff;
 }
 input:focus {
   outline: none;
@@ -18,4 +18,7 @@ input:focus {
 
 .searchIcon:hover {
   color: rgb(110, 169, 184);
+}
+.searchBtn {
+  width: 30px;
 }

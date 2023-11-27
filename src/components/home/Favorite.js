@@ -8,7 +8,15 @@ export default function Favorite() {
       width={'100%'}
       height={'100%'}
       text={'즐겨찾기'}
+      font_size="16px"
       children={<FavoritesList />}
+      childStyle={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'scroll',
+        paddingBottom: '10px',
+      }}
     />
   );
 }

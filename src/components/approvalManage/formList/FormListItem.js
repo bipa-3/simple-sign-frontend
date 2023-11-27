@@ -19,8 +19,11 @@ export default function FormListItem({ handleFormCategory }) {
           handleFormCategory('00');
         }}
       >
-        <FolderIcon className={styled.icon} />
-        <ListItemText primary="양식함" className={styled.font} />
+        <FolderIcon
+          className={styled.icon}
+          sx={{ color: 'rgb(247, 184, 75)' }}
+        />
+        <ListItemText primary="전체양식" className={styled.font} />
       </div>
       {category.map((ele, idx) => {
         return (
@@ -30,7 +33,10 @@ export default function FormListItem({ handleFormCategory }) {
               handleFormCategory(ele.id);
             }}
           >
-            <FolderIcon className={styled.icon} />
+            <FolderIcon
+              className={styled.icon}
+              sx={{ color: 'rgb(247, 184, 75)' }}
+            />
             <ListItemText primary={ele.category_name} className={styled.font} />
           </div>
         );

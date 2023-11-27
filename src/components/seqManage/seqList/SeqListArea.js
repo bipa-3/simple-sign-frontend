@@ -79,6 +79,7 @@ export default function SeqListArea({ rows, searchHandler }) {
       text={'채번목록'}
       width={'100%'}
       height={'100%'}
+      font_size="16px"
       titleChildren={
         <Button label={'삭제'} btnStyle={'red_btn'} onClick={delHandler} />
       }

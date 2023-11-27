@@ -150,31 +150,27 @@ function Sidebar() {
     navigate(`/FL?name=${'결재하기'}`);
   };
 
-  useEffect(() => {
-    setManageState((prevState) => ({
-      ...prevState,
-      boxUpdate: false,
-    }));
-  }, [manageState.boxList, manageState.boxUpdate]);
-
   return (
     <div className={styled.sidebar}>
       <BasicButton name="결재하기" goApproval={goApproval} />
-      {data.map((item) => (
-        <MenuItem
-          key={item.id}
-          item={item}
-          isSubMenuVisible={isSubMenuVisible}
-          boxName={item.name}
-          toggleSubMenu={() => {
-            toggleSubMenu(item.id);
-          }}
-        />
-      ))}
-
-      {getAuthrity() < 3 ? (
-        <AuthorityBtn authorityManage={authorityManage} />
-      ) : null}
+      <div className={styled.items}>
+        {data.map((item) => (
+          <MenuItem
+            key={item.id}
+            item={item}
+            isSubMenuVisible={isSubMenuVisible}
+            boxName={item.name}
+            toggleSubMenu={() => {
+              toggleSubMenu(item.id);
+            }}
+          />
+        ))}
+      </div>
+      <div className={styled.btnArea}>
+        {getAuthrity() < 3 ? (
+          <AuthorityBtn authorityManage={authorityManage} />
+        ) : null}
+      </div>
     </div>
   );
 }

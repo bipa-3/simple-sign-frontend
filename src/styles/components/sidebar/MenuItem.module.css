@@ -11,7 +11,7 @@
 }
 .menutext span:hover {
   /* color: #3bafda; */
-  color: #d7d71f;
+
   background-color: transparent !important;
 }
 
@@ -21,8 +21,8 @@
 
 .mainmenu:hover {
   /* color: #3bafda; */
-  color: #d7d71f;
-  background-color: #2f3c3b !important;
+
+  background-color: #5e7074 !important;
 }
 
 .submenu {
@@ -33,8 +33,8 @@
 .subitem:hover {
   /* color: #3bafda; */
   /* background-color: white !important; */
-  color: #d7d71f;
-  background-color: #2f3c3b !important;
+
+  background-color: #5e7074 !important;
   /* color: #d7d71f; */
   /* background-color: transparent !important; */
 }
@@ -47,7 +47,7 @@
 
 .sub_menutext span:hover {
   /* color: #3bafda; */
-  color: #d7d71f !important;
+
   background-color: transparent !important;
 }
 
@@ -56,7 +56,7 @@
   /* background-color: white !important; */
 
   color: white !important;
-  background-color: rgb(43, 39, 39) !important;
+  background-color: #5e7074 !important;
 }
 
 .selectedText {

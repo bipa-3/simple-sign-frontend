@@ -4,7 +4,7 @@
   display: inline-block; /* inline-block으로 설정하여 요소들을 인라인 레벨로 나열합니다. */
   border-radius: 2px;
   box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.18);
-  border: 2px solid rgba(59, 175, 218, 0.2);
+  border: 2px solid #498e9d3b;
   padding: 0 1px; /* 좌우 여백을 추가합니다. */
   height: 28.6px;
 }
@@ -21,10 +21,11 @@
   font-size: 12px !important;
   font-weight: bold;
   color: black !important;
+  margin-bottom: 1px;
 }
 
 .iconimg {
-  color: #3bafda;
+  color: #498e9d;
   padding-top: 2px;
 }
 .iconX {

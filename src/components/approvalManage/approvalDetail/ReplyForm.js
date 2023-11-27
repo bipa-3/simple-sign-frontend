@@ -6,6 +6,7 @@ import insertLowerReply from '../../../apis/approvalManageAPI/insertLowerReply';
 import ReplyBox from './ReplyBox';
 import errorHandle from '../../../apis/errorHandle';
 import { checkReplyCreateData } from '../../../validation/approvalManage/replySchema';
+import { useAlert } from '../../../contexts/AlertContext';
 
 export default function ReplyForm({ approval_doc_id }) {
   const [replyList, setReplyList] = useState([]);
@@ -15,18 +16,19 @@ export default function ReplyForm({ approval_doc_id }) {
   const upperReplyRef = useRef(null);
   const [files, setFiles] = useState([]);
   const [fileNames, setFileNames] = useState([]);
-  const [inputValue, setInputValue] = useState(''); // 입력 값 상태
+  const [inputValue, setInputValue] = useState('');
+  const { showAlert } = useAlert();
 
   const handleInsertReply = (index) => {
-    const updatedShowReplyTextarea = [...showReplyTextarea]; // showReplyTextarea 배열 복사
-    updatedShowReplyTextarea[index] = true; // 원하는 index 위치의 값을 변경
-    setShowReplyTextarea(updatedShowReplyTextarea); // 업데이트된 배열을 상태로 설정
+    const updatedShowReplyTextarea = [...showReplyTextarea];
+    updatedShowReplyTextarea[index] = true;
+    setShowReplyTextarea(updatedShowReplyTextarea);
   };
 
   const handleReplyBoxHide = (index) => {
-    const updatedShowReplyTextarea = [...showReplyTextarea]; // showReplyTextarea 배열 복사
-    updatedShowReplyTextarea[index] = false; // 원하는 index 위치의 값을 변경
-    setShowReplyTextarea(updatedShowReplyTextarea); // 업데이트된 배열을 상태로 설정
+    const updatedShowReplyTextarea = [...showReplyTextarea];
+    updatedShowReplyTextarea[index] = false;
+    setShowReplyTextarea(updatedShowReplyTextarea);
   };
 
   const handleReplyInsert = (upperReplyId, index, groupNo) => {
@@ -61,7 +63,10 @@ export default function ReplyForm({ approval_doc_id }) {
         insertLowerReply(data)
           .then((res) => {
             if (res.status === 200) {
-              alert('댓글이 작성되었습니다.');
+              showAlert({
+                severity: 'info',
+                message: '댓글이 작성되었습니다.',
+              });
               getReply();
               handleReplyBoxHide(index);
               setInputValue('');
@@ -75,7 +80,10 @@ export default function ReplyForm({ approval_doc_id }) {
           });
       })
       .catch((e) => {
-        alert(e.message);
+        showAlert({
+          severity: 'error',
+          message: e.message,
+        });
       });
   };
 

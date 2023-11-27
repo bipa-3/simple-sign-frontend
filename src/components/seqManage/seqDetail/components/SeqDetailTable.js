@@ -213,7 +213,7 @@ export default function SeqDetailTable() {
         formConfirm();
         closeFormModal();
       },
-      btnStyle: 'popup_blue_btn',
+      btnStyle: 'blue_btn',
     },
   ];
 

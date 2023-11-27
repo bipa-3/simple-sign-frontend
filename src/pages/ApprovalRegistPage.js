@@ -10,14 +10,14 @@ import errorHandle from '../apis/errorHandle';
 import { checkFormCreateData } from '../validation/approvalManage/approvalFormSchema';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import StarRateIcon from '@mui/icons-material/StarRate';
+import { FaRegStar } from 'react-icons/fa';
+import { FaStar } from 'react-icons/fa';
 import { yellow } from '@mui/material/colors';
 import insertFavorites from '../apis/approvalManageAPI/insertFavorites';
 import deleteFavorites from '../apis/approvalManageAPI/deleteFavorites';
 import { useFormManage } from '../contexts/FormManageContext';
 import getDefaultApprovalLine from '../apis/approvalManageAPI/getDefaultApprovalLine';
-import LinearProgressWithLabel from '../components/common/LinearProgressWithLabel';
+import { useAlert } from '../contexts/AlertContext';
 
 export default function ApprovalRegist(props) {
   //추천 양식 클릭시 사용할 양식 정보와 상태값
@@ -54,6 +54,7 @@ export default function ApprovalRegist(props) {
   const [formName, setFormName] = useState('');
   const { detailData, setDetailData, resetDetailData } = useFormManage();
   const [condition, setCondition] = useState('rec_ref');
+  const { showAlert } = useAlert();
 
   const dataUpdateHandler = (id, data) => {
     setDetailData((prevData) => ({
@@ -121,7 +122,10 @@ export default function ApprovalRegist(props) {
     } else if (clickStar === false) {
       insertFavorites(props.form_code).then((res) => {
         if (res.status === 400) {
-          alert('즐겨찾기는 4개이상 설정 불가합니다.');
+          showAlert({
+            severity: 'warn',
+            message: '즐겨찾기는 4개까지 설정가능합니다.',
+          });
           setClickStar(false);
         }
       });
@@ -207,7 +211,10 @@ export default function ApprovalRegist(props) {
         registApprovalDoc(data, docStatus);
       })
       .catch((errors) => {
-        alert(errors.message);
+        showAlert({
+          severity: 'error',
+          message: errors.message,
+        });
         hideLoading();
       });
   };
@@ -219,9 +226,15 @@ export default function ApprovalRegist(props) {
         console.log(res);
         if (res.status === 200) {
           if (docStatus === 'T') {
-            alert('임시저장되었습니다.');
+            showAlert({
+              severity: 'info',
+              message: '임시저장되었습니다.',
+            });
           } else if (docStatus === 'W') {
-            alert('상신되었습니다.');
+            showAlert({
+              severity: 'info',
+              message: '상신되었습니다.',
+            });
           }
           setRecRef('');
           closeModal();
@@ -233,7 +246,10 @@ export default function ApprovalRegist(props) {
       .catch((e) => {
         hideLoading();
         if (e.message === 'Failed to fetch') {
-          alert('파일 사이즈가 너무 큽니다.');
+          showAlert({
+            severity: 'warn',
+            message: '파일 사이즈가 너무 큽니다.',
+          });
         }
       })
       .finally(() => {
@@ -325,9 +341,9 @@ export default function ApprovalRegist(props) {
       ></PopUp>
       <div className={styled.star} onClick={handleClickStar}>
         {clickStar ? (
-          <StarRateIcon sx={{ color: yellow[500] }} fontSize="large" />
+          <FaStar color="rgb(247, 204, 75)" fontSize="27px" />
         ) : (
-          <StarBorderIcon sx={{ color: yellow[500] }} fontSize="large" />
+          <FaRegStar color="#c0cdcf" fontSize="27px" />
         )}
       </div>
     </div>

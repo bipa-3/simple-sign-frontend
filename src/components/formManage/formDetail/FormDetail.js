@@ -138,6 +138,7 @@ export default function FormDetail({ searchHandler }) {
       text={'양식상세'}
       width={'100%'}
       height={'100%'}
+      font_size="16px"
       titleChildren={returnTitleComponent()}
       childStyle={{
         flex: 1,

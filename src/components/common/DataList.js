@@ -71,6 +71,18 @@ export default function DataList({
         rows={rows}
         columns={columns}
         hideFooter
+        sx={{
+          '.MuiDataGrid-row': {
+            // 호버 상태의 스타일
+            '&:hover': {
+              backgroundColor: '#f3f5f6 !important',
+            },
+          },
+          '.MuiDataGrid-row.Mui-selected, .MuiDataGrid-row.Mui-selected:hover':
+            {
+              backgroundColor: '#eef2f2 !important',
+            },
+        }}
         disableColumnMenu={true}
         {...(isCheckTable
           ? { ...dataGridCheckBoxOption }

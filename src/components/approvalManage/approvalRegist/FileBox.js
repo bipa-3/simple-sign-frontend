@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import DragDrop from './DragDrop';
 import styled from '../../../styles/components/approvalManage/approvalRegist/FileBox.module.css';
 import FilePresentTwoToneIcon from '@mui/icons-material/FilePresentTwoTone';
+import { useAlert } from '../../../contexts/AlertContext';
 
 export default function FileBox({
   id,
@@ -12,12 +13,16 @@ export default function FileBox({
 }) {
   const dragRef = useRef(null);
   const fileId = useRef(0);
+  const { showAlert } = useAlert();
 
   const inputFileUpload = (e) => {
     const selectFiles = e.target.files;
     Array.from(selectFiles).map((file) => {
       if (file.size > 1024 * 1024 * 10) {
-        alert('파일은 10MB 이하만 삽입가능합니다.');
+        showAlert({
+          severity: 'warn',
+          message: '파일은 10MB 이하만 삽입 가능합니다.',
+        });
       } else {
         const newFile = {
           id: fileId.current++,

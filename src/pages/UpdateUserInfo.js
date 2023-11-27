@@ -113,14 +113,14 @@ export default function UpdateUserInfo() {
         handlePwdChange();
         closeModal();
       },
-      btnStyle: 'popup_blue_btn',
+      btnStyle: 'blue_btn',
     },
     {
       label: '취소',
       onClick: () => {
         closeModal();
       },
-      btnStyle: 'popup_gray_btn',
+      btnStyle: 'light_btn',
     },
   ];
 
@@ -130,7 +130,7 @@ export default function UpdateUserInfo() {
       onClick: () => {
         addressClose();
       },
-      btnStyle: 'popup_gray_btn',
+      btnStyle: 'light_btn',
     },
   ];
 
@@ -322,12 +322,12 @@ export default function UpdateUserInfo() {
   return (
     <div className={styled.container}>
       <InnerBox
-        width="55%"
+        width="60%"
         height="100%"
-        font_size="15px"
+        font_size="16px"
         text={'개인정보'}
         titleChildren={
-          <Button label={'저장'} btnStyle={'gray_btn'} onClick={updateAPI} />
+          <Button label={'저장'} btnStyle={'light_btn'} onClick={updateAPI} />
         }
         childStyle={{
           flex: 1,
@@ -416,6 +416,7 @@ export default function UpdateUserInfo() {
                     width={'400px'}
                     height={'400px'}
                     btnStyle={'dark_btn'}
+                    btnWidth={'100px'}
                     isModalOpen={isModalOpen}
                     openModal={openModal}
                     closeModal={closeModal}
@@ -493,7 +494,7 @@ export default function UpdateUserInfo() {
         </div>
       </InnerBox>
       <InnerBox
-        width="45%"
+        width="40%"
         height="100%"
         font_size="15px"
         text={'회사정보'}

@@ -7,6 +7,7 @@ import { useApprovalBoxManage } from '../../contexts/ApprovalBoxManageContext';
 import deleteApprovalBox from '../../apis/approvalBoxAPI/deleteApprovalBox';
 import PopUp from '../common/PopUp';
 import Button from '../common/Button';
+import { useAlert } from '../../contexts/AlertContext';
 
 function ApprovalBoxList({ companyId, searchQuery }) {
   const {
@@ -20,6 +21,7 @@ function ApprovalBoxList({ companyId, searchQuery }) {
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filteredData, setFilteredData] = useState([]); // 검색된 데이터를 관리
+  const { showAlert } = useAlert();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -61,6 +63,10 @@ function ApprovalBoxList({ companyId, searchQuery }) {
   const deleteBtnHandler = async (boxId) => {
     try {
       await deleteApprovalBox(boxId);
+      showAlert({
+        severity: 'success',
+        message: '결재함 삭제가 완료되었습니다.',
+      });
       closeModal();
       const updatedBoxList = await fetchApprovalBoxList(); // 삭제 후 새로운 목록 가져오기
 
@@ -86,6 +92,10 @@ function ApprovalBoxList({ companyId, searchQuery }) {
         }
       }
     } catch (error) {
+      showAlert({
+        severity: 'error',
+        message: '결재함 삭제가 실패하였습니다.',
+      });
       console.error('Error deleting box:', error);
     }
   };
@@ -93,13 +103,18 @@ function ApprovalBoxList({ companyId, searchQuery }) {
   useEffect(() => {
     fetchApprovalBoxList();
   }, [companyId, state.insertStatus, state.saveStatus]);
+
   useEffect(() => {
     // boxList가 업데이트되면 첫 번째 박스 선택
-    if (!state.insertStatus && !state.boxUpdate) {
+    if (!state.insertStatus && state.boxUpdate === false) {
       if (state.boxList && state.boxList.length > 0) {
         boxNameClickHandler(state.boxList[0].approvalBoxId);
       }
     }
+    setState((prevState) => ({
+      ...prevState,
+      boxUpdate: false,
+    }));
   }, [state.boxList]);
 
   useEffect(() => {

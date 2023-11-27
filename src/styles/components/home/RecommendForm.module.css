@@ -4,9 +4,65 @@
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  width: 100%;
+}
+
+.favoritescontainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px; /* 각 grid 아이템 사이의 간격 */
+  position: relative; /* 가상 요소의 위치 기준 */
+  /* 기타 스타일링 */
+  height: 100%;
+}
+
+.favoritescontainer::before,
+.favoritescontainer::after {
+  content: '';
+  position: absolute;
+  background-color: #e6e6e6; /* 구분선 색상 */
+}
+
+.favoritescontainer::before {
+  /* 세로선 */
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px; /* 선의 두께 */
+  transform: translateX(-50%);
+}
+
+.favoritescontainer::after {
+  /* 가로선 */
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px; /* 선의 두께 */
+  transform: translateY(-50%);
+}
+
+/* 섹션들에 대한 스타일링 */
+.favoriteSection1,
+.favoriteSection2,
+.favoriteSection3,
+.favoriteSection4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.favoriteSection1,
+.favoriteSection2,
+.favoriteSection3,
+.favoriteSection4 :hover {
+  cursor: pointer;
 }
 
 .shortCutBtn {
+  border: none !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -25,9 +81,45 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
-  font-weight: 700;
+  text-decoration: none;
   padding: 10px;
+  color: #323a46 !important;
+}
+.contenticon {
+  font-size: 30px;
+  margin-bottom: 7px;
+}
+.contenttext {
+  font-size: 13.4px;
+}
+
+.recommentContentBox:hover .contenticon {
+  font-size: 35px;
+  cursor: pointer;
+  color: #668286;
+}
+.recommentContentBox:hover .contenttext {
+  font-size: 14.6px;
+  cursor: pointer;
+  color: #668286;
+}
+
+.contenticonF {
+  font-size: 25px;
+  margin-bottom: 7px;
+}
+.contenttextF {
+  font-size: 12.4px;
+}
+
+.recommentContentBox:hover .contenticonF {
+  font-size: 26px;
+  margin-bottom: 7px;
+  color: #668286;
+}
+.recommentContentBox:hover .contenttextF {
+  font-size: 13px;
+  color: #668286;
 }
 
 .division {

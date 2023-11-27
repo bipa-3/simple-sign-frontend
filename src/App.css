@@ -1,6 +1,7 @@
 .App {
   display: flex;
   flex-direction: row;
+  background-color: #f5f5f5;
 }
 
 .contentContainer {
@@ -16,10 +17,10 @@
 .contentsArea {
   width: 100%;
   flex-grow: 1;
-  padding: 0px 17px 17px 17px;
+  padding: 10px 17px 22px 22px;
   flex-grow: 1;
   overflow-y: scroll;
-  background-color: #fff;
+  background-color: #f5f5f5;
 }
 .popup-mode .contentContainer {
   display: flex;

@@ -126,6 +126,7 @@ export default function SeqDetail({ searchHandler }) {
         text={'문서채번상세'}
         width={'100%'}
         height={'100%'}
+        font_size="16px"
         titleChildren={returnTitleComponent()}
         childStyle={{
           flex: 1,

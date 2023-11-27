@@ -59,28 +59,31 @@ function ViewDocBox() {
 
   const checkForMoreData = async () => {
     try {
-      const docListPromise = state.shouldFetchDocs
-        ? detailSearchDocs(
-            viewItems,
-            10,
-            detailSearchState,
-            state.sortStatus,
-            state.radioSortValue,
-            lastApprovalDate, // 조건부 상태 사용
-            lastDocId // 조건부 상태 사용
-          )
-        : getDocsList(
-            viewItems,
-            10,
-            state.searchInput ? state.searchInput : '',
-            state.sortStatus,
-            state.radioSortValue,
-            lastApprovalDate, // 조건부 상태 사용
-            lastDocId // 조건부 상태 사용
-          );
+      let docListPromise;
+      if (state.shouldFetchDocs) {
+        docListPromise = detailSearchDocs(
+          viewItems,
+          10,
+          detailSearchState,
+          state.sortStatus,
+          state.radioSortValue,
+          lastApprovalDate, // 조건부 상태 사용
+          lastDocId // 조건부 상태 사용
+        );
+        setState((prevState) => ({ ...prevState, shouldFetchDocs: false }));
+      } else {
+        docListPromise = getDocsList(
+          viewItems,
+          10,
+          state.searchInput ? state.searchInput : '',
+          state.sortStatus,
+          state.radioSortValue,
+          lastApprovalDate, // 조건부 상태 사용
+          lastDocId // 조건부 상태 사용
+        );
+      }
 
       const nextDataResponse = await docListPromise;
-      // console.log('다음페이지 데이터 길이 :', nextDataResponse.data.length);
 
       if (nextDataResponse.data.length === 0) {
         setNoMoreData(true);
@@ -119,7 +122,6 @@ function ViewDocBox() {
           isInitialLoad ? null : lastApprovalDate,
           isInitialLoad ? null : lastDocId
         );
-      
       }
 
       // 데이터 업데이트 (첫 페이지 또는 추가 페이지)
@@ -181,7 +183,6 @@ function ViewDocBox() {
       setDocData([]);
 
       fetchData(true);
-      setState((prevState) => ({ ...prevState, shouldFetchDocs: false }));
     }
   }, [
     // 의존성 배열

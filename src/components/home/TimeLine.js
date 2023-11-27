@@ -8,6 +8,7 @@ export default function TimeLine() {
       width={'100%'}
       height={'100%'}
       text={'타임라인'}
+      font_size="16px"
       childStyle={{ height: '100%', padding: '10px' }}
       children={
         <>

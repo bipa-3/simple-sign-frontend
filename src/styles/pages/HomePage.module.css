@@ -1,40 +1,39 @@
 .container {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  grid-template-rows: 3fr 2fr 2fr;
-  gap: 10px;
-  /* border: 1px solid #000; */
-
+  grid-template-rows: repeat(9, 1fr); /* 4개의 행으로 분할 */
+  grid-template-areas:
+    'recoFormArea favoriteArea'
+    'recoFormArea favoriteArea'
+    'recoFormArea favoriteArea'
+    'processDocArea favoriteArea'
+    'processDocArea timeLineArea'
+    'processDocArea timeLineArea'
+    'receRefArea timeLineArea'
+    'receRefArea timeLineArea'
+    ' receRefArea timeLineArea'; /* 마지막 행은 favoriteArea가 차지하지 않음 */
+  gap: 20px;
   width: 100%;
   height: 100%;
+  /* 기타 스타일 */
 }
 
 .recoFormArea {
-  grid-column: 1 / 2;
-  grid-row: 1 / 2;
-  /* border: 1px solid #000; */
+  grid-area: recoFormArea;
 }
 
 .favoriteArea {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-  /* border: 1px solid #000; */
+  grid-area: favoriteArea;
+  /* 필요한 경우 추가 스타일 */
 }
 
 .processDocArea {
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
-  /* border: 1px solid #000; */
+  grid-area: processDocArea;
 }
 
 .receRefArea {
-  grid-column: 1 / 2;
-  grid-row: 3 / 4;
-  /* border: 1px solid #000; */
+  grid-area: receRefArea;
 }
-
 .timeLineArea {
-  grid-column: 2 / 3;
-  grid-row: 2 / 4;
-  /* border: 1px solid #000; */
+  grid-area: timeLineArea;
 }

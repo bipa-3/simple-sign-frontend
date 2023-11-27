@@ -119,7 +119,9 @@ export default function ApprovalForm({
     //채번리스트 조회
     getSequenceList(form_code).then((json) => {
       setSequence(json);
-      setSelectedValue(json[0].seqCode);
+      if (json[0] !== undefined) {
+        setSelectedValue(json[0].seqCode);
+      }
     });
 
     deleteContentEditableError();

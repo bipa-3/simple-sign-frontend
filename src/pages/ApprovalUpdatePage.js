@@ -11,6 +11,7 @@ import styled from '../styles/pages/ApprovalUpdatePage.module.css';
 import updateTemporalApprovalDoc from '../apis/approvalManageAPI/updateTemporalApprovalDoc';
 import errorHandle from '../apis/errorHandle';
 import { checkFormCreateData } from '../validation/approvalManage/approvalFormSchema';
+import { useAlert } from '../contexts/AlertContext';
 
 export default function ApprovalUpdatePage() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ export default function ApprovalUpdatePage() {
   const [files, setFiles] = useState([]);
   const [fileNames, setFileNames] = useState([]);
   const [version, setVersion] = useState([]);
+  const { showAlert } = useAlert();
 
   const queryParams = new URLSearchParams(location.search);
   const approvalDocId = queryParams.get('page');
@@ -139,7 +141,10 @@ export default function ApprovalUpdatePage() {
         updateApprovalDocByType(data, type);
       })
       .catch((errors) => {
-        alert(errors.message);
+        showAlert({
+          severity: 'error',
+          message: errors.message,
+        });
         hideLoading();
       });
   };
@@ -150,7 +155,10 @@ export default function ApprovalUpdatePage() {
         .then((res) => {
           console.log(res);
           if (res.status === 200) {
-            alert('문서가 수정되었습니다');
+            showAlert({
+              severity: 'info',
+              message: '문서가 수정되었습니다.',
+            });
             navigate(`/AD?page=${approvalDocId}&popup=true`);
           } else {
             errorHandle(res);
@@ -164,10 +172,16 @@ export default function ApprovalUpdatePage() {
       updateApprovalDoc(approvalDocId, data)
         .then((res) => {
           if (res.status === 200 && docStatus === 'T') {
-            alert('문서가 상신되었습니다.');
+            showAlert({
+              severity: 'info',
+              message: '문서가 상신되었습니다.',
+            });
             navigate(`/AD?page=${approvalDocId}&popup=true`);
           } else if (res.status === 200) {
-            alert('문서가 수정되었습니다.');
+            showAlert({
+              severity: 'info',
+              message: '문서가 수정되었습니다.',
+            });
             navigate(`/AD?page=${approvalDocId}&popup=true`);
           } else {
             errorHandle(res);

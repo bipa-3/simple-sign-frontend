@@ -8,7 +8,7 @@
   width: 180px;
   height: 50px;
   /* background-color: #3bafda !important; */
-  background-color: #cfdfdb !important;
+  background-color: #c0cdcf !important;
   border-radius: 50px !important;
 }
 
@@ -20,5 +20,5 @@
 
 .name:hover {
   /* background-color: #35a1c9 !important; */
-  background-color: #b7d1cb !important;
+  background-color: #acb8ba !important;
 }

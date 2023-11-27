@@ -49,7 +49,7 @@ function ViewApprovalBoxList() {
     <InnerBox
       height="100%"
       width="45%"
-      font_size="15px"
+      font_size="16px"
       text="결재함 목록"
       childStyle={{
         flex: 1,

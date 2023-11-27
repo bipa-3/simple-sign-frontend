@@ -37,6 +37,17 @@ export default function AuthorityBtn({ authorityManage }) {
             authorityManage('user');
           }}
           className={styled.toggle}
+          sx={{
+            '&.Mui-selected': {
+              backgroundColor: '#acb8ba', // 선택 상태의 배경색
+              '&:hover': {
+                backgroundColor: '#acb8ba', // 선택 상태에서의 호버 색상
+              },
+            },
+            '&:hover': {
+              backgroundColor: '#D3E1E3', // 일반 호버 상태의 색상
+            },
+          }}
         >
           <PersonIcon />
         </ToggleButton>
@@ -46,6 +57,17 @@ export default function AuthorityBtn({ authorityManage }) {
             authorityManage('manager');
           }}
           className={styled.toggle}
+          sx={{
+            '&.Mui-selected': {
+              backgroundColor: '#acb8ba', // 선택 상태의 배경색
+              '&:hover': {
+                backgroundColor: '#acb8ba', // 선택 상태에서의 호버 색상
+              },
+            },
+            '&:hover': {
+              backgroundColor: '#D3E1E3', // 일반 호버 상태의 색상
+            },
+          }}
         >
           <ManageAccountsIcon />
         </ToggleButton>

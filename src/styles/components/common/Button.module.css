@@ -1,24 +1,24 @@
 .blue_btn {
   font-weight: 500;
   border: 0;
-  border-radius: 2px;
+  border-radius: 0.25rem;
   text-transform: uppercase;
   letter-spacing: 0.01em;
-  background-color: #3bafda;
+  background-color: #4d5f63;
   color: #fff;
   padding: 5px 5px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border: 1px solid #3bafda;
+  border: 1px solid #4d5f63;
   transition: background-color 0.3s, border 0.3s;
   margin: 10px;
 }
 
 .blue_btn:hover {
-  background-color: #3095c2;
-  border-color: #2884ab;
+  background-color: #5a6f72;
+  border-color: #5a6f72;
 }
 
 .gray_btn {
@@ -93,7 +93,7 @@
 .non_btn {
   width: 100% !important;
   height: 100% !important;
-  background-color: #f1f5f7;
+  background-color: #fff;
   border: none;
 }
 

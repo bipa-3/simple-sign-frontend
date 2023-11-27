@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from '../../../styles/components/approvalManage/approvalRegist/DragDrop.module.css';
 import { AiOutlineFileAdd } from 'react-icons/ai';
 import HighlightAltTwoToneIcon from '@mui/icons-material/HighlightAltTwoTone';
+import { useAlert } from '../../../contexts/AlertContext';
 
 const DragDrop = ({
   id,
@@ -13,6 +14,7 @@ const DragDrop = ({
   fileId,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
+  const { showAlert } = useAlert();
 
   const initDragEvents = () => {
     if (dragRef.current !== null) {
@@ -61,7 +63,10 @@ const DragDrop = ({
 
     Array.from(droppedFiles).map((file) => {
       if (file.size > 1024 * 1024 * 10) {
-        alert('파일은 10MB 이하만 삽입가능합니다.');
+        showAlert({
+          severity: 'warn',
+          message: '파일은 10MB 이하만 삽입 가능합니다.',
+        });
       } else {
         const newFile = {
           id: fileId.current++,

@@ -4,11 +4,17 @@
   width: 240px;
   /* height: 860px; */
   background-color: transparent;
-  overflow: auto;
+  overflow: hidden;
   box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
 
   border-top-right-radius: 5rem;
-  background-color: #465b59;
-  height: 100vh;
+  background-color: #4d5f63;
+  max-height: 100vh;
+  min-height: 100vh;
   padding-top: 30px;
+}
+.items {
+  flex: 1;
+}
+.btnArea {
 }

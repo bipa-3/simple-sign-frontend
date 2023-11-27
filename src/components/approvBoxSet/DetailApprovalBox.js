@@ -35,7 +35,6 @@ function DetailApprovalBox() {
         }));
         hideLoading();
         showAlert({
-          open: true,
           severity: 'success',
           message: '결재함 생성이 완료되었습니다.',
         });
@@ -52,15 +51,15 @@ function DetailApprovalBox() {
         const response = await updateApprovalBox(approvalBoxState2); // API 호출
         setState((prevState) => ({
           ...prevState,
+          boxUpdate: true,
+        }));
+        setState((prevState) => ({
+          ...prevState,
           saveStatus: !state.saveStatus,
         }));
         hideLoading();
-        setState((prevState) => ({
-          ...prevState,
-          boxUpdate: true,
-        }));
+
         showAlert({
-          open: true,
           severity: 'success',
           message: '결재함 수정이 완료되었습니다.',
         });
@@ -70,12 +69,11 @@ function DetailApprovalBox() {
       if (error) {
         // 유효성 검사 오류 메시지를 모두 표시
         const errorMessage = error.errors.join('\n');
-        showAlert({ open: true, severity: 'error', message: errorMessage });
+        showAlert({ severity: 'error', message: errorMessage });
       } else {
         // 기타 오류의 경우
         console.error('Error saving data:', error);
         showAlert({
-          open: true,
           severity: 'error',
           message:
             '데이터를 저장하는 도중 에러가 발생했습니다. 다시 시도해 주세요.',
@@ -88,7 +86,7 @@ function DetailApprovalBox() {
     <InnerBox
       height="100%"
       width="55%"
-      font_size="15px"
+      font_size="16px"
       text="결재함 상세"
       childStyle={{
         flex: 1,

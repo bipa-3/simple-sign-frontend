@@ -1,39 +1,40 @@
 .container {
   display: grid;
   grid-template-columns: 8fr 1fr;
-  border: 0.5px solid #3bafda;
+  border: 0.5px solid #dae0e1;
   margin-top: 10px;
   border-radius: 10px;
 }
 
 .container:hover {
-  border: 1.5px solid rgb(59, 175, 218);
+  border: 1.5px solid #acb8ba;
 }
 .box {
   border-radius: 10px;
-  background-color: #dfeff8;
+  background-color: #eef2f2;
   display: grid;
-  grid-template-columns: 2fr 5fr;
+  grid-template-columns: 2.5fr 5fr;
 }
 
 .title {
-  text-align: center;
-  padding-top: 30px;
-  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
   font-weight: bold;
-  color: black;
+  color: #323a46;
 }
 .content {
+  display: flex;
   background-color: white;
-
-  padding-left: 20px;
-  padding-top: 30px;
-  font-size: 16px;
-  font-weight: bold;
-  color: black;
+  justify-content: center;
+  align-items: center;
+  font-size: 13.6px;
+  color: #323a46;
 }
 
 .star {
-  margin-top: 20px;
-  margin-left: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

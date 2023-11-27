@@ -6,10 +6,11 @@
   position: fixed;
   bottom: 10px;
 
-  background-color: #cfdfdb !important;
+  background-color: #c0cdcf !important;
 }
 
 .toggle {
   width: 110px;
   color: #1f1f16;
+  background-color: #97a4a6;
 }

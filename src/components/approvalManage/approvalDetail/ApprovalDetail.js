@@ -25,6 +25,7 @@ import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import ContentPasteOffOutlinedIcon from '@mui/icons-material/ContentPasteOffOutlined';
 import AssignmentReturnOutlinedIcon from '@mui/icons-material/AssignmentReturnOutlined';
 import { green, red, grey } from '@mui/material/colors';
+import { useAlert } from '../../../contexts/AlertContext';
 
 export default function ApprovalDetail() {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ export default function ApprovalDetail() {
   const [formName, setFormName] = useState('');
   const [reload, setReload] = useState(false);
   const [version, setVersion] = useState(0);
+  const { showAlert } = useAlert();
 
   const queryParams = new URLSearchParams(location.search);
   const approvalDocId = queryParams.get('page');
@@ -132,7 +134,10 @@ export default function ApprovalDetail() {
       })
       .then((approvalRes) => {
         if (approvalRes.status === 200) {
-          alert(`결재가 ${mode}되었습니다.`);
+          showAlert({
+            severity: 'info',
+            message: `결재가 ${mode}되었습니다.`,
+          });
           setReload(!reload);
         } else {
           errorHandle(approvalRes);
@@ -201,7 +206,10 @@ export default function ApprovalDetail() {
     deleteApprovalDoc(approvalDocId)
       .then((res) => {
         if (res.status === 200) {
-          alert('문서가 삭제되었습니다.');
+          showAlert({
+            severity: 'info',
+            message: '문서가 삭제되었습니다.',
+          });
           localStorage.setItem('approvalState', '');
           localStorage.setItem('approvalState', 'delete');
           window.close();
@@ -210,7 +218,10 @@ export default function ApprovalDetail() {
         }
       })
       .catch((e) => {
-        alert('삭제를 실패했습니다.');
+        showAlert({
+          severity: 'error',
+          message: '삭제를 실패했습니다.',
+        });
       });
   };
 

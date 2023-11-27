@@ -77,15 +77,34 @@ export default function FormListPage() {
   return (
     <div className={styled.align}>
       <div className={styled.containers}>
-        <InnerBox width="100%" height="100%">
+        <InnerBox
+          width="20%"
+          height="100%"
+          childStyle={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
+        >
           <div className={styled.searchBoxContainer}>
-            <SearchBox width="200px" onSearch={onSearch} />
+            <SearchBox width="100%" onSearch={onSearch} />
           </div>
           <FormListItem handleFormCategory={handleFormCategory} />
         </InnerBox>
-      </div>
-      <div className={styled.containers}>
-        <InnerBox width="100%" height="100%" text="전체양식" font_size="18px">
+
+        <InnerBox
+          width="80%"
+          height="100%"
+          text="양식목록"
+          font_size="16px"
+          childStyle={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+          }}
+        >
           <div className={styled.innerBox}>
             {filteredFormList.length > 0
               ? filteredFormList.map(({ formName, formExplain, formCode }) =>

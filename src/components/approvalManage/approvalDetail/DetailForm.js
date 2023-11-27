@@ -12,6 +12,7 @@ import downloadFile from '../../../apis/approvalManageAPI/downloadFile';
 import getFileNames from '../../../apis/approvalManageAPI/getFileNames';
 import Button from '../../common/Button';
 import { BiDownload } from 'react-icons/bi';
+import { useAlert } from '../../../contexts/AlertContext';
 
 export default function DetailForm(props) {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ export default function DetailForm(props) {
   const { showLoading, hideLoading } = useLoading();
   const [customSign, setCustomSign] = useState('');
   const [files, setFiles] = useState([]);
+  const { showAlert } = useAlert();
 
   const download = (filePath) => {
     showLoading();
@@ -86,7 +88,10 @@ export default function DetailForm(props) {
         }
       })
       .catch(() => {
-        alert('문서를 찾을 수 없습니다');
+        showAlert({
+          severity: 'error',
+          message: '문서를 찾을 수 없습니다',
+        });
         hideLoading();
         navigate('/');
       })
@@ -221,18 +226,23 @@ export default function DetailForm(props) {
                     <td>결재자8</td>
                   </tr>
                   <tr>
-                    {[...Array(8)].map((_, index) => (
-                      <td
-                        style={{
-                          textAlign: 'center',
-                          width: '12.5%',
-                          height: '70px',
-                        }}
-                        key={index}
-                      >
-                        {renderApproval(approval_line[index])}
-                      </td>
-                    ))}
+                    {[...Array(8)].map((_, index) => {
+                      const sortedApprovalLine = approval_line.sort(
+                        (a, b) => a.approvalOrder - b.approvalOrder
+                      );
+                      return (
+                        <td
+                          style={{
+                            textAlign: 'center',
+                            width: '12.5%',
+                            height: '70px',
+                          }}
+                          key={index}
+                        >
+                          {renderApproval(sortedApprovalLine[index])}
+                        </td>
+                      );
+                    })}
                   </tr>
                 </table>
               );

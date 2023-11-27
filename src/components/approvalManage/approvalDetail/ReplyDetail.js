@@ -17,6 +17,7 @@ import { useLoading } from '../../../contexts/LoadingContext';
 import getReplyFileNames from '../../../apis/approvalManageAPI/getReplyFileNames';
 import { BiDownload } from 'react-icons/bi';
 import Buttons from '../../common/Button';
+import { useAlert } from '../../../contexts/AlertContext';
 
 const CustomButton = MUIStyled(Button)({
   width: '0.5em',
@@ -41,6 +42,7 @@ export default function ReplyDetail({
   const [editedContent, setEditedContent] = useState(content);
   const { showLoading, hideLoading } = useLoading();
   const [filesData, setFilesData] = useState({ replyId: null, object: [] });
+  const { showAlert } = useAlert();
 
   const updateHandler = () => {
     //권한가져오고 권한이 있으면 contentEditable로 바꿔주기
@@ -49,7 +51,10 @@ export default function ReplyDetail({
         if (res === true) {
           setIsEdit(res);
         } else {
-          alert('해당 메뉴를 사용할 수 있는 권한이 없습니다.');
+          showAlert({
+            severity: 'warn',
+            message: '해당 메뉴를 사용할 수 있는 권한이 없습니다.',
+          });
         }
       })
       .catch((e) => {
@@ -61,7 +66,10 @@ export default function ReplyDetail({
     deleteReply(replyId)
       .then((res) => {
         if (res.status === 200) {
-          alert('댓글이 삭제되었습니다.');
+          showAlert({
+            severity: 'info',
+            message: '댓글이 삭제되었습니다.',
+          });
           getReply();
         } else {
           errorHandle(res);
@@ -83,18 +91,27 @@ export default function ReplyDetail({
             if (res.status === 200) {
               getReply();
               setIsEdit(false);
-              alert('댓글이 수정되었습니다.');
+              showAlert({
+                severity: 'info',
+                message: '댓글이 수정되었습니다.',
+              });
             } else {
               errorHandle(res);
             }
           })
           .catch((e) => {
-            alert('댓글 수정 실패');
+            showAlert({
+              severity: 'error',
+              message: '댓글 수정을 실패했습니다.',
+            });
             console.error(e);
           });
       })
       .catch((e) => {
-        alert(e.message);
+        showAlert({
+          severity: 'info',
+          message: e.message,
+        });
       });
   };
 

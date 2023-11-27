@@ -8,6 +8,7 @@ export default function RecommendForm() {
       width={'100%'}
       height={'100%'}
       text={'추천양식'}
+      font_size="16px"
       childStyle={{ height: '100%', padding: '10px' }}
       children={<FormShortCut />}
     />

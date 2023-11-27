@@ -12,7 +12,7 @@ import { useLoading } from '../../contexts/LoadingContext';
 
 const commonCellStyle = {
   width: '30%',
-  backgroundColor: '#f1f5f7',
+  backgroundColor: '#f3f5f6',
   padding: '13.6px 0 13.6px 13.6px',
 };
 

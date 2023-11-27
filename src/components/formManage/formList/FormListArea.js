@@ -94,6 +94,7 @@ export default function FormListArea({ rows, searchHandler }) {
       text={'양식목록'}
       width={'100%'}
       height={'100%'}
+      font_size="16px"
       titleChildren={
         <Button label={'삭제'} btnStyle={'red_btn'} onClick={delHandler} />
       }
