@@ -60,7 +60,7 @@ export default function SeqListArea({ rows, searchHandler }) {
       .catch((err) => {
         showAlert({
           severity: 'error',
-          message: `상세 데이터 호출에 실패했습니다. [${err}]`,
+          message: `상세 데이터 호출에 실패했습니다.`,
         });
       })
       .finally(() => {

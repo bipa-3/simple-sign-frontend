@@ -73,7 +73,7 @@ export default function FormListArea({ rows, searchHandler }) {
       .catch((err) => {
         showAlert({
           severity: 'error',
-          message: `양식 상세조회에 실패했습니다. [${err}]`,
+          message: `양식 상세조회에 실패했습니다.`,
         });
       })
       .finally(() => {

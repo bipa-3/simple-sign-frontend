@@ -77,10 +77,10 @@ export default function FormManagePage() {
         });
       })
       .catch((err) => {
-        showAlert({
-          severity: 'error',
-          message: `기본 데이터 조회를 실패했습니다. [${err}]`,
-        });
+        // showAlert({
+        //   severity: 'error',
+        //   message: `기본 데이터 조회를 실패했습니다. [${err}]`,
+        // });
       })
       .finally(() => {
         hideLoading();
