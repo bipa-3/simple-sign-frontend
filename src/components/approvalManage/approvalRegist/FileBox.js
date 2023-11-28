@@ -20,7 +20,7 @@ export default function FileBox({
     Array.from(selectFiles).map((file) => {
       if (file.size > 1024 * 1024 * 10) {
         showAlert({
-          severity: 'warn',
+          severity: 'warning',
           message: '파일은 10MB 이하만 삽입 가능합니다.',
         });
       } else {

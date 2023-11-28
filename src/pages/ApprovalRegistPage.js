@@ -123,7 +123,7 @@ export default function ApprovalRegist(props) {
       insertFavorites(props.form_code).then((res) => {
         if (res.status === 400) {
           showAlert({
-            severity: 'warn',
+            severity: 'warning',
             message: '즐겨찾기는 4개까지 설정가능합니다.',
           });
           setClickStar(false);
@@ -247,7 +247,7 @@ export default function ApprovalRegist(props) {
         hideLoading();
         if (e.message === 'Failed to fetch') {
           showAlert({
-            severity: 'warn',
+            severity: 'warning',
             message: '파일 사이즈가 너무 큽니다.',
           });
         }

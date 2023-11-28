@@ -25,7 +25,7 @@ export default function Notice() {
   const [subscription, setSubscription] = useState(null);
 
   const socketUrl =
-    //`http://localhost:8081/alarm/ws`
+    //`http://localhost:8081/alarm/ws`;
     `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/alarm/ws`;
   const initializeWebSocket = () => {
     const socket = new SockJS(socketUrl, null, {

@@ -52,7 +52,7 @@ export default function ReplyDetail({
           setIsEdit(res);
         } else {
           showAlert({
-            severity: 'warn',
+            severity: 'warning',
             message: '해당 메뉴를 사용할 수 있는 권한이 없습니다.',
           });
         }
