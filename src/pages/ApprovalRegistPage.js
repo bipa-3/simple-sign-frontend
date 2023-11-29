@@ -297,8 +297,8 @@ export default function ApprovalRegist(props) {
           </div>
         }
         btnStyle={'popup_non_btn'}
-        width="1300px"
-        height="800px"
+        width={'1300px'}
+        height={'900px'}
         title={formName}
         children={
           <>

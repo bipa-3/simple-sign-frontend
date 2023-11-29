@@ -206,20 +206,25 @@ export default function UpdateForm({
                       <td>결재자8</td>
                     </tr>
                     <tr style={{ height: '70px' }}>
-                      {[...Array(8)].map((_, index) => (
-                        <td
-                          style={{
-                            textAlign: 'center',
-                            width: '12.5%',
-                            height: '70px',
-                          }}
-                          key={index}
-                        >
-                          {org_use_list.length > index
-                            ? org_use_list[index].user
-                            : ''}
-                        </td>
-                      ))}
+                      {[...Array(8)].map((_, index) => {
+                        const sortedApprovalLine = org_use_list.sort(
+                          (a, b) => a.approvalOrder - b.approvalOrder
+                        );
+                        return (
+                          <td
+                            style={{
+                              textAlign: 'center',
+                              width: '12.5%',
+                              height: '70px',
+                            }}
+                            key={index}
+                          >
+                            {org_use_list.length > index
+                              ? org_use_list[index].user
+                              : ''}
+                          </td>
+                        );
+                      })}
                     </tr>
                   </table>
                 </div>
