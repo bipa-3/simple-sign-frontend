@@ -5,6 +5,7 @@ import styled from '../../../styles/components/home/TimeLine.module.css';
 import { GrDocumentText } from 'react-icons/gr';
 import TextsmsIcon from '@mui/icons-material/Textsms';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 export default function TimeLineList() {
   const { notifications } = useAlarm();
@@ -59,7 +60,13 @@ export default function TimeLineList() {
                   <img src={pen} className={styled.timeline_img} />
                 ) : notification.alarmCode === '02' ? (
                   <div className={styled.timeline_stamp}>
-                    <CheckCircleOutlineIcon />
+                    <CheckCircleOutlineIcon
+                      style={{ color: 'rgb(26, 188, 156)' }}
+                    />
+                  </div>
+                ) : notification.alarmCode === '03' ? (
+                  <div className={styled.timeline_icon}>
+                    <ErrorOutlineIcon style={{ color: '#f1556c' }} />
                   </div>
                 ) : (
                   <div className={styled.timeline_icon}>{GrDocumentText()}</div>

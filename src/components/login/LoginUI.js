@@ -3,9 +3,11 @@ import React, { useState, useContext } from 'react';
 import { postLogin } from '../../apis/loginAPI/postLogin';
 import { useNavigate } from 'react-router';
 import AppContext from '../../contexts/AppContext';
+import { useAlert } from '../../contexts/AlertContext';
 
 export default function LoginUI() {
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
 
   const { state, setState } = useContext(AppContext);
 
@@ -13,9 +15,6 @@ export default function LoginUI() {
   const [password, setPassword] = useState('');
 
   const [err, setErr] = useState({ loginId: null, password: null });
-  const [loginErr, setLoginErr] = useState(
-    '아이디나 비밀번호를 잘 못 입력하셨습니다.'
-  );
 
   const onLoginIdChange = (e) => {
     setLoginId(e.target.value);
@@ -29,8 +28,6 @@ export default function LoginUI() {
   const loginValidate = () => {
     let isLoginVaalid = true;
     const loginValidationErr = {};
-
-    setLoginErr('아이디나 비밀번호를 잘 못 입력하셨습니다.');
 
     if (!loginId) {
       isLoginVaalid = false;
@@ -85,10 +82,13 @@ export default function LoginUI() {
         }
       })
       .catch((error) => {
-        setLoginErr('아이디나 비밀번호를 잘 못 입력하셨습니다.');
         setLoginId('');
         setPassword('');
-        alert(loginErr);
+        showAlert({
+          open: true,
+          severity: 'error',
+          message: '아이디나 비밀번호를 잘 못 입력하셨습니다.',
+        });
       });
   };
 
@@ -109,7 +109,7 @@ export default function LoginUI() {
             placeholder={err.password ? err.password : '비밀번호'}
             value={password}
             onChange={onPasswordChange}
-            className={err.loginId ? styled.login_err_massage : ''}
+            className={err.password ? styled.login_err_massage : ''}
           />
           <button
             className={`${styled.btn} ${styled.btnPrimary} ${styled.btnLarge}`}

@@ -9,7 +9,7 @@ import moment from 'moment';
 import { usePage } from '../contexts/PageContext';
 import styled from '../styles/pages/ApprovalUpdatePage.module.css';
 import updateTemporalApprovalDoc from '../apis/approvalManageAPI/updateTemporalApprovalDoc';
-import errorHandle from '../apis/errorHandle';
+import ErrorHandle from '../apis/errorHandle';
 import { checkFormCreateData } from '../validation/approvalManage/approvalFormSchema';
 import { useAlert } from '../contexts/AlertContext';
 
@@ -161,7 +161,7 @@ export default function ApprovalUpdatePage() {
             });
             navigate(`/AD?page=${approvalDocId}&popup=true`);
           } else {
-            errorHandle(res);
+            ErrorHandle(res);
           }
         })
         .catch((e) => console.error(e))
@@ -184,7 +184,7 @@ export default function ApprovalUpdatePage() {
             });
             navigate(`/AD?page=${approvalDocId}&popup=true`);
           } else {
-            errorHandle(res);
+            ErrorHandle(res);
             hideLoading();
           }
         })

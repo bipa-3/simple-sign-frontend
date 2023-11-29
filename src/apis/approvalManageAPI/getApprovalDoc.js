@@ -1,5 +1,5 @@
 import base_url from '../base_url';
-import errorHandle from '../errorHandle';
+import ErrorHandle from '../errorHandle';
 
 export default function getApprovalDoc(approval_doc_id) {
   let url = base_url + `approve/detail/${approval_doc_id}`;

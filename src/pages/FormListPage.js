@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { useLoading } from '../contexts/LoadingContext';
 import getFormList from '../apis/approvalManageAPI/getFormList';
 import { usePage } from '../contexts/PageContext';
-import errorHandle from '../apis/errorHandle';
+import ErrorHandle from '../apis/errorHandle';
 import { useNavigate } from 'react-router-dom';
 import getFavorites from '../apis/approvalManageAPI/getFavorites';
 
@@ -30,7 +30,7 @@ export default function FormListPage() {
         if (res.status === 200) {
           return res.json();
         } else {
-          errorHandle(res);
+          ErrorHandle(res);
           navigate('/');
         }
       })

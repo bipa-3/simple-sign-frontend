@@ -1,11 +1,22 @@
-export default function errorHandle(res) {
+import { useAlert } from '../contexts/AlertContext';
+import React from 'react';
+
+export default function ErrorHandle(res) {
+  const { showAlert } = useAlert();
+
   return res.json().then((data) => {
     if (data.errors) {
       data.errors.map((ele) => {
-        alert(ele.message);
+        showAlert({
+          severity: 'error',
+          message: ele.message,
+        });
       });
     } else {
-      alert(data.message);
+      showAlert({
+        severity: 'info',
+        message: data.message,
+      });
     }
   });
 }

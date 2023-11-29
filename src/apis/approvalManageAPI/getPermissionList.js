@@ -1,5 +1,5 @@
 import base_url from '../base_url';
-import errorHandle from '../errorHandle';
+import ErrorHandle from '../errorHandle';
 
 export default function getPermissionList(page) {
   let url = base_url + `approve/permissionList/${page}`;
@@ -10,7 +10,7 @@ export default function getPermissionList(page) {
     if (res.status === 200) {
       return res.json();
     } else {
-      errorHandle(res);
+      ErrorHandle(res);
     }
   });
 }

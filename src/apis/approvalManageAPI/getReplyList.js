@@ -1,5 +1,5 @@
 import base_url from '../base_url';
-import errorHandle from '../errorHandle';
+import ErrorHandle from '../errorHandle';
 
 export default function getReplyList(approval_doc_id) {
   let url = base_url + `reply/${approval_doc_id}`;
@@ -10,7 +10,7 @@ export default function getReplyList(approval_doc_id) {
     if (res.status === 200) {
       return res.json();
     } else {
-      errorHandle(res);
+      ErrorHandle(res);
     }
   });
 }

@@ -17,10 +17,12 @@ import { useLoading } from '../contexts/LoadingContext';
 import axiosErrorHandle from '../apis/error/axiosErrorHandle';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { getUserInfo } from '../apis/userInfoAPl/getUserInfo';
+import { useAlert } from '../contexts/AlertContext';
 
 export default function UpdateUserInfo() {
   const location = useLocation();
   const { showLoading, hideLoading } = useLoading();
+  const { showAlert } = useAlert();
 
   //input 스타일 변경
   const input = useRef(null);
@@ -144,7 +146,11 @@ export default function UpdateUserInfo() {
       value = value.replace(/[^0-9]/g, '');
 
       if (value.length > 11) {
-        alert('전화번호의 최대 입력 값은 11자리까지 입니다.');
+        showAlert({
+          open: true,
+          severity: 'warning',
+          message: '전화번호의 최대 입력 값은 11자리까지 입니다.',
+        });
         return;
       }
 
@@ -187,10 +193,37 @@ export default function UpdateUserInfo() {
     addressClose();
   };
 
+  // 비밀번호 정규식
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+]).{6,15}$/;
+
   // 비밀번호 변경 api
   const handlePwdChange = () => {
+    if (pwdData.currentPassword == '') {
+      showAlert({
+        open: true,
+        severity: 'warning',
+        message: '현재 비밀번호를 입력해주세요.',
+      });
+      return;
+    }
+
+    if (!passwordRegex.test(pwdData.newPassword)) {
+      showAlert({
+        open: true,
+        severity: 'warning',
+        message:
+          '비밀번호는 6자 이상 15자 이하이며, 영문(대문자),영문(소문자),숫자,특수문자를 포함해야 합니다.',
+      });
+      return;
+    }
+
     if (pwdData.newPassword !== pwdData.newPwdCheck) {
-      alert('변경할 비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+      showAlert({
+        open: true,
+        severity: 'warning',
+        message: '변경할 비밀번호와 비밀번호 확인이 일치하지 않습니다.',
+      });
       return;
     }
     postPassword({
@@ -199,13 +232,20 @@ export default function UpdateUserInfo() {
     })
       .then((response) => {
         if (response.status === 200) {
-          alert('비번이 변경 되었습니다.');
+          showAlert({
+            open: true,
+            severity: 'success',
+            message: '비번이 변경 되었습니다.',
+          });
           closeModal();
         }
       })
       .catch((err) => {
-        axiosErrorHandle(err);
-        alert('비밀번호 변경에 실패했습니다. 다시 입력해주세요.');
+        showAlert({
+          open: true,
+          severity: 'error',
+          message: '비밀번호 변경에 실패했습니다.',
+        });
       });
   };
 
@@ -229,7 +269,11 @@ export default function UpdateUserInfo() {
 
     if (file.type.match('image.*')) {
       if (file.size > 2 * 1024 * 1024) {
-        alert('이미지 크기는 2MB까지만 넣어주세요.');
+        showAlert({
+          open: true,
+          severity: 'warning',
+          message: '이미지 크기는 2MB까지만 넣어주세요.',
+        });
       } else {
         setProfileFile(file);
 
@@ -240,7 +284,11 @@ export default function UpdateUserInfo() {
         reader.readAsDataURL(file);
       }
     } else {
-      alert('이미지 파일만 가능합니다.');
+      showAlert({
+        open: true,
+        severity: 'warning',
+        message: '이미지 파일만 가능합니다.',
+      });
     }
   };
 
@@ -248,7 +296,11 @@ export default function UpdateUserInfo() {
     const file = e.target.files[0];
     if (file.type.match('image.*')) {
       if (file.size > 2 * 1024 * 1024) {
-        alert('이미지 크기는 2MB까지만 넣어주세요.');
+        showAlert({
+          open: true,
+          severity: 'warning',
+          message: '이미지 크기는 2MB까지만 넣어주세요.',
+        });
       } else {
         setCurrentSign(file);
         const reader = new FileReader();
@@ -258,7 +310,11 @@ export default function UpdateUserInfo() {
         reader.readAsDataURL(file);
       }
     } else {
-      alert('이미지 파일만 가능합니다.');
+      showAlert({
+        open: true,
+        severity: 'warning',
+        message: '이미지 파일만 가능합니다.',
+      });
     }
   };
 

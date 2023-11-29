@@ -20,6 +20,7 @@ export default function FormManagePage() {
   const { showLoading, hideLoading } = useLoading();
   const { state, setState } = usePage();
   const { showAlert } = useAlert();
+  const [defaultFlag, setDefaultFlag] = useState(false);
 
   const searchFormData = () => {
     getFormAndCompList(searchData)
@@ -42,10 +43,10 @@ export default function FormManagePage() {
         setFormListData(data);
       })
       .catch((err) => {
-        showAlert({
-          severity: 'error',
-          message: `양식목록 조회에 실패했습니다.`,
-        });
+        // showAlert({
+        //   severity: 'error',
+        //   message: `양식목록 조회에 실패했습니다.`,
+        // });
         setFormListData([]);
       })
       .finally(() => {
@@ -75,6 +76,9 @@ export default function FormManagePage() {
           compList: compListData,
           approvalKindList: approvalKindResult,
         });
+      })
+      .then(() => {
+        setDefaultFlag(true);
       })
       .catch((err) => {
         // showAlert({
@@ -109,10 +113,10 @@ export default function FormManagePage() {
 
   //기본 항목 검색
   useEffect(() => {
-    if (setData.compList.length > 0) {
+    if (setData.compList.length > 0 && defaultFlag) {
       searchHandler();
     }
-  }, [setData.compList]);
+  }, [setData.compList, defaultFlag]);
 
   return (
     <div className={styled.container}>

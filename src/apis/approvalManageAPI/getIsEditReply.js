@@ -1,5 +1,5 @@
 import base_url from '../base_url';
-import errorHandle from '../errorHandle';
+import ErrorHandle from '../errorHandle';
 
 export default function getIsEditReply(replyId) {
   let url = base_url + `reply/isEdit/${replyId}`;
@@ -11,7 +11,7 @@ export default function getIsEditReply(replyId) {
     if (res.status === 200) {
       return res.json();
     } else {
-      errorHandle(res);
+      ErrorHandle(res);
     }
   });
 }

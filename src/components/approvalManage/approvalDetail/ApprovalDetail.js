@@ -20,7 +20,7 @@ import getHasUpdate from '../../../apis/approvalManageAPI/getHasUpdate';
 import getHasDelete from '../../../apis/approvalManageAPI/getHasDelete';
 import getHasCancelApproval from '../../../apis/approvalManageAPI/getHasCancelApproval';
 import styled from '../../../styles/components/approvalManage/approvalDetail/ApprovalDetail.module.css';
-import errorHandle from '../../../apis/errorHandle';
+import ErrorHandle from '../../../apis/errorHandle';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import ContentPasteOffOutlinedIcon from '@mui/icons-material/ContentPasteOffOutlined';
 import AssignmentReturnOutlinedIcon from '@mui/icons-material/AssignmentReturnOutlined';
@@ -129,7 +129,7 @@ export default function ApprovalDetail() {
             return insertCancelApproval(approvalDocId);
           }
         } else {
-          errorHandle(passwordRes);
+          ErrorHandle(passwordRes);
         }
       })
       .then((approvalRes) => {
@@ -140,7 +140,7 @@ export default function ApprovalDetail() {
           });
           setReload(!reload);
         } else {
-          errorHandle(approvalRes);
+          ErrorHandle(approvalRes);
         }
       })
       .catch((error) => {
@@ -214,7 +214,7 @@ export default function ApprovalDetail() {
           localStorage.setItem('approvalState', 'delete');
           window.close();
         } else {
-          errorHandle(res);
+          ErrorHandle(res);
         }
       })
       .catch((e) => {

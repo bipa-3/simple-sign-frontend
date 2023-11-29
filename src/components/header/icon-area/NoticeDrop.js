@@ -16,10 +16,12 @@ import { deleteAlarm } from '../../../apis/alarm/deleteAlarm';
 import { FiBellOff } from 'react-icons/fi';
 import LoadingAlarm from '../../common/LoadingAlarm';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useAlert } from '../../../contexts/AlertContext';
 
 export default function Notice() {
   const [stompClient, setStompClient] = useState(null);
   const { notifications, setNotifications } = useAlarm();
+  const { showAlert } = useAlert();
   const [unreadCount, setUnreadCount] = useState(0);
   const [alarmLoading, setAlarmLoading] = useState(false);
   const [subscription, setSubscription] = useState(null);
@@ -36,8 +38,8 @@ export default function Notice() {
     const client = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
-      heartbeatIncoming: 1000,
-      heartbeatOutgoing: 1000,
+      // heartbeatIncoming: 1000,
+      // heartbeatOutgoing: 1000,
       debug: (str) => {
         console.log(str);
       },
@@ -194,7 +196,11 @@ export default function Notice() {
         })
       );
     } catch (error) {
-      console.error('알림 상태를 업데이트하는데 실패했습니다', error);
+      showAlert({
+        open: true,
+        severity: 'error',
+        message: '알림 상태를 업데이트하는데 실패했습니다.',
+      });
     }
   };
 
@@ -210,9 +216,17 @@ export default function Notice() {
       );
       // 읽지 않은 알람 개수 업데이트
       setUnreadCount((prev) => prev - 1);
-      alert('삭제되었습니다.');
+      showAlert({
+        open: true,
+        severity: 'success',
+        message: '알림이 삭제 되었습니다.',
+      });
     } catch (error) {
-      console.error('알람 삭제에 실패했습니다', error);
+      showAlert({
+        open: true,
+        severity: 'error',
+        message: '알람 삭제에 실패했습니다',
+      });
     }
   };
 

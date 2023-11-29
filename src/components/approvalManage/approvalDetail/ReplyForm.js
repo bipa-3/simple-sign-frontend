@@ -4,7 +4,7 @@ import styled from '../../../styles/components/approvalManage/approvalDetail/Rep
 import getReplyList from '../../../apis/approvalManageAPI/getReplyList';
 import insertLowerReply from '../../../apis/approvalManageAPI/insertLowerReply';
 import ReplyBox from './ReplyBox';
-import errorHandle from '../../../apis/errorHandle';
+import ErrorHandle from '../../../apis/errorHandle';
 import { checkReplyCreateData } from '../../../validation/approvalManage/replySchema';
 import { useAlert } from '../../../contexts/AlertContext';
 
@@ -72,7 +72,7 @@ export default function ReplyForm({ approval_doc_id }) {
               setInputValue('');
               replyRefs.current[index].value = '';
             } else {
-              errorHandle(res);
+              ErrorHandle(res);
             }
           })
           .catch((e) => {

@@ -10,7 +10,7 @@ import { styled as MUIStyled } from '@mui/material';
 import getIsEditReply from '../../../apis/approvalManageAPI/getIsEditReply';
 import deleteReply from '../../../apis/approvalManageAPI/deleteReply';
 import updateReply from '../../../apis/approvalManageAPI/updateReply';
-import errorHandle from '../../../apis/errorHandle';
+import ErrorHandle from '../../../apis/errorHandle';
 import { checkReplyCreateData } from '../../../validation/approvalManage/replySchema';
 import downloadFile from '../../../apis/approvalManageAPI/downloadFile';
 import { useLoading } from '../../../contexts/LoadingContext';
@@ -72,7 +72,7 @@ export default function ReplyDetail({
           });
           getReply();
         } else {
-          errorHandle(res);
+          ErrorHandle(res);
         }
       })
       .catch((e) => {
@@ -96,7 +96,7 @@ export default function ReplyDetail({
                 message: '댓글이 수정되었습니다.',
               });
             } else {
-              errorHandle(res);
+              ErrorHandle(res);
             }
           })
           .catch((e) => {
@@ -122,7 +122,7 @@ export default function ReplyDetail({
         if (res.status === 200) {
           return res.blob();
         } else {
-          errorHandle(res);
+          ErrorHandle(res);
         }
       })
       .then((blob) => {

@@ -108,7 +108,7 @@ export default function Profile() {
                             {item.authorityName === 'USER'
                               ? '사용자'
                               : item.authorityName === 'DEPT_ADMIN'
-                              ? '부서 관리자'
+                              ? '회사 관리자'
                               : '관리자'}
                           </td>
                         </tr>

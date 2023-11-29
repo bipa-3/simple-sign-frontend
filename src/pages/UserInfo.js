@@ -15,6 +15,7 @@ import DefaultSign from '../components/userinfo/DefaultSign';
 import { useLoading } from '../contexts/LoadingContext';
 import axiosErrorHandle from '../apis/error/axiosErrorHandle';
 import profileicon from '../assets/imgs/profile.png';
+import { useAlert } from '../contexts/AlertContext';
 
 function renderDeptString(deptString) {
   const depts = deptString.split(',');
@@ -23,6 +24,7 @@ function renderDeptString(deptString) {
 
 export default function UserInfo() {
   const { showLoading, hideLoading } = useLoading();
+  const { showAlert } = useAlert();
 
   const [pwdData, setPwdData] = useState({
     currentPassword: '',
@@ -63,10 +65,37 @@ export default function UserInfo() {
     setIsModalOpen(false);
   };
 
+  // 비밀번호 정규식
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+]).{6,15}$/;
+
   // 비밀번호 변경
   const handlePwdChange = () => {
+    if (pwdData.currentPassword == '') {
+      showAlert({
+        open: true,
+        severity: 'warning',
+        message: '현재 비밀번호를 입력해주세요.',
+      });
+      return;
+    }
+
+    if (!passwordRegex.test(pwdData.newPassword)) {
+      showAlert({
+        open: true,
+        severity: 'warning',
+        message:
+          '비밀번호는 6자 이상 15자 이하이며, 영문(대문자),영문(소문자),숫자,특수문자를 포함해야 합니다.',
+      });
+      return;
+    }
+
     if (pwdData.newPassword !== pwdData.newPwdCheck) {
-      alert('변경할 비밀번호와 비밀번호 확인이 일치하지 않습니다.');
+      showAlert({
+        open: true,
+        severity: 'warning',
+        message: '변경할 비밀번호와 비밀번호 확인이 일치하지 않습니다.',
+      });
       return;
     }
 
@@ -76,12 +105,20 @@ export default function UserInfo() {
     })
       .then((response) => {
         if (response.status === 200) {
-          alert('비번이 변경 되었습니다.');
+          showAlert({
+            open: true,
+            severity: 'success',
+            message: '비번이 변경 되었습니다.',
+          });
           closeModal();
         }
       })
       .catch((err) => {
-        axiosErrorHandle(err);
+        showAlert({
+          open: true,
+          severity: 'error',
+          message: '비밀번호 변경에 실패했습니다.',
+        });
       });
   };
 

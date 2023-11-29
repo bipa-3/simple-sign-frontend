@@ -15,7 +15,7 @@ import {
   AreaBox,
 } from '../../formManage/formDetail/components/DetailTableItem';
 import { useFormManage } from '../../../contexts/FormManageContext';
-import errorHandle from '../../../apis/errorHandle';
+import ErrorHandle from '../../../apis/errorHandle';
 import { useNavigate } from 'react-router-dom';
 import FileBox from '../approvalRegist/FileBox';
 import getFileNames from '../../../apis/approvalManageAPI/getFileNames';
@@ -120,7 +120,7 @@ export default function UpdateForm({
             setSelectedValue(data.seqCode);
           });
         } else {
-          errorHandle(res);
+          ErrorHandle(res);
           navigate('/');
         }
       })

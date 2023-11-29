@@ -6,7 +6,7 @@ import Button from '../common/Button';
 import { usePage } from '../../contexts/PageContext';
 import { useLoading } from '../../contexts/LoadingContext';
 import insertApprovalAll from '../../apis/approvalManageAPI/insertApprovalAll';
-import errorHandle from '../../apis/errorHandle';
+import ErrorHandle from '../../apis/errorHandle';
 
 function ApprovalRightHeader() {
   const [isDropdownView, setDropdownView] = useState(false);
@@ -52,7 +52,7 @@ function ApprovalRightHeader() {
             approvalState: 'allapproval',
           }));
         } else {
-          errorHandle(res);
+          ErrorHandle(res);
         }
       })
       .catch((e) => {

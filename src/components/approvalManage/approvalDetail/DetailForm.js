@@ -7,7 +7,7 @@ import deleteContentEditableError from '../../../apis/approvalManageAPI/deleteCo
 import { useLoading } from '../../../contexts/LoadingContext';
 import { getSign, getApproverSign } from '../../../apis/userInfoAPl/getSign';
 import styled from '../../../styles/components/approvalManage/approvalDetail/DetailForm.module.css';
-import errorHandle from '../../../apis/errorHandle';
+import ErrorHandle from '../../../apis/errorHandle';
 import downloadFile from '../../../apis/approvalManageAPI/downloadFile';
 import getFileNames from '../../../apis/approvalManageAPI/getFileNames';
 import Button from '../../common/Button';
@@ -38,7 +38,7 @@ export default function DetailForm(props) {
         if (res.status === 200) {
           return res.blob();
         } else {
-          errorHandle(res);
+          ErrorHandle(res);
         }
       })
       .then((blob) => {
@@ -83,7 +83,7 @@ export default function DetailForm(props) {
             props.setVersion(data.version);
           });
         } else {
-          errorHandle(res);
+          ErrorHandle(res);
           navigate(`/`);
         }
       })

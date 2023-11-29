@@ -1,5 +1,5 @@
 import base_url from '../base_url';
-import errorHandle from '../errorHandle';
+import ErrorHandle from '../errorHandle';
 
 export default function downloadFile(filePath) {
   //const encodedFilePath = encodeURIComponent(filePath);

@@ -9,10 +9,15 @@ export default function TimeLine() {
       height={'100%'}
       text={'타임라인'}
       font_size="16px"
-      childStyle={{ height: '100%', padding: '10px' }}
+      childStyle={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        overflow: 'hidden',
+      }}
       children={
         <>
-          <hr style={{ marginBottom: '10px', marginTop: '-10px' }} />
+          <hr style={{ margin: 0 }}></hr>
           <TimeLineList />
         </>
       }

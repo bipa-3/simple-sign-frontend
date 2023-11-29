@@ -1,5 +1,5 @@
 import base_url from '../base_url';
-import errorHandle from '../errorHandle';
+import ErrorHandle from '../errorHandle';
 
 export default function getSequenceList(form_code) {
   let url = base_url + `manage/form/seqTitleList?formCode=${form_code}`;
@@ -10,7 +10,7 @@ export default function getSequenceList(form_code) {
     if (res.status === 200) {
       return res.json();
     } else {
-      errorHandle(res);
+      ErrorHandle(res);
     }
   });
 }

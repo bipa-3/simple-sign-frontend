@@ -1,5 +1,5 @@
 import base_url from '../base_url';
-import errorHandle from '../errorHandle';
+import ErrorHandle from '../errorHandle';
 
 export default function getDefaultApprovalLine(form_code) {
   let url = base_url + `approve/defaultApprovalLine/${form_code}`;
@@ -11,7 +11,7 @@ export default function getDefaultApprovalLine(form_code) {
     if (res.status === 200) {
       return res.json();
     } else {
-      errorHandle(res);
+      ErrorHandle(res);
     }
   });
 }

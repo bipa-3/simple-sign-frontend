@@ -6,7 +6,7 @@ import PopUpFoot from '../components/common/PopUpFoot';
 import moment from 'moment';
 import { useLoading } from '../contexts/LoadingContext';
 import insertApprovalDoc from '../apis/approvalManageAPI/insertApprovalDoc';
-import errorHandle from '../apis/errorHandle';
+import ErrorHandle from '../apis/errorHandle';
 import { checkFormCreateData } from '../validation/approvalManage/approvalFormSchema';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
@@ -239,8 +239,7 @@ export default function ApprovalRegist(props) {
           setRecRef('');
           closeModal();
         } else {
-          console.log('errorhandle');
-          errorHandle(res);
+          ErrorHandle(res);
         }
       })
       .catch((e) => {
