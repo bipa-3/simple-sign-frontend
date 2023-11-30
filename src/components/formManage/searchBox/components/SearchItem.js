@@ -10,8 +10,15 @@ const TextComp = ({ text }) => {
   return <p className={styled.title}>{text}</p>;
 };
 
-const InputComp = ({ id, dataHandler, width, placeholder }) => {
-  return (
+const InputComp = ({
+  id,
+  dataHandler,
+  width,
+  placeholder,
+  enterEvent,
+  searchHandler,
+}) => {
+  return !enterEvent ? (
     <div className={styled.inputBox} style={{ width: `${width}` }}>
       <input
         className={styled.input}
@@ -20,6 +27,23 @@ const InputComp = ({ id, dataHandler, width, placeholder }) => {
         placeholder={placeholder}
         onChange={(e) => {
           dataHandler(id, e.target.value);
+        }}
+      />
+    </div>
+  ) : (
+    <div className={styled.inputBox} style={{ width: `${width}` }}>
+      <input
+        className={styled.input}
+        style={{ width: `${width}` }}
+        type="text"
+        placeholder={placeholder}
+        onChange={(e) => {
+          dataHandler(id, e.target.value);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            searchHandler();
+          }
         }}
       />
     </div>

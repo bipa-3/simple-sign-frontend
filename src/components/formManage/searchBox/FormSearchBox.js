@@ -13,7 +13,7 @@ export default function FormSearchBox({ searchHandler }) {
         <div className={styled.optionsArea}>
           <SearchCompBox />
           <SearchStatusBox />
-          <SearchFormBox />
+          <SearchFormBox searchHandler={searchHandler} />
         </div>
         <div className={styled.iconArea}>
           <AiOutlineSearch onClick={searchHandler} />
