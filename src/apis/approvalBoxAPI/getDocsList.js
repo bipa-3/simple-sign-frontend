@@ -71,7 +71,7 @@ export function detailSearchDocsCount(
   detailSearchState,
   radioSortValue
 ) {
-  const url = base_url + `approvbox/search`;
+  const url = base_url + `approvbox/searchCount`;
   const payload = {
     viewItems: viewItems,
     ...detailSearchState,

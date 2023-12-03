@@ -40,6 +40,18 @@ function ApprovalBoxViewPage() {
           }}
         >
           <div className={styles.radiobuttonsBox}>
+            <div className={styles.docCount}>
+              {state.showCount ? (
+                <div>
+                  <span>검색 결과</span>
+                  {'  '}
+                  <span className={styles.countNumber}>{state.docCount}</span>
+                  <span>건</span>
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
             <div className={styles.radiogroup}>
               <RowRadioButtonsGroup></RowRadioButtonsGroup>
             </div>

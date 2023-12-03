@@ -58,7 +58,11 @@ function RemainSearchDetail() {
   }, [state.bottomSelectSortDate]);
 
   const handleSearchIconClick = () => {
-    setState((prevState) => ({ ...prevState, shouldFetchDocs: true }));
+    setState((prevState) => ({
+      ...prevState,
+      shouldFetchDocs: true,
+      showCount: true,
+    }));
   };
 
   const optionlist = () => {
