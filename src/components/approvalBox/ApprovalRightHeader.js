@@ -37,6 +37,7 @@ function ApprovalRightHeader() {
       ...prevState,
       searchInput: value,
       searchBtnStatus: !prevState.searchBtnStatus,
+      showCount: true,
     }));
   };
 
@@ -65,13 +66,15 @@ function ApprovalRightHeader() {
 
   return (
     <div className={styles.list}>
-      {pageState.curPage === '미결문서' ? (
-        <Button
-          label={'일괄결재'}
-          btnStyle={'red_btn'}
-          onClick={handleApproval}
-        />
-      ) : null}
+      <div className={styles.allApprovalBtn}>
+        {pageState.curPage === '미결문서' ? (
+          <Button
+            label={'일괄결재'}
+            btnStyle={'red_btn'}
+            onClick={handleApproval}
+          />
+        ) : null}
+      </div>
       <Search onSearch={handleSearch} fontSize="17px" />
       <div className={styles.container} onBlur={handleBlurContainer}>
         <label onClick={handleClickContainer}>
