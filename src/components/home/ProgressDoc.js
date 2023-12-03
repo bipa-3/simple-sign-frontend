@@ -27,7 +27,7 @@ export default function ProgressDoc() {
         const docList = response.data || [];
         const recentPDocs = docList
           .filter((doc) => doc.docStatus === 'P')
-          .slice(0, 2);
+          .slice(0, 3);
         setRecentPDocuments(recentPDocs);
       } catch (error) {
         console.error('Error fetching documents:', error);

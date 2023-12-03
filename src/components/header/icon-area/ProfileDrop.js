@@ -99,7 +99,7 @@ export default function Profile() {
                               onChange={hadleChange}
                               value={item.orgUserId}
                               name="radio"
-                              style={{ marginLeft: '20%' }}
+                              style={{ marginLeft: '20%', color: 'grey' }}
                             />
                           </td>
                           <td className={styles.table_td}>{item.compName}</td>

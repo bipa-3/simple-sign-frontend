@@ -16,6 +16,8 @@ const initialState = {
   docView: [],
   approvalState: '',
   checkNextPage: true,
+  showCount: false,
+  docCount: 0,
 };
 
 const detailSearchInitState = {

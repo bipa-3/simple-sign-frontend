@@ -49,6 +49,7 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
           ...prevState,
           isApprovalBox: false,
         }));
+
         break;
     }
   }, [currentPath, setPageState]);
@@ -71,6 +72,7 @@ function MenuItem({ item, isSubMenuVisible, toggleSubMenu }) {
       view: false,
       radioSortValue: 'alldoc',
       shouldFetchDocs: false,
+      showCount: false,
     }));
 
     const customBoxNames = customBoxViewItemState.map(

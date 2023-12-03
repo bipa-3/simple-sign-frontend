@@ -93,6 +93,7 @@ function DetailApprovalBox() {
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
+        paddingBottom: '50px',
       }}
       titleChildren={
         <Button

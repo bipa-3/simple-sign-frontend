@@ -42,14 +42,28 @@
   align-items: center;
   margin-top: 10px;
 }
+.docCount {
+  width: 50%;
+}
+.docCount span {
+  padding-left: 5px;
+  font-size: 13.6px;
+  color: rgb(108, 117, 125);
+}
+.countNumber {
+  color: #b59f52 !important;
+  font-weight: 600;
+}
 .radiobuttonsBox {
   box-sizing: border-box;
   display: flex;
-  justify-content: end;
+
   align-items: center;
   min-height: 65px;
 }
 .radiogroup {
+  width: 50%;
+  justify-content: end;
   height: 27px;
   display: flex;
   align-items: center;

@@ -91,7 +91,7 @@ function Sidebar() {
       .catch((error) =>
         console.error('Error fetching approval box list:', error)
       );
-  }, [manageState.boxList, manageState.boxUpdate]);
+  }, [manageState.boxUpdate]);
 
   useEffect(() => {
     // 결재분류함 데이터를 가져오는 로직 ...
