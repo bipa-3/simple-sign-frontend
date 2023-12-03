@@ -26,7 +26,11 @@ function SendSearchDetail(props) {
   ];
 
   const handleSearchIconClick = () => {
-    setState((prevState) => ({ ...prevState, shouldFetchDocs: true }));
+    setState((prevState) => ({
+      ...prevState,
+      shouldFetchDocs: true,
+      showCount: true,
+    }));
   };
 
   const handleDataChange = (key) => (id, value) => {

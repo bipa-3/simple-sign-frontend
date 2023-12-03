@@ -26,7 +26,7 @@ export default function ReceivedRef() {
         );
         const docList = response.data || [];
 
-        const recentPDocs = docList.slice(0, 2);
+        const recentPDocs = docList.slice(0, 3);
         setRecentPDocuments(recentPDocs);
       } catch (error) {
         console.error('Error fetching documents:', error);

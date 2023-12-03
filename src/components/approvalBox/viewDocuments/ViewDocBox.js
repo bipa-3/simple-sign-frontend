@@ -94,10 +94,35 @@ function ViewDocBox() {
       console.error('Error checking for more data:', error);
     }
   };
+  const fetchCountData = async () => {
+    let countResponse;
+    try {
+      if (state.shouldFetchDocs) {
+        countResponse = await detailSearchDocsCount(
+          viewItems,
+          detailSearchState,
+          state.radioSortValue
+        );
+      } else {
+        if (state.searchInput) {
+          countResponse = await getDocsListCount(
+            viewItems,
+            state.searchInput ? state.searchInput : '',
+            state.radioSortValue
+          );
+        }
+      }
+
+      setState((prevState) => ({ ...prevState, docCount: countResponse.data }));
+    } catch (error) {}
+  };
 
   const fetchData = async (isInitialLoad = false) => {
     showLoading();
     try {
+      if (state.shouldFetchDocs || state.searchInput != '') {
+        fetchCountData();
+      }
       let docListResponse;
 
       if (state.shouldFetchDocs) {
@@ -188,6 +213,12 @@ function ViewDocBox() {
     // 의존성 배열
     state.shouldFetchDocs,
   ]);
+
+  useEffect(() => {
+    if (state.shouldFetchDocs || state.searchInput != '') {
+      fetchCountData();
+    }
+  }, [state.shouldFetchDocs, state.searchInput]);
 
   useEffect(() => {
     if (state.checkNextPage) {
