@@ -38,8 +38,6 @@ export default function Notice() {
     const client = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
-      // heartbeatIncoming: 1000,
-      // heartbeatOutgoing: 1000,
       debug: (str) => {
         console.log(str);
       },
@@ -56,7 +54,7 @@ export default function Notice() {
         (message) => {
           const newNotification = JSON.parse(message.body);
           setNotifications((prevNotifs) => [newNotification, ...prevNotifs]);
-
+          localStorage.setItem('lastAlarmId', newNotification.alarmId);
           // 새 알림이 읽지 않은 상태라면 읽지 않은 알림 개수를 증가시킴
           if (!newNotification.read) {
             setUnreadCount((prevUnreadCount) => prevUnreadCount + 1);
@@ -142,6 +140,7 @@ export default function Notice() {
       try {
         const response = await getAlarm();
         setNotifications(response.data);
+        localStorage.setItem('lastAlarmId', response.data[0].alarmId);
       } catch (error) {
         console.error('알림 데이터를 가져오는데 실패했습니다', error);
       } finally {
@@ -177,6 +176,24 @@ export default function Notice() {
       }
     };
   }, []);
+
+  // 마지막 알림 아이디 전송
+  useEffect(() => {
+    const sendAlarmMessage = () => {
+      if (stompClient && stompClient.connected && notifications.length > 0) {
+        const lastAlarmId = localStorage.getItem('lastAlarmId');
+        const orgUserId = localStorage.getItem('orgUserId');
+        stompClient.publish({
+          destination: '/app/alarmMessage',
+          body: JSON.stringify({ lastAlarmId, orgUserId }),
+        });
+      }
+    };
+
+    const intervalId = setInterval(sendAlarmMessage, 30000);
+
+    return () => clearInterval(intervalId);
+  }, [stompClient, notifications]);
 
   // 알림을 읽음으로 표시하는 함수
   const markAsRead = async (alarmId) => {
