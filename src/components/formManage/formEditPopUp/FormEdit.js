@@ -96,10 +96,10 @@ export default function FormEdit({
           <div className={styled.optionsBox}>
             <Button
               onClick={defualt_template}
-              width={'100px'}
+              width={'130px'}
               fontSize={'12px'}
               label={'기본 템플릿 적용'}
-              btnStyle={'gray_btn'}
+              btnStyle={'grey_btn'}
             />
           </div>
         </div>

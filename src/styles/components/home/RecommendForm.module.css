@@ -86,7 +86,7 @@
   color: #323a46 !important;
 }
 .contenticon {
-  font-size: 30px;
+  font-size: 28px;
   margin-bottom: 7px;
 }
 .contenttext {
@@ -94,7 +94,7 @@
 }
 
 .recommentContentBox:hover .contenticon {
-  font-size: 35px;
+  font-size: 30px;
   cursor: pointer;
   color: #668286;
 }

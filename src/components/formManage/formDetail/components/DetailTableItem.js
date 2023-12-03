@@ -210,14 +210,14 @@ const FileBox = ({ id, name, data, dataHandler }) => {
           alert('필수 항목을 입력하세요');
         }
       },
-      btnStyle: 'popup_blue_btn',
+      btnStyle: 'blue_btn',
     },
     {
       label: '취소',
       onClick: () => {
         closeModal();
       },
-      btnStyle: 'popup_blue_btn',
+      btnStyle: 'light_btn',
     },
   ];
 

@@ -277,7 +277,7 @@ export default function ApprovalRegist(props) {
       onClick: () => {
         closeModal();
       },
-      btnStyle: 'dark_btn',
+      btnStyle: 'light_btn',
     },
   ];
 
@@ -299,7 +299,7 @@ export default function ApprovalRegist(props) {
         }
         btnStyle={'popup_non_btn'}
         width="1300px"
-        height="800px"
+        height="700px"
         title={formName}
         children={
           <>

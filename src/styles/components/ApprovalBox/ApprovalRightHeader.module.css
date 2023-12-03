@@ -3,6 +3,10 @@
   flex-direction: row; /* 수평으로 배치 */
   align-items: center; /* 수직 가운데 정렬 (선택 사항) */
   margin: 0;
+  padding-right: 15px;
+}
+.allApprovalBtn {
+  padding-right: 30px;
 }
 .selectBox {
   padding: 0;
@@ -12,7 +16,7 @@
   height: 27px;
   font-size: 12px;
   background-color: white;
-  border: 1px solid #e6e6e6;
+  border: 1px solid #bdbcbc;
   border-radius: 10%;
   color: #8c8c8c;
 }
