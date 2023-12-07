@@ -50,7 +50,7 @@ function DocItem(props) {
           </div>
           <div className={styled.info}>
             <div className={styled.txtinfo}>{props.formName}</div>
-            <div className={styled.bar}>|</div>
+            {props.docNumber ? <div className={styled.bar}>|</div> : <></>}
             <div className={styled.txtinfo}>{props.docNumber}</div>
           </div>
         </div>
