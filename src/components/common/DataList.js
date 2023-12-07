@@ -78,6 +78,13 @@ export default function DataList({
               backgroundColor: '#f3f5f6 !important',
             },
           },
+          '.MuiDataGrid-row .Mui-checked': {
+            color: '#498E9D !important',
+          },
+          '.MuiDataGrid-columnHeaderCheckbox .Mui-checked': {
+            color: '#498E9D !important',
+          },
+
           '.MuiDataGrid-row.Mui-selected, .MuiDataGrid-row.Mui-selected:hover':
             {
               backgroundColor: '#eef2f2 !important',
