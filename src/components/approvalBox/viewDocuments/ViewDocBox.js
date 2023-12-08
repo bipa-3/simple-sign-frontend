@@ -292,7 +292,7 @@ function ViewDocBox() {
               .map((docItem) => (
                 <DocItem
                   key={docItem.approvalDocId}
-                  docNumber={docItem.approvalDocId}
+                  docNumber={docItem.productNum}
                   formName={docItem.formName}
                   date={
                     state.selectSortDate === 1
