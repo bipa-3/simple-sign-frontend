@@ -17,17 +17,23 @@ import { FiBellOff } from 'react-icons/fi';
 import LoadingAlarm from '../../common/LoadingAlarm';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAlert } from '../../../contexts/AlertContext';
+import { useAlarmAlert } from '../../../contexts/AlarmAlertContext';
 
-export default function Notice() {
+export default function Notice({ onStompClient }) {
   const [stompClient, setStompClient] = useState(null);
   const { notifications, setNotifications } = useAlarm();
   const { showAlert } = useAlert();
   const [unreadCount, setUnreadCount] = useState(0);
   const [alarmLoading, setAlarmLoading] = useState(false);
   const [subscription, setSubscription] = useState(null);
+  const { showAlarmAlert } = useAlarmAlert();
+
+  useEffect(() => {
+    onStompClient(stompClient);
+  }, [stompClient, onStompClient]);
 
   const socketUrl =
-    //`http://localhost:8081/alarm/ws`;
+    //`http://localhost:8081/api/alarm/ws`;
     `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/alarm/ws`;
   const initializeWebSocket = () => {
     const socket = new SockJS(socketUrl, null, {
@@ -38,8 +44,6 @@ export default function Notice() {
     const client = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
-      // heartbeatIncoming: 1000,
-      // heartbeatOutgoing: 1000,
       debug: (str) => {
         console.log(str);
       },
@@ -56,14 +60,34 @@ export default function Notice() {
         (message) => {
           const newNotification = JSON.parse(message.body);
           setNotifications((prevNotifs) => [newNotification, ...prevNotifs]);
-
+          localStorage.setItem('lastAlarmId', newNotification.alarmId);
           // 새 알림이 읽지 않은 상태라면 읽지 않은 알림 개수를 증가시킴
           if (!newNotification.read) {
             setUnreadCount((prevUnreadCount) => prevUnreadCount + 1);
           }
+          // 새 알림이 도착했을 때 Alert
+          showAlarmAlert({
+            open: true,
+            severity: 'info',
+            message: `${newNotification.alarmContent}`,
+          });
         }
       );
       setSubscription(newSubscription);
+
+      // 재연결 시 메시지 전송
+      if (
+        client &&
+        client.connected &&
+        localStorage.getItem('lastAlarmId') != null
+      ) {
+        const lastAlarmId = localStorage.getItem('lastAlarmId');
+        const orgUserId = localStorage.getItem('orgUserId');
+        client.publish({
+          destination: '/app/alarmMessage',
+          body: JSON.stringify({ lastAlarmId, orgUserId }),
+        });
+      }
     };
 
     client.onStompError = (frame) => {
@@ -142,6 +166,7 @@ export default function Notice() {
       try {
         const response = await getAlarm();
         setNotifications(response.data);
+        localStorage.setItem('lastAlarmId', response.data[0].alarmId);
       } catch (error) {
         console.error('알림 데이터를 가져오는데 실패했습니다', error);
       } finally {

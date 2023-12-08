@@ -13,7 +13,7 @@ import Button2 from '../../common/Button';
 import { getAuthorityCode } from '../../../apis/headerAPI/getAuthorityCode';
 import { getUserAuthority } from '../../../apis/headerAPI/getUserAuthority';
 
-export default function Profile() {
+export default function Profile({ stompClient }) {
   // 로그아웃
   const navigate = useNavigate();
   const { state, setState } = useContext(AppContext);
@@ -34,6 +34,8 @@ export default function Profile() {
   const logout = () => {
     postLogout()
       .then(() => {
+        stompClient.deactivate();
+
         localStorage.clear();
         document.cookie =
           'LOGIN_COOKIE=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
