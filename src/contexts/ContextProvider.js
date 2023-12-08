@@ -7,6 +7,7 @@ import { ApprovalBoxManageProvider } from './ApprovalBoxManageContext';
 import { LoadingProvider } from './LoadingContext';
 import { AlarmProvider } from './AlarmContext';
 import { AlertProvider } from './AlertContext';
+import { AlarmAlertProvider } from './AlarmAlertContext';
 import React from 'react';
 
 export default function ContextProvider({ children }) {
@@ -19,7 +20,9 @@ export default function ContextProvider({ children }) {
               <ApprovalBoxManageProvider>
                 <SeqManageProvider>
                   <AlarmProvider>
-                    <AlertProvider>{children}</AlertProvider>
+                    <AlertProvider>
+                      <AlarmAlertProvider>{children}</AlarmAlertProvider>
+                    </AlertProvider>
                   </AlarmProvider>
                 </SeqManageProvider>
               </ApprovalBoxManageProvider>
