@@ -30,6 +30,7 @@ import { useSeqManage } from './contexts/SeqManageContext';
 import Button from './components/common/Button';
 import Login from './components/login/Login';
 import { useAlert } from './contexts/AlertContext';
+import { useAlarmAlert } from './contexts/AlarmAlertContext';
 
 function getCookie(name) {
   const value = ';' + document.cookie;
@@ -47,6 +48,7 @@ function AppContent() {
   const { createDetailData: createFormState } = useFormManage();
   const { createDetailData: createSeqState } = useSeqManage();
   const { renderCustomAlert } = useAlert();
+  const { renderAlarmAlert } = useAlarmAlert();
 
   let loginValue = getCookie('LOGIN_COOKIE');
   //세션 확인 후 쿠키값 삭제 요청 api
@@ -151,6 +153,7 @@ function AppContent() {
       )}
       <Loading />
       {renderCustomAlert()}
+      {renderAlarmAlert()}
     </>
   );
 }

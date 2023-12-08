@@ -17,18 +17,23 @@ import { FiBellOff } from 'react-icons/fi';
 import LoadingAlarm from '../../common/LoadingAlarm';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAlert } from '../../../contexts/AlertContext';
+import { useAlarmAlert } from '../../../contexts/AlarmAlertContext';
 
-export default function Notice() {
+export default function Notice({ onStompClient }) {
   const [stompClient, setStompClient] = useState(null);
   const { notifications, setNotifications } = useAlarm();
   const { showAlert } = useAlert();
   const [unreadCount, setUnreadCount] = useState(0);
   const [alarmLoading, setAlarmLoading] = useState(false);
   const [subscription, setSubscription] = useState(null);
+  const { showAlarmAlert } = useAlarmAlert();
 
-  const socketUrl =
-    //`http://localhost:8081/alarm/ws`;
-    `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/alarm/ws`;
+  useEffect(() => {
+    onStompClient(stompClient);
+  }, [stompClient, onStompClient]);
+
+  const socketUrl = `http://localhost:8081/api/alarm/ws`;
+  //`https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/alarm/ws`;
   const initializeWebSocket = () => {
     const socket = new SockJS(socketUrl, null, {
       transports: ['websocket', 'xhr-streaming', 'xhr-polling'],
@@ -59,9 +64,29 @@ export default function Notice() {
           if (!newNotification.read) {
             setUnreadCount((prevUnreadCount) => prevUnreadCount + 1);
           }
+          // 새 알림이 도착했을 때 Alert
+          showAlarmAlert({
+            open: true,
+            severity: 'info',
+            message: `${newNotification.alarmContent}`,
+          });
         }
       );
       setSubscription(newSubscription);
+
+      // 재연결 시 메시지 전송
+      if (
+        client &&
+        client.connected &&
+        localStorage.getItem('lastAlarmId') != null
+      ) {
+        const lastAlarmId = localStorage.getItem('lastAlarmId');
+        const orgUserId = localStorage.getItem('orgUserId');
+        client.publish({
+          destination: '/app/alarmMessage',
+          body: JSON.stringify({ lastAlarmId, orgUserId }),
+        });
+      }
     };
 
     client.onStompError = (frame) => {
@@ -176,24 +201,6 @@ export default function Notice() {
       }
     };
   }, []);
-
-  // 마지막 알림 아이디 전송
-  useEffect(() => {
-    const sendAlarmMessage = () => {
-      if (stompClient && stompClient.connected && notifications.length > 0) {
-        const lastAlarmId = localStorage.getItem('lastAlarmId');
-        const orgUserId = localStorage.getItem('orgUserId');
-        stompClient.publish({
-          destination: '/app/alarmMessage',
-          body: JSON.stringify({ lastAlarmId, orgUserId }),
-        });
-      }
-    };
-
-    const intervalId = setInterval(sendAlarmMessage, 30000);
-
-    return () => clearInterval(intervalId);
-  }, [stompClient, notifications]);
 
   // 알림을 읽음으로 표시하는 함수
   const markAsRead = async (alarmId) => {
