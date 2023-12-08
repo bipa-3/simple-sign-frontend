@@ -32,8 +32,9 @@ export default function Notice({ onStompClient }) {
     onStompClient(stompClient);
   }, [stompClient, onStompClient]);
 
-  const socketUrl = `http://localhost:8081/api/alarm/ws`;
-  //`https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/alarm/ws`;
+  const socketUrl =
+    //`http://localhost:8081/api/alarm/ws`;
+    `https://ec2-43-202-224-51.ap-northeast-2.compute.amazonaws.com/alarm/ws`;
   const initializeWebSocket = () => {
     const socket = new SockJS(socketUrl, null, {
       transports: ['websocket', 'xhr-streaming', 'xhr-polling'],
