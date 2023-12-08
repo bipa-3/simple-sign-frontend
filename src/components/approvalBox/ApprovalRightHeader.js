@@ -7,12 +7,14 @@ import { usePage } from '../../contexts/PageContext';
 import { useLoading } from '../../contexts/LoadingContext';
 import insertApprovalAll from '../../apis/approvalManageAPI/insertApprovalAll';
 import ErrorHandle from '../../apis/errorHandle';
+import { useAlert } from '../../contexts/AlertContext';
 
 function ApprovalRightHeader() {
   const [isDropdownView, setDropdownView] = useState(false);
   const { state, setState } = useApprovalBox();
   const { state: pageState, setState: setPageState } = usePage();
   const { showLoading, hideLoading } = useLoading();
+  const { showAlert } = useAlert();
 
   const { detailSearchState, setDetailSearchState, detailSearchInitState } =
     useApprovalBox();
@@ -33,12 +35,19 @@ function ApprovalRightHeader() {
   };
 
   const handleSearch = (value) => {
-    setState((prevState) => ({
-      ...prevState,
-      searchInput: value,
-      searchBtnStatus: !prevState.searchBtnStatus,
-      showCount: true,
-    }));
+    if (value === '' || value === null) {
+      showAlert({
+        severity: 'info',
+        message: '검색 항목을 입력해 주세요',
+      });
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        searchInput: value,
+        searchBtnStatus: !prevState.searchBtnStatus,
+        showCount: true,
+      }));
+    }
   };
 
   const handleApproval = () => {

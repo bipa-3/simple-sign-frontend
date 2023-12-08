@@ -10,12 +10,14 @@ import styled from '../../../styles/components/ApprovalBox/SearchDeatil.module.c
 import React, { useEffect } from 'react';
 import { useApprovalBox } from '../../../contexts/ApprovalBoxContext';
 import Button from '../../common/Button';
+import { useAlert } from '../../../contexts/AlertContext';
 
 function SendSearchDetail(props) {
   const { state, setState, detailSearchState, setDetailSearchState } =
     useApprovalBox();
   const { viewItem } = state;
   const dateName = props.dateName;
+  const { showAlert } = useAlert();
 
   const docStatus = [
     { id: '1', name: '전체', value: '1' },
@@ -26,11 +28,33 @@ function SendSearchDetail(props) {
   ];
 
   const handleSearchIconClick = () => {
-    setState((prevState) => ({
-      ...prevState,
-      shouldFetchDocs: true,
-      showCount: true,
-    }));
+    if (
+      (detailSearchState.searchTitle === '' ||
+        detailSearchState.searchTitle === null) &&
+      (detailSearchState.searchContent === '' ||
+        detailSearchState.searchContent === null) &&
+      (detailSearchState.searchDept === '' ||
+        detailSearchState.searchDept === null) &&
+      (detailSearchState.searchWriter === '' ||
+        detailSearchState.searchWriter === null) &&
+      (detailSearchState.searchApprovUser === '' ||
+        detailSearchState.searchApprovUser === null) &&
+      (detailSearchState.searchDocForm === '' ||
+        detailSearchState.searchDocForm === null) &&
+      (detailSearchState.searchDocNumber == '' ||
+        detailSearchState.searchDocNumber == null)
+    ) {
+      showAlert({
+        severity: 'info',
+        message: '검색 항목을 입력해 주세요',
+      });
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        shouldFetchDocs: true,
+        showCount: true,
+      }));
+    }
   };
 
   const handleDataChange = (key) => (id, value) => {

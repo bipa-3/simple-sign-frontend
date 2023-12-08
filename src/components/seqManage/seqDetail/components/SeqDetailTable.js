@@ -202,7 +202,7 @@ export default function SeqDetailTable() {
         seqConfirm();
         closeModal();
       },
-      btnStyle: 'popup_blue_btn',
+      btnStyle: 'blue_btn',
     },
   ];
 
