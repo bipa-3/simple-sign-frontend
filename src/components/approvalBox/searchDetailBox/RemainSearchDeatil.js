@@ -11,6 +11,7 @@ import styled from '../../../styles/components/ApprovalBox/SearchDeatil.module.c
 import { useApprovalBox } from '../../../contexts/ApprovalBoxContext';
 import Button from '../../common/Button';
 import { useLocation } from 'react-router-dom';
+import { useAlert } from '../../../contexts/AlertContext';
 
 function RemainSearchDetail() {
   const { state, setState, detailSearchState, setDetailSearchState } =
@@ -19,6 +20,7 @@ function RemainSearchDetail() {
   const queryParams = new URLSearchParams(location.search);
   const viewItemsString = queryParams.get('viewItems');
   const viewItems = viewItemsString ? viewItemsString.split(',') : [];
+  const { showAlert } = useAlert();
 
   const docStatus = [
     { id: '1', name: '전체', value: '1' },
@@ -58,11 +60,34 @@ function RemainSearchDetail() {
   }, [state.bottomSelectSortDate]);
 
   const handleSearchIconClick = () => {
-    setState((prevState) => ({
-      ...prevState,
-      shouldFetchDocs: true,
-      showCount: true,
-    }));
+
+    if (
+      (detailSearchState.searchTitle === '' ||
+        detailSearchState.searchTitle === null) &&
+      (detailSearchState.searchContent === '' ||
+        detailSearchState.searchContent === null) &&
+      (detailSearchState.searchDept === '' ||
+        detailSearchState.searchDept === null) &&
+      (detailSearchState.searchWriter === '' ||
+        detailSearchState.searchWriter === null) &&
+      (detailSearchState.searchApprovUser === '' ||
+        detailSearchState.searchApprovUser === null) &&
+      (detailSearchState.searchDocForm === '' ||
+        detailSearchState.searchDocForm === null) &&
+      (detailSearchState.searchDocNumber == '' ||
+        detailSearchState.searchDocNumber == null)
+    ) {
+      showAlert({
+        severity: 'info',
+        message: '검색 항목을 입력해 주세요',
+      });
+    } else {
+      setState((prevState) => ({
+        ...prevState,
+        shouldFetchDocs: true,
+        showCount: true,
+      }));
+    }
   };
 
   const optionlist = () => {
